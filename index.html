@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#0B0B0B">
+<title>Code1008 — Identity by Code</title>
+<style>
+/* ============================================================
+   CODE1008 — DESIGN SYSTEM
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0B0B0B;
+  --card:#151515;
+  --card2:#1E1E1E;
+  --line:#262626;
+  --gold:#D4AF37;
+  --gold-dim:#a8862a;
+  --gold-soft:rgba(212,175,55,.13);
+  --text:#FFFFFF;
+  --muted:#8B8B8B;
+  --mine:#D4AF37;
+  --mine-text:#0B0B0B;
+  --green:#39D98A;
+  --red:#FF5C5C;
+  --shadow:0 10px 40px rgba(0,0,0,.55);
+  --r:16px;
+}
+body.light{
+  --bg:#F5F5F7;
+  --card:#FFFFFF;
+  --card2:#EFEFF2;
+  --line:#E4E4EA;
+  --text:#0B0B0B;
+  --muted:#7A7A85;
+  --gold-soft:rgba(212,175,55,.18);
+  --shadow:0 10px 40px rgba(0,0,0,.10);
+}
+html,body{height:100%}
+body{
+  background:#000;
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  display:flex;justify-content:center;
+  overflow:hidden;
+  transition:background .3s;
+}
+body.light{background:#DEDEE3}
+::-webkit-scrollbar{width:0;height:0}
+input,button,textarea{font:inherit;color:inherit;outline:none;border:none;background:none}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+/* ---------- APP SHELL ---------- */
+#app{
+  position:relative;
+  width:100%;max-width:480px;height:100dvh;
+  background:var(--bg);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 80px rgba(0,0,0,.6);
+}
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  background:var(--bg);
+}
+.ic svg{width:22px;height:22px;display:block}
+.icon-btn{
+  width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;
+  color:var(--text);opacity:.9;
+  transition:background .18s,transform .12s,opacity .18s;
+}
+.icon-btn:hover{background:var(--card2);opacity:1}
+.icon-btn:active{transform:scale(.9)}
+
+/* ---------- AUTH ---------- */
+#authScreen{
+  justify-content:center;align-items:center;padding:28px;
+  background:
+    radial-gradient(700px 420px at 50% -10%,rgba(212,175,55,.14),transparent 60%),
+    var(--bg);
+  overflow-y:auto;
+}
+.auth-wrap{width:100%;max-width:380px;animation:fadeUp .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.brand-big{
+  font-size:34px;font-weight:800;letter-spacing:6px;text-align:center;
+  color:var(--text);
+}
+.brand-big span{color:var(--gold)}
+.brand-sub{
+  text-align:center;color:var(--muted);font-size:13.5px;margin-top:10px;
+  letter-spacing:.3px;line-height:1.6;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:22px;
+  margin-top:26px;
+  box-shadow:var(--shadow);
+}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;letter-spacing:1.4px;color:var(--muted);margin-bottom:8px;text-transform:uppercase}
+.input{
+  width:100%;background:var(--card2);
+  border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;font-size:15px;
+  transition:border-color .2s,background .2s;
+}
+.input:focus{border-color:var(--gold);background:var(--gold-soft)}
+.btn{
+  width:100%;padding:15px;border-radius:12px;
+  background:var(--gold);color:#0B0B0B;font-weight:700;
+  font-size:15px;letter-spacing:.4px;
+  transition:transform .12s,filter .2s,opacity .2s;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:600}
+.btn.ghost:hover{background:var(--card2)}
+.btn.small{padding:10px 16px;width:auto;font-size:13px;border-radius:10px}
+.code-reveal{
+  text-align:center;padding:22px 10px;
+  border:1px dashed rgba(212,175,55,.4);
+  border-radius:14px;background:var(--gold-soft);
+  margin-bottom:18px;
+}
+.code-reveal .cl{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.code-reveal .cv{font-size:34px;font-weight:800;color:var(--gold);font-family:ui-monospace,Menlo,monospace;margin-top:8px}
+.muted{color:var(--muted);font-size:12.5px;line-height:1.6}
+.center{text-align:center}
+
+/* ---------- TOP BAR ---------- */
+#topbar{
+  height:58px;flex:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 10px 0 18px;
+  border-bottom:1px solid var(--line);
+  background:var(--bg);
+  z-index:5;
+}
+.brand{font-size:17px;font-weight:800;letter-spacing:3.4px}
+.brand span{color:var(--gold)}
+.tb-actions{display:flex;gap:2px}
+
+/* ---------- TAB BAR ---------- */
+#tabbar{
+  height:66px;flex:none;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--line);
+  background:var(--bg);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+#tabbar button{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  color:var(--muted);font-size:10px;letter-spacing:.4px;font-weight:600;
+  transition:color .2s,transform .15s;position:relative;
+}
+#tabbar button:active{transform:scale(.9)}
+#tabbar button.active{color:var(--gold)}
+#tabbar button.active::after{
+  content:"";position:absolute;top:0;width:22px;height:2px;border-radius:2px;background:var(--gold);
+}
+
+/* ---------- VIEWS ---------- */
+#views{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:14px;scroll-behavior:smooth}
+.view-head{
+  padding:18px 18px 6px;
+  font-size:22px;font-weight:800;letter-spacing:.4px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sec-title{
+  padding:16px 18px 8px;font-size:11px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--muted);font-weight:700;
+}
+.empty{padding:50px 30px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.8}
+
+/* ---------- LIST ROWS ---------- */
+.row{
+  display:flex;align-items:center;gap:13px;
+  padding:11px 16px;cursor:pointer;
+  transition:background .15s;
+}
+.row:hover{background:var(--card)}
+.row:active{background:var(--card2)}
+.av{
+  width:48px;height:48px;flex:none;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:14px;font-weight:800;letter-spacing:.5px;
+  color:var(--gold);
+  background:radial-gradient(circle at 30% 25%,#2a2a2a,#0e0e0e);
+  border:1px solid rgba(212,175,55,.3);
+  position:relative;
+  user-select:none;
+}
+.av.sm{width:38px;height:38px;font-size:11.5px}
+.av.lg{width:96px;height:96px;font-size:28px}
+.av .dot{
+  position:absolute;right:-1px;bottom:-1px;
+  width:13px;height:13px;border-radius:50%;
+  background:var(--green);border:2.5px solid var(--bg);
+}
+.av.group{color:#fff;background:linear-gradient(135deg,#2b2b2b,#141414);border-color:var(--line)}
+.row-main{flex:1;min-width:0}
+.row-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.row-name{font-size:15.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-time{font-size:11px;color:var(--muted);flex:none}
+.row-bot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:3px}
+.row-prev{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{
+  min-width:20px;height:20px;padding:0 6px;border-radius:10px;
+  background:var(--gold);color:#0B0B0B;font-size:11px;font-weight:800;
+  display:grid;place-items:center;flex:none;
+}
+.ctag{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:var(--gold);font-size:.86em;letter-spacing:.2px;
+}
+.pin-ic{color:var(--muted);display:inline-flex;vertical-align:-3px;margin-right:4px}
+.pin-ic svg{width:13px;height:13px}
+
+/* ---------- CARDS ---------- */
+.card-item{
+  margin:8px 14px;padding:16px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);
+  transition:transform .15s,border-color .2s;
+}
+.card-item:hover{border-color:rgba(212,175,55,.35)}
+.chal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.chal-title{font-size:15px;font-weight:700;line-height:1.4}
+.chal-reward{color:var(--gold);font-weight:800;font-size:15px;white-space:nowrap}
+.chal-desc{color:var(--muted);font-size:13px;line-height:1.6;margin-top:8px}
+.chal-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.tag{
+  font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;font-weight:800;
+  padding:5px 10px;border-radius:20px;border:1px solid var(--line);color:var(--muted);
+}
+.tag.open{color:var(--gold);border-color:rgba(212,175,55,.45);background:var(--gold-soft)}
+.tag.locked{color:#7fb2ff;border-color:rgba(127,178,255,.35)}
+.tag.done{color:var(--green);border-color:rgba(57,217,138,.35)}
+.tag.fail{color:var(--red);border-color:rgba(255,92,92,.35)}
+.chal-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+
+/* ---------- SEGMENT ---------- */
+.segment{
+  display:flex;gap:6px;margin:10px 14px 4px;padding:5px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+}
+.segment button{
+  flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:700;
+  color:var(--muted);transition:all .2s;
+}
+.segment button.active{background:var(--gold-soft);color:var(--gold)}
+
+/* ---------- PROFILE ---------- */
+.profile-hero{
+  text-align:center;padding:26px 20px 20px;
+  background:radial-gradient(500px 240px at 50% 0%,rgba(212,175,55,.13),transparent 70%);
+}
+.profile-hero .av{margin:0 auto 14px}
+.profile-name{font-size:22px;font-weight:800;letter-spacing:.4px}
+.profile-code{
+  font-family:ui-monospace,Menlo,monospace;color:var(--gold);
+  font-size:14px;margin-top:5px;letter-spacing:1px;
+}
+.profile-bio{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.65;max-width:300px;margin-left:auto;margin-right:auto}
+.btn-row{display:flex;gap:10px;padding:4px 16px 8px;flex-wrap:wrap;justify-content:center}
+.btn-row .btn{width:auto;flex:1;min-width:110px;padding:12px;font-size:13.5px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px}
+.info-cell{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.info-cell .k{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.info-cell .v{font-size:13.5px;margin-top:7px;line-height:1.5;word-break:break-word}
+
+/* ---------- SETTINGS ---------- */
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:15px 18px;cursor:pointer;border-bottom:1px solid var(--line);
+  transition:background .15s;
+}
+.set-row:hover{background:var(--card)}
+.set-left{display:flex;align-items:center;gap:14px;min-width:0}
+.set-ic{color:var(--gold);opacity:.9;display:flex}
+.set-label{font-size:14.5px}
+.set-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.switch{
+  width:48px;height:28px;border-radius:16px;background:var(--card2);
+  border:1px solid var(--line);position:relative;flex:none;transition:background .25s,border-color .25s;
+}
+.switch::after{
+  content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;
+  background:var(--muted);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s;
+}
+.switch.on{background:var(--gold-soft);border-color:var(--gold)}
+.switch.on::after{transform:translateX(20px);background:var(--gold)}
+.back-link{
+  display:flex;align-items:center;gap:8px;padding:14px 16px;
+  color:var(--gold);font-size:14px;font-weight:700;cursor:pointer;
+}
+
+/* ---------- CHAT SCREEN ---------- */
+.chat-screen{
+  transform:translateX(100%);
+  transition:transform .32s cubic-bezier(.2,.8,.2,1);
+  z-index:20;
+}
+.chat-screen.open{transform:translateX(0)}
+.chat-head{
+  height:60px;flex:none;display:flex;align-items:center;gap:10px;
+  padding:0 8px 0 6px;border-bottom:1px solid var(--line);background:var(--bg);
+}
+.ch-meta{flex:1;min-width:0;cursor:pointer}
+.ch-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-sub{font-size:11.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-sub.live{color:var(--gold)}
+.chat-search{
+  padding:9px 12px;border-bottom:1px solid var(--line);background:var(--card);
+}
+.chat-search input{width:100%;background:var(--card2);border-radius:10px;padding:10px 14px;font-size:14px}
+.chat-body{
+  flex:1;overflow-y:auto;padding:16px 12px 10px;
+  display:flex;flex-direction:column;gap:3px;
+  background-image:radial-gradient(rgba(212,175,55,.055) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+.day-sep{
+  align-self:center;margin:12px 0 6px;font-size:10.5px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted);font-weight:700;
+  background:var(--card);border:1px solid var(--line);
+  padding:4px 12px;border-radius:20px;
+}
+.msg{max-width:80%;display:flex;flex-direction:column;position:relative;animation:pop .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.them{align-self:flex-start;align-items:flex-start}
+.bubble{
+  padding:9px 13px;border-radius:16px;font-size:14.5px;line-height:1.48;
+  word-break:break-word;position:relative;cursor:pointer;
+  transition:transform .12s;
+}
+.bubble:active{transform:scale(.985)}
+.msg.them .bubble{background:var(--card2);border:1px solid var(--line);border-bottom-left-radius:5px;color:var(--text)}
+.msg.me .bubble{background:var(--mine);color:var(--mine-text);border-bottom-right-radius:5px;font-weight:500}
+.msg-sender{font-size:11px;color:var(--gold);font-weight:800;margin:0 0 3px 4px;letter-spacing:.3px}
+.msg-foot{
+  display:flex;align-items:center;gap:4px;justify-content:flex-end;
+  font-size:10px;margin-top:4px;opacity:.75;
+}
+.msg.me .msg-foot{color:rgba(11,11,11,.65)}
+.msg.them .msg-foot{color:var(--muted)}
+.ticks{display:inline-flex}
+.ticks svg{width:14px;height:14px}
+.ticks.read{color:#0B0B0B}
+.msg.them .ticks.read{color:var(--gold)}
+.reactions{
+  display:flex;gap:4px;margin-top:-8px;z-index:2;
+  background:var(--card);border:1px solid var(--line);
+  padding:3px 8px;border-radius:20px;font-size:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.35);
+}
+.msg.me .reactions{align-self:flex-end}
+.voice-msg{display:flex;align-items:center;gap:10px;min-width:170px}
+.wave{display:flex;align-items:center;gap:2.5px;height:22px}
+.wave i{width:3px;border-radius:3px;background:currentColor;opacity:.65;display:block}
+.play-btn{
+  width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:rgba(0,0,0,.18);
+}
+.msg.them .play-btn{background:rgba(212,175,55,.18);color:var(--gold)}
+.attach-img{
+  width:220px;height:150px;border-radius:12px;
+  background:linear-gradient(135deg,#2a2a2a,#111);
+  display:grid;place-items:center;color:var(--gold);font-size:11px;letter-spacing:1px;
+  border:1px solid rgba(212,175,55,.25);
+}
+.file-msg{display:flex;align-items:center;gap:11px;min-width:190px}
+.file-ic{
+  width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+  background:rgba(0,0,0,.18);
+}
+.msg.them .file-ic{background:var(--gold-soft);color:var(--gold)}
+.file-name{font-size:13.5px;font-weight:650}
+.file-size{font-size:11px;opacity:.7;margin-top:2px}
+
+/* typing */
+.typing{display:flex;gap:4px;padding:13px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}
+.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+/* composer */
+.composer{
+  flex:none;display:flex;align-items:flex-end;gap:6px;
+  padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);background:var(--bg);
+}
+.msg-input{
+  flex:1;background:var(--card2);border:1px solid var(--line);
+  border-radius:22px;padding:12px 16px;font-size:14.5px;max-height:110px;resize:none;
+  transition:border-color .2s;
+}
+.msg-input:focus{border-color:rgba(212,175,55,.5)}
+.send-btn{
+  width:44px;height:44px;border-radius:50%;flex:none;
+  background:var(--gold);color:#0B0B0B;display:grid;place-items:center;
+  transition:transform .12s,filter .2s;
+}
+.send-btn:active{transform:scale(.9)}
+.mic-btn{color:var(--gold)}
+.readonly-note{
+  flex:none;text-align:center;padding:12px;font-size:11.5px;color:var(--muted);
+  border-top:1px solid var(--line);letter-spacing:.5px;
+}
+
+/* ---------- CALL OVERLAY ---------- */
+.call-overlay{
+  position:absolute;inset:0;z-index:60;
+  background:linear-gradient(180deg,#0B0B0B 0%,#141008 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.call-overlay.on{opacity:1;pointer-events:auto}
+.call-av{margin-bottom:22px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.25)}50%{box-shadow:0 0 0 22px rgba(212,175,55,0)}}
+.call-name{font-size:25px;font-weight:800;letter-spacing:.4px}
+.call-code{color:var(--gold);font-family:ui-monospace,Menlo,monospace;font-size:14px;margin-top:7px;letter-spacing:1px}
+.call-status{color:var(--muted);font-size:13.5px;margin-top:16px;letter-spacing:.6px}
+.call-controls{
+  display:flex;gap:18px;margin-top:60px;
+}
+.call-btn{
+  width:62px;height:62px;border-radius:50%;
+  background:var(--card2);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--text);
+  transition:transform .12s,background .2s;
+}
+.call-btn:active{transform:scale(.92)}
+.call-btn.active{background:var(--gold);color:#0B0B0B;border-color:var(--gold)}
+.call-btn.end{background:var(--red);color:#fff;border-color:var(--red)}
+.call-video-preview{
+  position:absolute;top:24px;right:20px;width:100px;height:150px;border-radius:16px;
+  background:linear-gradient(135deg,#242424,#0d0d0d);
+  border:1px solid rgba(212,175,55,.3);
+  display:grid;place-items:center;color:var(--muted);font-size:11px;
+}
+
+/* ---------- SHEET / MODAL ---------- */
+.backdrop{
+  position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:70;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+  backdrop-filter:blur(3px);
+}
+.backdrop.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;z-index:71;
+  background:var(--card);
+  border-radius:22px 22px 0 0;
+  border-top:1px solid var(--line);
+  max-height:86%;overflow-y:auto;
+  transform:translateY(102%);
+  transition:transform .32s cubic-bezier(.2,.8,.2,1);
+  padding-bottom:calc(18px + env(safe-area-inset-bottom));
+}
+.sheet.on{transform:translateY(0)}
+.sheet-handle{width:40px;height:4px;border-radius:4px;background:var(--line);margin:10px auto 4px}
+.sheet-title{padding:14px 20px 6px;font-size:17px;font-weight:800;letter-spacing:.3px}
+.sheet-body{padding:8px 16px 12px}
+.sheet-item{
+  display:flex;align-items:center;gap:14px;padding:14px 12px;border-radius:12px;
+  cursor:pointer;font-size:14.5px;transition:background .15s;
+}
+.sheet-item:hover{background:var(--card2)}
+.sheet-item .set-ic{color:var(--gold)}
+.sheet-item.danger{color:var(--red)}
+.sheet-item.danger .set-ic{color:var(--red)}
+.emoji-row{display:flex;gap:8px;justify-content:space-around;padding:10px 4px}
+.emoji-row button{
+  font-size:26px;width:52px;height:52px;border-radius:50%;
+  transition:transform .15s,background .2s;
+}
+.emoji-row button:hover{background:var(--card2);transform:scale(1.15)}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--gold-soft);border:1px solid rgba(212,175,55,.35);
+  color:var(--gold);border-radius:20px;padding:6px 12px;font-size:12.5px;font-weight:700;
+}
+.chip span.x{cursor:pointer;opacity:.7;font-size:15px;line-height:1}
+
+/* ---------- RESULT CARD (search) ---------- */
+.result{
+  background:var(--card2);border:1px solid var(--line);
+  border-radius:16px;padding:16px;margin-top:10px;
+  animation:fadeUp .3s;
+}
+.result-top{display:flex;gap:14px;align-items:center}
+.result-name{font-size:16px;font-weight:750}
+.result-code{color:var(--gold);font-family:ui-monospace,Menlo,monospace;font-size:12.5px;margin-top:3px}
+.result-bio{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.result-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mini-btn{
+  flex:1;min-width:76px;padding:10px 6px;border-radius:11px;
+  border:1px solid var(--line);background:var(--card);
+  font-size:12px;font-weight:700;display:flex;flex-direction:column;
+  align-items:center;gap:5px;color:var(--text);transition:all .18s;
+}
+.mini-btn:hover{border-color:var(--gold);color:var(--gold)}
+.mini-btn svg{width:17px;height:17px}
+
+/* ---------- TOAST ---------- */
+.toast{
+  position:absolute;left:50%;bottom:96px;transform:translate(-50%,20px);
+  background:var(--card);border:1px solid rgba(212,175,55,.4);
+  color:var(--text);font-size:13px;font-weight:600;
+  padding:12px 20px;border-radius:30px;z-index:99;
+  opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.2,.8,.2,1);
+  box-shadow:var(--shadow);white-space:nowrap;max-width:90%;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- FAB ---------- */
+.fab{
+  position:absolute;right:18px;bottom:84px;z-index:9;
+  width:56px;height:56px;border-radius:18px;
+  background:var(--gold);color:#0B0B0B;display:grid;place-items:center;
+  box-shadow:0 10px 28px rgba(212,175,55,.3);
+  transition:transform .16s,filter .2s;
+}
+.fab:hover{filter:brightness(1.08)}
+.fab:active{transform:scale(.92)}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ AUTH ============ -->
+  <section id="authScreen" class="screen">
+    <div class="auth-wrap">
+      <div class="brand-big">CODE<span>1008</span></div>
+      <p class="brand-sub">Private communication.<br>Identity by Code — not by phone number.</p>
+      <div class="card" id="authCard"></div>
+    </div>
+  </section>
+
+  <!-- ============ MAIN ============ -->
+  <section id="mainScreen" class="screen hidden">
+    <header id="topbar">
+      <div class="brand">CODE<span>1008</span></div>
+      <div class="tb-actions">
+        <button class="icon-btn" data-act="openSearch" title="Search Code ID"></button>
+        <button class="icon-btn" data-act="openSettings" title="Settings"></button>
+      </div>
+    </header>
+    <main id="views"></main>
+    <nav id="tabbar"></nav>
+  </section>
+
+  <!-- ============ CHAT ============ -->
+  <section id="chatScreen" class="screen chat-screen">
+    <header class="chat-head" id="chatHead"></header>
+    <div class="chat-search hidden" id="chatSearchBar">
+      <input id="chatSearchInput" placeholder="Search in conversation…">
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div id="composerWrap"></div>
+  </section>
+
+  <!-- ============ CALL ============ -->
+  <div class="call-overlay" id="callOverlay">
+    <div class="call-video-preview hidden" id="callPreview">You</div>
+    <div class="av lg call-av" id="callAv">LE</div>
+    <div class="call-name" id="callName">LEO</div>
+    <div class="call-code" id="callCode">&lt;001</div>
+    <div class="call-status" id="callStatus">Calling…</div>
+    <div class="call-controls">
+      <button class="call-btn" data-act="callMute" id="btnMute"></button>
+      <button class="call-btn" data-act="callSpeaker" id="btnSpeaker"></button>
+      <button class="call-btn" data-act="callVideo" id="btnVideo"></button>
+      <button class="call-btn end" data-act="callEnd" id="btnEnd"></button>
+    </div>
+  </div>
+
+  <!-- ============ SHEET ============ -->
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div id="sheetBody"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   CODE1008 — APP LOGIC
+   ============================================================ */
+
+/* ---------- ICONS ---------- */
+const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const I = {
+  chat:  svg('<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/>'),
+  phone: svg('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>'),
+  users: svg('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/>'),
+  target:svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/>'),
+  user:  svg('<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
+  search:svg('<circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.3-4.3"/>'),
+  gear:  svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 16.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 20.4 9v.09a1.65 1.65 0 0 0 1.51 1H22a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'),
+  back:  svg('<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>'),
+  send:  svg('<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>'),
+  mic:   svg('<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>'),
+  clip:  svg('<path d="m21.4 11-9.2 9.2a6 6 0 0 1-8.5-8.5l8.6-8.6a4 4 0 0 1 5.6 5.7l-8.6 8.5a2 2 0 0 1-2.8-2.8l8.5-8.5"/>'),
+  video: svg('<path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2.5"/>'),
+  more:  svg('<circle cx="12" cy="5" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/>'),
+  plus:  svg('<path d="M12 5v14M5 12h14"/>'),
+  x:     svg('<path d="M18 6 6 18M6 6l12 12"/>'),
+  check: svg('<path d="M20 6 9 17l-5-5"/>'),
+  checks:svg('<path d="M1 13l3.5 3.5L13 8"/><path d="M9 16.5 10.5 18 22 6.5"/>'),
+  share: svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5"/>'),
+  shield:svg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'),
+  bell:  svg('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>'),
+  globe: svg('<circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5a15 15 0 0 1 4 9.5 15 15 0 0 1-4 9.5 15 15 0 0 1-4-9.5 15 15 0 0 1 4-9.5z"/>'),
+  moon:  svg('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),
+  ban:   svg('<circle cx="12" cy="12" r="9.5"/><path d="m5.6 5.6 12.8 12.8"/>'),
+  play:  svg('<path d="M6 4l14 8-14 8V4z" fill="currentColor" stroke="none"/>'),
+  pin:   svg('<path d="M12 17v5"/><path d="M9 2h6l-1 7 3 3v2H7v-2l3-3-1-7z"/>'),
+  file:  svg('<path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/>'),
+  image: svg('<rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>'),
+  gif:   svg('<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M8 12h2.5M8 9.5v5M14 9.5v5M14 12h2M18 9.5v5"/>'),
+  wave:  svg('<path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 12h2"/>'),
+  logout:svg('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>'),
+  vol:   svg('<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M19.1 4.9a10 10 0 0 1 0 14.2"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/>'),
+  voloff:svg('<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6M17 9l6 6"/>'),
+  cam:   svg('<path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2.5"/>'),
+  camoff:svg('<path d="M16 16v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m23 7-7 5 7 5V7z"/><path d="m1 1 22 22"/>'),
+  phoneoff:svg('<path d="M10.7 13.3a16 16 0 0 0 4.3 3.2l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9"/><path d="m23 1-22 22"/>'),
+  inbox: svg('<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.4 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.4-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.8 1.1z"/>'),
+  outbox:svg('<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>'),
+  missed:svg('<path d="M23 1 17 7 13 3"/><path d="M17 7V2"/><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>'),
+  archive:svg('<rect x="2" y="4" width="20" height="5" rx="1.5"/><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/>'),
+  mute:  svg('<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6M17 9l6 6"/>'),
+  trash: svg('<path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>'),
+  lang:  svg('<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>'),
+  lock:  svg('<rect x="3" y="11" width="18" height="11" rx="2.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'),
+  sparkle:svg('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/>')
+};
+
+/* ---------- HELPERS ---------- */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ctag = c => `<span class="ctag">&lt;${esc(c)}</span>`;
+const uid = () => Math.random().toString(36).slice(2,10);
+const rand = n => Math.floor(Math.random()*n);
+
+function fmtTime(ts){
+  return new Date(ts).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+}
+function fmtDay(ts){
+  const d = new Date(ts), n = new Date();
+  const same = (a,b)=>a.toDateString()===b.toDateString();
+  if(same(d,n)) return 'Today';
+  const y = new Date(n.getTime()-864e5);
+  if(same(d,y)) return 'Yesterday';
+  return d.toLocaleDateString([], {day:'numeric',month:'short'});
+}
+function relTime(ts){
+  const diff = Date.now()-ts;
+  if(diff < 60e3) return 'now';
+  if(diff < 3600e3) return Math.floor(diff/60e3)+'m';
+  if(diff < 86400e3) return fmtTime(ts);
+  if(diff < 604800e3) return Math.floor(diff/86400e3)+'d';
+  return new Date(ts).toLocaleDateString([],{day:'numeric',month:'short'});
+}
+function avHTML(name, online, cls=''){
+  const ini = esc((name||'?').trim().slice(0,2).toUpperCase());
+  return `<div class="av ${cls}">${ini}${online?'<i class="dot"></i>':''}</div>`;
+}
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('on'), 1900);
+}
+
+/* ---------- DATA ---------- */
+const DIRECTORY = [
+  {code:'001', alias:'LEO',   online:true,  bio:'Founder. Building in public.', skills:'Product, Strategy', location:'Dubai',     joined:'Jan 2024'},
+  {code:'108', alias:'SKILL', online:true,  bio:'Engineer. Ships fast.',        skills:'React, Node',       location:'Bangalore', joined:'Feb 2024'},
+  {code:'2024',alias:'ECHO',  online:false, bio:'Designer of quiet interfaces.',skills:'UI, Motion',        location:'Berlin',    joined:'Mar 2024'},
+  {code:'5678',alias:'NOVA',  online:true,  bio:'AI researcher.',               skills:'ML, Python',        location:'Toronto',   joined:'Apr 2024'},
+  {code:'9999',alias:'ORBIT', online:false, bio:'Markets & macro.',             skills:'Trading',           location:'Singapore', joined:'May 2024'},
+  {code:'42',  alias:'PIXEL', online:true,  bio:'Creator. Frames & light.',     skills:'Video, Photo',      location:'Lagos',     joined:'Jun 2024'},
+  {code:'777', alias:'ATLAS', online:false, bio:'Ops and growth.',              skills:'Growth, Ops',       location:'London',    joined:'Jul 2024'}
+];
+const POOL = ['1008','777','2025','321','8888','100','500','123','9090'];
+const REPLIES = [
+  'Got it 👌','On it.','That works for me.','Let me check and revert.',
+  'Nice — sending details now.','Sure. Voice call in 10?','🔥','Sounds good.',
+  'Understood. Locking it in.','Ping me your Code ID again?'
+];
+
+const KEY = 'code1008.v1';
+let S = null;
+let chatCtx = null;
+let tab = 'chats';
+let groupsSeg = 'groups';
+let pendingAuth = {email:'', code:''};
+let groupDraft = {members:[]};
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function loadState(){ try{ return JSON.parse(localStorage.getItem(KEY)); }catch(e){ return null; } }
+
+/* ---------- SEED ---------- */
+function pickCode(){
+  const used = new Set(DIRECTORY.map(d=>d.code));
+  for(const c of POOL) if(!used.has(c)) return c;
+  let c; do{ c = String(1000+rand(9000)); }while(used.has(c));
+  return c;
+}
+
+function seedState(email, alias, code){
+  const now = Date.now(), H = 3600e3;
+  return {
+    me:{code, alias, email, bio:'', skills:'', location:'', status:'Available', joined:new Date().toISOString()},
+    directory: DIRECTORY.map(d=>({...d})),
+    contacts: ['001','108'],
+    blocked: [],
+    chats: [
+      { code:'001', alias:'LEO', online:true, unread:2, muted:false, archived:false, typing:false, pinned:['Welcome to Code1008 — identity by Code 👑'], messages:[
+        {id:uid(),from:'001',type:'text',text:'Hey! Found you by your Code ID '+ '<'+code+' 🔎',time:now-5*H,reactions:{}},
+        {id:uid(),from:'me', type:'text',text:'That\'s the whole point — no usernames, no phone numbers.',time:now-4.9*H,status:'read',reactions:{}},
+        {id:uid(),from:'001',type:'text',text:'Exactly. Simple like WhatsApp, private like Signal.',time:now-4.8*H,reactions:{'🔥':1}},
+        {id:uid(),from:'001',type:'text',text:'Add me. Code <001. Let\'s build.',time:now-2.2*H,reactions:{}}
+      ]},
+      { code:'108', alias:'SKILL', online:true, unread:0, muted:false, archived:false, typing:false, pinned:[], messages:[
+        {id:uid(),from:'108',type:'text',text:'Pushed the new chat screen. Check it.',time:now-26*H,reactions:{}},
+        {id:uid(),from:'me', type:'text',text:'Looks clean. Ship it.',time:now-25.8*H,status:'read',reactions:{'👍':1}},
+        {id:uid(),from:'108',type:'voice',text:'',dur:12,time:now-25.5*H,reactions:{}}
+      ]},
+      { code:'5678', alias:'NOVA', online:true, unread:0, muted:false, archived:false, typing:false, pinned:[], messages:[
+        {id:uid(),from:'5678',type:'text',text:'Challenge posted. $1008 reward. You in?',time:now-50*H,reactions:{}}
+      ]}
+    ],
+    calls:[
+      {id:uid(),code:'001',alias:'LEO',type:'voice',dir:'in',  time:now-3*H,   dur:'4:12'},
+      {id:uid(),code:'108',alias:'SKILL',type:'video',dir:'out',time:now-27*H,  dur:'12:03'},
+      {id:uid(),code:'2024',alias:'ECHO',type:'voice',dir:'miss',time:now-49*H, dur:''},
+      {id:uid(),code:'001',alias:'LEO',type:'voice',dir:'out', time:now-72*H,  dur:'1:47'}
+    ],
+    groups:[
+      { id:'g1', name:'CODE1008 Founders', desc:'Core team. Ship weekly.', members:['001','108',code], messages:[
+        {id:uid(),from:'001',type:'text',text:'Welcome to the Founders group. Code IDs only — no numbers.',time:now-30*H,reactions:{'👑':2}},
+        {id:uid(),from:'108',type:'text',text:'Design system is done. Gold on black. 🔥',time:now-28*H,reactions:{}},
+        {id:uid(),from:'me', type:'text',text:'Shipping the MVP this week.',time:now-4*H,status:'read',reactions:{'🚀':3}}
+      ]},
+      { id:'g2', name:'AI Builders', desc:'Models, agents, tools.', members:['5678','108',code], messages:[
+        {id:uid(),from:'5678',type:'text',text:'Anyone testing the new assistant layer?',time:now-20*H,reactions:{}}
+      ]},
+      { id:'g3', name:'Startup Circle', desc:'Founders helping founders.', members:['001','777',code], messages:[
+        {id:uid(),from:'777',type:'text',text:'Growth notes posted in the channel.',time:now-60*H,reactions:{}}
+      ]}
+    ],
+    channels:[
+      { id:'ch1', name:'Code1008 Updates', desc:'Official announcements', subs:'12.4k', messages:[
+        {id:uid(),from:'001',type:'text',text:'Code1008 v1 is live. Identity is now a Code — permanent, private, yours.',time:now-8*H,reactions:{'🔥':42,'👑':18}}
+      ]},
+      { id:'ch2', name:'Founder News', desc:'Stories from the network', subs:'5.1k', messages:[
+        {id:uid(),from:'001',type:'text',text:'LEO<>001 crossed 1000 direct connections without a single username.',time:now-40*H,reactions:{'👏':12}}
+      ]},
+      { id:'ch3', name:'Challenge Announcements', desc:'New rewards posted daily', subs:'8.7k', messages:[
+        {id:uid(),from:'108',type:'text',text:'New challenge: Ship the onboarding flow. Reward $1008. Open for 7 days.',time:now-11*H,reactions:{'⚡':9}}
+      ]}
+    ],
+    challenges:[
+      {id:'c1', title:'Ship the Code1008 landing page', by:'001', reward:'$1008', deadline:'7 days', status:'open',   assigned:null, desc:'Build a single-page site explaining Code ID identity. Mobile-first, gold on black.'},
+      {id:'c2', title:'Design 3 onboarding screens',     by:'108', reward:'$500',  deadline:'5 days', status:'locked', assigned:'2024', desc:'Email OTP → Code ID assignment → first message.'},
+      {id:'c3', title:'Write the launch thread',         by:'9999',reward:'$250',  deadline:'3 days', status:'open',   assigned:null, desc:'10 posts. No hashtags. Pure signal.'}
+    ],
+    settings:{theme:'dark', lang:'English', notifications:true, readReceipts:true, onlineStatus:true},
+    auth:{created:now}
+  };
+}
+
+/* ---------- BOOT ---------- */
+function boot(){
+  const saved = loadState();
+  if(saved && saved.me){
+    S = saved;
+    applyTheme();
+    enterApp();
+  } else {
+    renderAuth('email');
+  }
+}
+
+function applyTheme(){
+  document.body.classList.toggle('light', S?.settings?.theme === 'light');
+}
+
+function enterApp(){
+  $('#authScreen').classList.add('hidden');
+  $('#mainScreen').classList.remove('hidden');
+  renderTabbar();
+  render();
+}
+
+/* ============================================================
+   AUTH FLOW
+   ============================================================ */
+function renderAuth(step){
+  const card = $('#authCard');
+  if(step === 'email'){
+    card.innerHTML = `
+      <div class="field">
+        <label>Email Address</label>
+        <input class="input" id="authEmail" type="email" placeholder="you@domain.com" autocomplete="email">
+      </div>
+      <button class="btn" data-act="sendOtp">Send Code</button>
+      <p class="muted center" style="margin-top:14px">We'll email you a one-time code.<br>No phone number. Ever.</p>`;
+    setTimeout(()=>$('#authEmail')?.focus(), 200);
+  }
+  else if(step === 'otp'){
+    card.innerHTML = `
+      <p class="muted" style="margin-bottom:16px">Verification code sent to <b style="color:var(--text)">${esc(pendingAuth.email)}</b></p>
+      <div class="field">
+        <label>One-Time Code</label>
+        <input class="input" id="authOtp" inputmode="numeric" maxlength="6" placeholder="••••••" style="letter-spacing:8px;text-align:center;font-size:20px">
+      </div>
+      <button class="btn" data-act="verifyOtp">Verify</button>
+      <p class="muted center" style="margin-top:14px">Demo code: <b style="color:var(--gold)">1008</b></p>
+      <button class="btn ghost" data-act="authBack" style="margin-top:10px">Back</button>`;
+    setTimeout(()=>$('#authOtp')?.focus(), 200);
+  }
+  else if(step === 'alias'){
+    const code = pendingAuth.code;
+    card.innerHTML = `
+      <div class="code-reveal">
+        <div class="cl">Your Permanent Code ID</div>
+        <div class="cv">&lt;${esc(code)}</div>
+      </div>
+      <div class="field">
+        <label>Alias Name</label>
+        <input class="input" id="authAlias" placeholder="e.g. MAKER" maxlength="12" style="text-transform:uppercase">
+      </div>
+      <button class="btn" data-act="createIdentity">Create Identity</button>
+      <p class="muted center" style="margin-top:14px">Your Code ID never changes.<br>Your alias can.</p>`;
+    setTimeout(()=>$('#authAlias')?.focus(), 200);
+  }
+}
+
+/* ============================================================
+   TAB BAR
+   ============================================================ */
+const TABS = [
+  {id:'chats',     label:'Chats',      icon:'chat'},
+  {id:'calls',     label:'Calls',      icon:'phone'},
+  {id:'groups',    label:'Groups',     icon:'users'},
+  {id:'challenges',label:'Challenges', icon:'target'},
+  {id:'profile',   label:'Profile',    icon:'user'}
+];
+function renderTabbar(){
+  $('#tabbar').innerHTML = TABS.map(t=>`
+    <button data-tab="${t.id}" class="${t.id===tab?'active':''}">
+      <span class="ic">${I[t.icon]}</span><span>${t.label}</span>
+    </button>`).join('');
+  $$('#topbar .icon-btn')[0].innerHTML = `<span class="ic">${I.search}</span>`;
+  $$('#topbar .icon-btn')[1].innerHTML = `<span class="ic">${I.gear}</span>`;
+}
+
+/* ============================================================
+   MAIN RENDER
+   ============================================================ */
+function render(){
+  const v = $('#views');
+  if(tab==='chats')       v.innerHTML = viewChats();
+  else if(tab==='calls')  v.innerHTML = viewCalls();
+  else if(tab==='groups') v.innerHTML = viewGroups();
+  else if(tab==='challenges') v.innerHTML = viewChallenges();
+  else if(tab==='profile')v.innerHTML = viewProfile();
+  else if(tab==='settings')v.innerHTML = viewSettings();
+
+  $$('#tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  $('#topbar').classList.toggle('hidden', tab==='settings');
+  $('#tabbar').classList.toggle('hidden', tab==='settings');
+  save();
+}
+
+/* ---------- CHATS ---------- */
+function lastMsg(c){ return c.messages[c.messages.length-1]; }
+function previewOf(m){
+  if(!m) return 'No messages yet';
+  const who = m.from==='me' ? 'You: ' : '';
+  switch(m.type){
+    case 'voice': return who+'🎤 Voice note';
+    case 'image': return who+'📷 Photo';
+    case 'file':  return who+'📄 '+m.text;
+    case 'gif':   return who+'GIF';
+    default: return who + (m.text||'');
+  }
+}
+function chatLastTs(c){
+  const m = lastMsg(c);
+  return m ? m.time : 0;
+}
+
+function viewChats(){
+  const dms = S.chats.map(c=>({kind:'dm', id:c.code, name:c.alias, online:c.online, unread:c.unread, muted:c.muted, ts:chatLastTs(c), prev:previewOf(lastMsg(c)), pinned:!!c.messages.length}));
+  const grps = S.groups.map(g=>({kind:'group', id:g.id, name:g.name, online:false, unread:0, muted:false, ts:chatLastTs(g), prev:previewOf(lastMsg(g)), pinned:false}));
+  const all = [...dms, ...grps].sort((a,b)=>b.ts-a.ts);
+
+  if(!all.length) return `<div class="empty">No conversations yet.<br>Search a Code ID to start.</div>`;
+
+  return all.map(r=>{
+    const isGroup = r.kind==='group';
+    return `
+    <div class="row" data-act="openChat" data-kind="${r.kind}" data-id="${esc(r.id)}">
+      ${avHTML(r.name, r.online, isGroup?'group':'')}
+      <div class="row-main">
+        <div class="row-top">
+          <span class="row-name">${esc(r.name)}</span>
+          <span class="row-time">${r.ts?relTime(r.ts):''}</span>
+        </div>
+        <div class="row-bot">
+          <span class="row-prev">${isGroup?'<span class="pin-ic">'+I.users+'</span>':''}${esc(r.prev).slice(0,60)}</span>
+          ${r.unread?`<span class="badge">${r.unread}</span>`:''}
+          ${r.muted?`<span class="pin-ic">${I.mute}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('') + `<button class="fab" data-act="openSearch"><span class="ic">${I.plus}</span></button>`;
+}
+
+/* ---------- CALLS ---------- */
+function viewCalls(){
+  const list = [...S.calls].sort((a,b)=>b.time-a.time);
+  const head = `<div class="view-head">Calls</div>`;
+  if(!list.length) return head+`<div class="empty">No calls yet.</div>`;
+  return head + list.map(c=>{
+    const dirIc = c.dir==='miss' ? I.missed : (c.dir==='in' ? I.inbox : I.outbox);
+    const color = c.dir==='miss' ? 'var(--red)' : 'var(--gold)';
+    return `
+    <div class="row" data-act="startCall" data-code="${esc(c.code)}" data-type="${c.type}">
+      ${avHTML(c.alias,false)}
+      <div class="row-main">
+        <div class="row-top">
+          <span class="row-name">${esc(c.alias)} ${ctag(c.code)}</span>
+          <span class="row-time">${relTime(c.time)}</span>
+        </div>
+        <div class="row-bot">
+          <span class="row-prev" style="display:flex;align-items:center;gap:6px">
+            <span class="ic" style="color:${color}"><span class="ic" style="display:none"></span>${dirIc}</span>
+            ${c.type==='video'?'Video':'Voice'} · ${c.dir==='miss'?'Missed':(c.dir==='in'?'Incoming':'Outgoing')}
+          </span>
+          <span class="row-time">${c.dur||''}</span>
+        </div>
+      </div>
+      <span class="ic" style="color:var(--gold)">${c.type==='video'?I.video:I.phone}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- GROUPS & CHANNELS ---------- */
+function viewGroups(){
+  let out = `<div class="view-head">Community</div>
+    <div class="segment">
+      <button class="${groupsSeg==='groups'?'active':''}" data-act="seg" data-seg="groups">Groups</button>
+      <button class="${groupsSeg==='channels'?'active':''}" data-act="seg" data-seg="channels">Channels</button>
+    </div>`;
+
+  if(groupsSeg==='groups'){
+    out += S.groups.map(g=>`
+      <div class="row" data-act="openChat" data-kind="group" data-id="${esc(g.id)}">
+        ${avHTML(g.name,false,'group')}
+        <div class="row-main">
+          <div class="row-top"><span class="row-name">${esc(g.name)}</span><span class="row-time">${relTime(chatLastTs(g)||Date.now())}</span></div>
+          <div class="row-bot"><span class="row-prev">${g.members.length} members · ${esc(previewOf(lastMsg(g))).slice(0,40)}</span></div>
+        </div>
+      </div>`).join('');
+    out += `<button class="fab" data-act="newGroup"><span class="ic">${I.plus}</span></button>`;
+  } else {
+    out += S.channels.map(c=>`
+      <div class="row" data-act="openChat" data-kind="channel" data-id="${esc(c.id)}">
+        ${avHTML(c.name,false,'group')}
+        <div class="row-main">
+          <div class="row-top"><span class="row-name">${esc(c.name)}</span><span class="row-time">${c.subs}</span></div>
+          <div class="row-bot"><span class="row-prev">${esc(c.desc)}</span></div>
+        </div>
+      </div>`).join('');
+  }
+  return out;
+}
+
+/* ---------- CHALLENGES ---------- */
+function statusTag(s){
+  const map = {open:['open','Open'], locked:['locked','Locked'], completed:['done','Completed'], failed:['fail','Failed']};
+  const [cls,label] = map[s]||['',''];
+  return `<span class="tag ${cls}">${label}</span>`;
+}
+function viewChallenges(){
+  let out = `<div class="view-head">Challenges <button class="icon-btn" data-act="newChallenge"><span class="ic">${I.plus}</span></button></div>`;
+  out += S.challenges.map(c=>{
+    const mine = c.assigned === S.me.code;
+    let actions = '';
+    if(c.status==='open'){
+      actions = `<button class="btn small" data-act="claim" data-id="${c.id}">Claim Challenge</button>`;
+    } else if(c.status==='locked' && mine){
+      actions = `<button class="btn small" data-act="complete" data-id="${c.id}">Mark Complete</button>
+                 <button class="btn small ghost" data-act="fail" data-id="${c.id}">Mark Failed</button>`;
+    } else if(c.status==='locked'){
+      actions = `<span class="muted">Assigned to ${ctag(c.assigned)}</span>`;
+    } else if(c.status==='completed'){
+      actions = `<span class="muted">Reward processing · ${ctag(c.assigned)}</span>`;
+    } else if(c.status==='failed'){
+      actions = `<span class="muted">Reopened for the network</span>`;
+    }
+    return `
+    <div class="card-item">
+      <div class="chal-head">
+        <div class="chal-title">${esc(c.title)}</div>
+        <div class="chal-reward">${esc(c.reward)}</div>
+      </div>
+      <div class="chal-desc">${esc(c.desc)}</div>
+      <div class="chal-meta">
+        ${statusTag(c.status)}
+        <span class="tag">⏱ ${esc(c.deadline)}</span>
+        <span class="tag">By ${ctag(c.by)}</span>
+      </div>
+      <div class="chal-actions">${actions}</div>
+    </div>`;
+  }).join('');
+  return out;
+}
+
+/* ---------- PROFILE ---------- */
+function viewProfile(){
+  const m = S.me;
+  return `
+  <div class="profile-hero">
+    ${avHTML(m.alias,true,'lg')}
+    <div class="profile-name">${esc(m.alias)}</div>
+    <div class="profile-code">&lt;${esc(m.code)}</div>
+    <div class="profile-bio">${esc(m.bio || 'No bio yet. Tap edit to add one.')}</div>
+  </div>
+  <div class="btn-row">
+    <button class="btn ghost" data-act="editProfile">Edit Profile</button>
+    <button class="btn" data-act="shareCode">Share Code</button>
+  </div>
+  <div class="info-grid">
+    <div class="info-cell"><div class="k">Skills</div><div class="v">${esc(m.skills||'—')}</div></div>
+    <div class="info-cell"><div class="k">Location</div><div class="v">${esc(m.location||'—')}</div></div>
+    <div class="info-cell"><div class="k">Status</div><div class="v" style="color:var(--gold)">${esc(m.status||'Available')}</div></div>
+    <div class="info-cell"><div class="k">Joined</div><div class="v">${new Date(m.joined).toLocaleDateString([], {day:'numeric',month:'short',year:'numeric'})}</div></div>
+  </div>
+  <div class="sec-title">Account</div>
+  <div class="set-row" data-act="openSettings">
+    <div class="set-left"><span class="set-ic">${I.gear}</span><div><div class="set-label">Settings</div><div class="set-sub">Theme, privacy, notifications</div></div></div>
+    <span class="ic" style="color:var(--muted);transform:rotate(180deg)">${I.back}</span>
+  </div>
+  <div class="set-row" data-act="logout">
+    <div class="set-left"><span class="set-ic" style="color:var(--red)">${I.logout}</span><div><div class="set-label" style="color:var(--red)">Sign Out</div><div class="set-sub">Your Code ID stays yours</div></div></div>
+  </div>`;
+}
+
+/* ---------- SETTINGS ---------- */
+function viewSettings(){
+  const st = S.settings;
+  const sw = (key,on)=>`<div class="switch ${on?'on':''}" data-act="toggle" data-key="${key}"></div>`;
+  return `
+  <div class="back-link" data-act="backToProfile"><span class="ic">${I.back}</span> Back</div>
+  <div class="view-head" style="padding-top:4px">Settings</div>
+
+  <div class="sec-title">Appearance</div>
+  <div class="set-row" data-act="toggleTheme">
+    <div class="set-left"><span class="set-ic">${I.moon}</span><div><div class="set-label">${st.theme==='dark'?'Dark Mode':'Light Mode'}</div><div class="set-sub">Minimal premium design</div></div></div>
+    <div class="switch ${st.theme==='dark'?'on':''}"></div>
+  </div>
+
+  <div class="sec-title">Privacy</div>
+  <div class="set-row">
+    <div class="set-left"><span class="set-ic">${I.check}</span><div><div class="set-label">Read Receipts</div><div class="set-sub">Show when you've read messages</div></div></div>
+    ${sw('readReceipts', st.readReceipts)}
+  </div>
+  <div class="set-row">
+    <div class="set-left"><span class="set-ic">${I.shield}</span><div><div class="set-label">Online Status</div><div class="set-sub">Let contacts see you're online</div></div></div>
+    ${sw('onlineStatus', st.onlineStatus)}
+  </div>
+  <div class="set-row" data-act="blockedList">
+    <div class="set-left"><span class="set-ic">${I.ban}</span><div><div class="set-label">Blocked Users</div><div class="set-sub">${S.blocked.length} blocked</div></div></div>
+    <span class="ic" style="color:var(--muted);transform:rotate(180deg)">${I.back}</span>
+  </div>
+
+  <div class="sec-title">Notifications</div>
+  <div class="set-row">
+    <div class="set-left"><span class="set-ic">${I.bell}</span><div><div class="set-label">Notifications</div><div class="set-sub">Messages, calls, challenges</div></div></div>
+    ${sw('notifications', st.notifications)}
+  </div>
+
+  <div class="sec-title">Language</div>
+  <div class="set-row" data-act="language">
+    <div class="set-left"><span class="set-ic">${I.globe}</span><div><div class="set-label">Language</div><div class="set-sub">${esc(st.lang)}</div></div></div>
+    <span class="ic" style="color:var(--muted);transform:rotate(180deg)">${I.back}</span>
+  </div>
+
+  <div class="sec-title">Account</div>
+  <div class="set-row" data-act="shareCode">
+    <div class="set-left"><span class="set-ic">${I.share}</span><div><div class="set-label">Share My Code</div><div class="set-sub">&lt;${esc(S.me.code)}</div></div></div>
+  </div>
+  <div class="set-row" data-act="logout">
+    <div class="set-left"><span class="set-ic" style="color:var(--red)">${I.logout}</span><div><div class="set-label" style="color:var(--red)">Sign Out</div><div class="set-sub">Remove session from this device</div></div></div>
+  </div>
+  <div class="empty" style="padding-top:24px;font-size:11.5px">CODE1008 · v1.0 · Identity by Code</div>`;
+}
+
+/* ============================================================
+   CHAT SCREEN
+   ============================================================ */
+function chatTarget(){
+  if(!chatCtx) return null;
+  if(chatCtx.kind==='dm')      return S.chats.find(c=>c.code===chatCtx.id);
+  if(chatCtx.kind==='group')   return S.groups.find(g=>g.id===chatCtx.id);
+  if(chatCtx.kind==='channel') return S.channels.find(c=>c.id===chatCtx.id);
+  return null;
+}
+function targetName(t){ return chatCtx.kind==='dm' ? t.alias : t.name; }
+function targetSub(t){
+  if(chatCtx.kind==='dm') return t.typing ? 'typing…' : (t.online ? 'online' : 'offline');
+  if(chatCtx.kind==='group') return `${t.members.length} members`;
+  return `${t.subs} subscribers`;
+}
+
+function openChat(kind, id){
+  chatCtx = {kind, id};
+  if(kind==='dm'){
+    let c = S.chats.find(x=>x.code===id);
+    if(!c){
+      const d = S.directory.find(x=>x.code===id) || {alias:'User', online:false};
+      c = {code:id, alias:d.alias, online:d.online, unread:0, muted:false, archived:false, typing:false, pinned:[], messages:[]};
+      S.chats.push(c);
+    }
+    c.unread = 0;
+  }
+  $('#chatScreen').classList.add('open');
+  $('#chatSearchBar').classList.add('hidden');
+  renderChat();
+  save();
+}
+
+function closeChat(){
+  $('#chatScreen').classList.remove('open');
+  chatCtx = null;
+  render();
+}
+
+function renderChat(){
+  const t = chatTarget();
+  if(!t) return;
+  const isChannel = chatCtx.kind==='channel';
+  const isDM = chatCtx.kind==='dm';
+
+  /* header */
+  $('#chatHead').innerHTML = `
+    <button class="icon-btn" data-act="closeChat"><span class="ic">${I.back}</span></button>
+    ${avHTML(targetName(t), isDM ? t.online : false, chatCtx.kind==='dm' ? 'sm' : 'sm group')}
+    <div class="ch-meta" data-act="openPeerProfile">
+      <div class="ch-name">${esc(targetName(t))}</div>
+      <div class="ch-sub ${t.typing?'live':''}">${isDM ? '&lt;'+esc(t.code)+' · '+esc(targetSub(t)) : esc(targetSub(t))}</div>
+    </div>
+    ${isDM ? `
+      <button class="icon-btn" data-act="voiceCall" data-code="${esc(t.code)}"><span class="ic">${I.phone}</span></button>
+      <button class="icon-btn" data-act="videoCall" data-code="${esc(t.code)}"><span class="ic">${I.video}</span></button>` : ''}
+    <button class="icon-btn" data-act="chatMenu"><span class="ic">${I.more}</span></button>`;
+
+  renderMessages();
+
+  /* composer */
+  const wrap = $('#composerWrap');
+  if(isChannel){
+    wrap.innerHTML = `<div class="readonly-note">🔒 Only admins can post in this channel</div>`;
+  } else {
+    wrap.innerHTML = `
+      <div class="composer">
+        <button class="icon-btn" data-act="attach"><span class="ic">${I.clip}</span></button>
+        <textarea class="msg-input" id="msgInput" rows="1" placeholder="Message"></textarea>
+        <button class="icon-btn mic-btn" data-act="voiceNote"><span class="ic">${I.mic}</span></button>
+        <button class="send-btn" data-act="send"><span class="ic">${I.send}</span></button>
+      </div>`;
+    const inp = $('#msgInput');
+    inp.addEventListener('input', ()=>{
+      inp.style.height='auto';
+      inp.style.height = Math.min(inp.scrollHeight,110)+'px';
+    });
+    inp.addEventListener('keydown', e=>{
+      if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+    });
+  }
+}
+
+function renderMessages(){
+  const t = chatTarget(); if(!t) return;
+  const body = $('#chatBody');
+  const q = ($('#chatSearchInput')?.value || '').toLowerCase().trim();
+  let msgs = t.messages || [];
+  if(q) msgs = msgs.filter(m=>(m.text||'').toLowerCase().includes(q));
+
+  let html = '';
+  let lastDay = '';
+  msgs.forEach(m=>{
+    const day = fmtDay(m.time);
+    if(day !== lastDay){ html += `<div class="day-sep">${day}</div>`; lastDay = day; }
+    html += msgHTML(m);
+  });
+
+  if(t.typing) html += `<div class="msg them"><div class="bubble typing"><i></i><i></i><i></i></div></div>`;
+  if(!msgs.length && !t.typing) html += `<div class="empty">${q?'No messages found.':'No messages yet. Say hello 👋'}</div>`;
+
+  body.innerHTML = html;
+  body.scrollTop = body.scrollHeight;
+}
+
+function msgHTML(m){
+  const mine = m.from === 'me';
+  const isDM = chatCtx.kind === 'dm';
+  const sender = (!mine && !isDM) ? (m.from==='001'?'LEO':m.from==='108'?'SKILL':m.from) : null;
+
+  let inner = '';
+  if(m.type==='voice'){
+    const bars = Array.from({length:22},()=>`<i style="height:${5+rand(14)}px"></i>`).join('');
+    inner = `<div class="voice-msg">
+        <div class="play-btn"><span class="ic" style="width:14px">${I.play}</span></div>
+        <div class="wave">${bars}</div>
+        <span style="font-size:11px;opacity:.75">${m.dur||8}s</span>
+      </div>`;
+  } else if(m.type==='image'){
+    inner = `<div class="attach-img">📷 PHOTO</div>`;
+  } else if(m.type==='file'){
+    inner = `<div class="file-msg">
+        <div class="file-ic"><span class="ic">${I.file}</span></div>
+        <div><div class="file-name">${esc(m.text)}</div><div class="file-size">${esc(m.size||'248 KB')}</div></div>
+      </div>`;
+  } else if(m.type==='gif'){
+    inner = `<div class="attach-img" style="background:linear-gradient(135deg,#3a2f10,#151515)">GIF</div>`;
+  } else {
+    inner = esc(m.text).replace(/\n/g,'<br>');
+  }
+
+  const rEntries = Object.entries(m.reactions||{}).filter(([,v])=>v>0);
+  const rHtml = rEntries.length
+    ? `<div class="reactions">${rEntries.map(([e,v])=>`<span>${e}${v>1?' '+v:''}</span>`).join('')}</div>`
+    : '';
+
+  const ticks = mine ? `<span class="ticks ${m.status==='read'?'read':''}">${m.status==='sent'?I.check:I.checks}</span>` : '';
+
+  return `
+  <div class="msg ${mine?'me':'them'}" data-msg="${m.id}">
+    ${sender?`<div class="msg-sender">${esc(sender)}</div>`:''}
+    <div class="bubble" data-act="msgMenu" data-id="${m.id}">${inner}
+      <div class="msg-foot"><span>${fmtTime(m.time)}</span>${ticks}</div>
+    </div>
+    ${rHtml}
+  </div>`;
+}
+
+/* ---------- SENDING ---------- */
+function pushMessage(obj){
+  const t = chatTarget(); if(!t) return;
+  t.messages.push(obj);
+  save();
+  renderMessages();
+}
+
+function sendMessage(){
+  const inp = $('#msgInput');
+  if(!inp) return;
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value = '';
+  inp.style.height = 'auto';
+  pushMessage({id:uid(), from:'me', type:'text', text, time:Date.now(), status:'sent', reactions:{}});
+  simulateDelivery();
+  if(chatCtx.kind==='dm') simulateReply();
+  if(chatCtx.kind==='group') simulateGroupReply();
+}
+
+function simulateDelivery(){
+  const t = chatTarget(); if(!t) return;
+  const last = t.messages[t.messages.length-1];
+  if(!last || last.from!=='me') return;
+  setTimeout(()=>{ last.status='delivered'; renderMessages(); save(); }, 600);
+  setTimeout(()=>{ last.status='read'; renderMessages(); save(); }, 1600);
+}
+
+function simulateReply(){
+  const t = chatTarget(); if(!t || chatCtx.kind!=='dm') return;
+  const id = chatCtx.id;
+  setTimeout(()=>{
+    const cur = S.chats.find(c=>c.code===id);
+    if(!cur) return;
+    cur.typing = true;
+    if(chatCtx && chatCtx.id===id) renderChat();
+  }, 1100);
+  setTimeout(()=>{
+    const cur = S.chats.find(c=>c.code===id);
+    if(!cur) return;
+    cur.typing = false;
+    cur.messages.push({
+      id:uid(), from:id, type:'text',
+      text: REPLIES[rand(REPLIES.length)],
+      time: Date.now(), reactions:{}
+    });
+    if(chatCtx && chatCtx.id===id) renderChat();
+    else { render(); }
+    save();
+  }, 2600);
+}
+
+function simulateGroupReply(){
+  const g = chatTarget(); if(!g || chatCtx.kind!=='group') return;
+  const gid = g.id;
+  const others = g.members.filter(m=>m!==S.me.code);
+  const who = others[rand(others.length)] || '001';
+  setTimeout(()=>{
+    const cur = S.groups.find(x=>x.id===gid);
+    if(!cur) return;
+    cur.typing = true;
+    if(chatCtx && chatCtx.id===gid) renderChat();
+  }, 1200);
+  setTimeout(()=>{
+    const cur = S.groups.find(x=>x.id===gid);
+    if(!cur) return;
+    cur.typing = false;
+    cur.messages.push({id:uid(), from:who, type:'text', text:REPLIES[rand(REPLIES.length)], time:Date.now(), reactions:{}});
+    if(chatCtx && chatCtx.id===gid) renderChat();
+    save();
+  }, 2800);
+}
+
+/* ============================================================
+   CALLS
+   ============================================================ */
+let callState = null;
+function startCall(code, type){
+  const d = S.directory.find(x=>x.code===code) || {alias:'User'};
+  callState = {code, alias:d.alias, type, muted:false, speaker:false, video:type==='video', t0:null, timer:null, secs:0};
+  const ov = $('#callOverlay');
+  $('#callAv').outerHTML = `<div class="av lg call-av" id="callAv">${esc(d.alias.slice(0,2).toUpperCase())}</div>`;
+  $('#callName').textContent = d.alias;
+  $('#callCode').innerHTML = '&lt;'+esc(code);
+  $('#callStatus').textContent = 'Calling…';
+  $('#callPreview').classList.toggle('hidden', type!=='video');
+  updateCallButtons();
+  ov.classList.add('on');
+
+  setTimeout(()=>{
+    if(!callState) return;
+    $('#callStatus').textContent = 'Connected';
+    callState.t0 = Date.now();
+    callState.timer = setInterval(()=>{
+      callState.secs++;
+      const m = String(Math.floor(callState.secs/60)).padStart(2,'0');
+      const s = String(callState.secs%60).padStart(2,'0');
+      $('#callStatus').textContent = `${m}:${s}`;
+    },1000);
+  }, 2200);
+}
+
+function updateCallButtons(){
+  if(!callState) return;
+  $('#btnMute').innerHTML = `<span class="ic">${callState.muted?I.voloff:I.mic}</span>`;
+  $('#btnMute').classList.toggle('active', callState.muted);
+  $('#btnSpeaker').innerHTML = `<span class="ic">${callState.speaker?I.vol:I.voloff}</span>`;
+  $('#btnSpeaker').classList.toggle('active', callState.speaker);
+  $('#btnVideo').innerHTML = `<span class="ic">${callState.video?I.cam:I.camoff}</span>`;
+  $('#btnVideo').classList.toggle('active', callState.video);
+  $('#btnEnd').innerHTML = `<span class="ic">${I.phoneoff}</span>`;
+}
+
+function endCall(){
+  if(!callState) return;
+  clearInterval(callState.timer);
+  const dur = callState.secs
+    ? `${Math.floor(callState.secs/60)}:${String(callState.secs%60).padStart(2,'0')}`
+    : '';
+  S.calls.unshift({
+    id:uid(), code:callState.code, alias:callState.alias,
+    type:callState.type, dir:'out', time:Date.now(), dur
+  });
+  callState = null;
+  $('#callOverlay').classList.remove('on');
+  save();
+  if(tab==='calls') render();
+  toast('Call ended' + (dur?` · ${dur}`:''));
+}
+
+/* ============================================================
+   SHEETS
+   ============================================================ */
+function openSheet(html){
+  $('#sheetBody').innerHTML = html;
+  $('#sheet').classList.add('on');
+  $('#backdrop').classList.add('on');
+}
+function closeSheet(){
+  $('#sheet').classList.remove('on');
+  $('#backdrop').classList.remove('on');
+}
+
+/* ---------- SEARCH ---------- */
+function openSearch(){
+  openSheet(`
+    <div class="sheet-title">Find by Code ID</div>
+    <div class="sheet-body">
+      <input class="input" id="searchInput" placeholder="Enter Code ID e.g. 001 or alias" autocomplete="off">
+      <div id="searchResults"><p class="muted" style="margin-top:14px">Search anyone using their permanent Code ID.</p></div>
+    </div>`);
+  setTimeout(()=>$('#searchInput')?.focus(), 250);
+  $('#searchInput').addEventListener('input', runSearch);
+}
+
+function runSearch(){
+  const q = ($('#searchInput').value||'').trim().toLowerCase().replace(/^</,'');
+  const box = $('#searchResults');
+  if(!q){ box.innerHTML = `<p class="muted" style="margin-top:14px">Search anyone using their permanent Code ID.</p>`; return; }
+
+  const results = S.directory.filter(d =>
+    d.code.toLowerCase().includes(q) || d.alias.toLowerCase().includes(q)
+  ).slice(0,6);
+
+  if(!results.length){
+    box.innerHTML = `<p class="muted" style="margin-top:14px">No member found for "${esc(q)}".</p>`;
+    return;
+  }
+
+  box.innerHTML = results.map(d=>`
+    <div class="result">
+      <div class="result-top">
+        ${avHTML(d.alias, d.online)}
+        <div>
+          <div class="result-name">${esc(d.alias)}</div>
+          <div class="result-code">&lt;${esc(d.code)} · ${d.online?'online':'offline'}</div>
+          <div class="result-bio">${esc(d.bio||'')}</div>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button class="mini-btn" data-act="dm" data-code="${esc(d.code)}"><span class="ic" style="color:var(--gold)">${I.chat}</span>Message</button>
+        <button class="mini-btn" data-act="call" data-code="${esc(d.code)}" data-type="voice"><span class="ic" style="color:var(--gold)">${I.phone}</span>Voice</button>
+        <button class="mini-btn" data-act="call" data-code="${esc(d.code)}" data-type="video"><span class="ic" style="color:var(--gold)">${I.video}</span>Video</button>
+        <button class="mini-btn" data-act="addContact" data-code="${esc(d.code)}"><span class="ic" style="color:var(--gold)">${I.plus}</span>Add</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ---------- MESSAGE MENU ---------- */
+function openMsgMenu(id){
+  const t = chatTarget(); if(!t) return;
+  const m = t.messages.find(x=>x.id===id); if(!m) return;
+  openSheet(`
+    <div class="sheet-title">Message</div>
+    <div class="sheet-body">
+      <div class="emoji-row">
+        ${['👍','❤️','😂','🔥','👑','🙏'].map(e=>`<button data-act="react" data-id="${id}" data-emoji="${e}">${e}</button>`).join('')}
+      </div>
+      <div class="sheet-item" data-act="copyMsg" data-id="${id}"><span class="set-ic">${I.file}</span> Copy text</div>
+      ${m.from==='me'?`<div class="sheet-item danger" data-act="deleteMsg" data-id="${id}"><span class="set-ic">${I.trash}</span> Delete message</div>`:''}
+    </div>`);
+}
+
+/* ---------- CHAT MENU ---------- */
+function openChatMenu(){
+  const t = chatTarget(); if(!t) return;
+  const isDM = chatCtx.kind==='dm';
+  openSheet(`
+    <div class="sheet-title">${esc(targetName(t))}</div>
+    <div class="sheet-body">
+      <div class="sheet-item" data-act="pinChat"><span class="set-ic">${I.pin}</span> Pinned messages ${t.pinned?.length?`(${t.pinned.length})`:''}</div>
+      <div class="sheet-item" data-act="searchChat"><span class="set-ic">${I.search}</span> Search in conversation</div>
+      ${isDM?`<div class="sheet-item" data-act="muteChat"><span class="set-ic">${I.mute}</span> ${t.muted?'Unmute':'Mute'} chat</div>`:''}
+      <div class="sheet-item" data-act="archiveChat"><span class="set-ic">${I.archive}</span> Archive chat</div>
+      <div class="sheet-item danger" data-act="clearChat"><span class="set-ic">${I.trash}</span> Delete chat</div>
+    </div>`);
+}
+
+/* ---------- NEW GROUP ---------- */
+function openNewGroup(){
+  groupDraft = {members:[]};
+  openSheet(`
+    <div class="sheet-title">New Group</div>
+    <div class="sheet-body">
+      <div class="field"><label>Group Name</label><input class="input" id="gName" placeholder="e.g. CODE1008 Founders"></div>
+      <div class="field"><label>Description</label><input class="input" id="gDesc" placeholder="What is this group about?"></div>
+      <div class="field">
+        <label>Add Members by Code ID</label>
+        <input class="input" id="gCode" placeholder="Type a Code ID and press Add">
+        <div class="chip-wrap" id="gChips"></div>
+      </div>
+      <button class="btn ghost" data-act="addMember" style="margin-bottom:10px">Add Member</button>
+      <button class="btn" data-act="createGroup">Create Group</button>
+    </div>`);
+}
+
+/* ---------- NEW CHALLENGE ---------- */
+function openNewChallenge(){
+  openSheet(`
+    <div class="sheet-title">Post a Challenge</div>
+    <div class="sheet-body">
+      <div class="field"><label>Title</label><input class="input" id="cTitle" placeholder="e.g. Ship the landing page"></div>
+      <div class="field"><label>Description</label><input class="input" id="cDesc" placeholder="What needs to be done?"></div>
+      <div class="field"><label>Reward</label><input class="input" id="cReward" placeholder="$1008"></div>
+      <div class="field"><label>Deadline</label><input class="input" id="cDeadline" placeholder="7 days"></div>
+      <button class="btn" data-act="createChallenge">Post Challenge</button>
+    </div>`);
+}
+
+/* ---------- EDIT PROFILE ---------- */
+function openEditProfile(){
+  const m = S.me;
+  openSheet(`
+    <div class="sheet-title">Edit Profile</div>
+    <div class="sheet-body">
+      <div class="field"><label>Alias Name</label><input class="input" id="pAlias" value="${esc(m.alias)}" maxlength="12"></div>
+      <div class="field"><label>Bio</label><input class="input" id="pBio" value="${esc(m.bio)}" placeholder="Short line about you"></div>
+      <div class="field"><label>Skills</label><input class="input" id="pSkills" value="${esc(m.skills)}" placeholder="Design, Code, Growth"></div>
+      <div class="field"><label>Location</label><input class="input" id="pLoc" value="${esc(m.location)}" placeholder="City"></div>
+      <div class="field"><label>Status</label><input class="input" id="pStatus" value="${esc(m.status)}" placeholder="Available"></div>
+      <button class="btn" data-act="saveProfile">Save</button>
+      <p class="muted center" style="margin-top:12px">Your Code ID &lt;${esc(m.code)} can never be changed.</p>
+    </div>`);
+}
+
+/* ============================================================
+   EVENT HANDLING
+   ============================================================ */
+document.addEventListener('click', e=>{
+  /* tab bar */
+  const tb = e.target.closest('[data-tab]');
+  if(tb){ tab = tb.dataset.tab; renderTabbar(); render(); $('#views').scrollTop = 0; return; }
+
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const act = el.dataset.act;
+
+  switch(act){
+
+    /* ---- AUTH ---- */
+    case 'sendOtp': {
+      const email = $('#authEmail').value.trim();
+      if(!email || !email.includes('@')) return toast('Enter a valid email');
+      pendingAuth.email = email;
+      renderAuth('otp');
+      toast('Code sent to ' + email);
+      break;
+    }
+    case 'verifyOtp': {
+      const v = $('#authOtp').value.trim();
+      if(v !== '1008') return toast('Invalid code — use 1008');
+      pendingAuth.code = pickCode();
+      renderAuth('alias');
+      break;
+    }
+    case 'authBack': renderAuth('email'); break;
+    case 'createIdentity': {
+      const alias = ($('#authAlias').value.trim() || 'MEMBER').toUpperCase();
+      S = seedState(pendingAuth.email, alias, pendingAuth.code);
+      S.me.joined = new Date().toISOString();
+      applyTheme(); save(); enterApp();
+      toast('Welcome, ' + alias + ' — your Code is <' + S.me.code);
+      break;
+    }
+
+    /* ---- NAV ---- */
+    case 'openSearch': openSearch(); break;
+    case 'openSettings': tab='settings'; render(); $('#views').scrollTop=0; break;
+    case 'backToProfile': tab='profile'; render(); break;
+
+    /* ---- SEARCH ACTIONS ---- */
+    case 'dm': {
+      closeSheet();
+      setTimeout(()=>openChat('dm', el.dataset.code), 260);
+      break;
+    }
+    case 'call': {
+      closeSheet();
+      const c = el.dataset.code, t = el.dataset.type;
+      setTimeout(()=>startCall(c,t), 260);
+      break;
+    }
+    case 'addContact': {
+      const c = el.dataset.code;
+      if(!S.contacts.includes(c)){ S.contacts.push(c); toast('Added <'+c+' to contacts'); }
+      else toast('Already in contacts');
+      save();
+      break;
+    }
+
+    /* ---- CHAT LIST ---- */
+    case 'openChat': openChat(el.dataset.kind, el.dataset.id); break;
+
+    /* ---- CHAT SCREEN ---- */
+    case 'closeChat': closeChat(); break;
+    case 'send': sendMessage(); break;
+    case 'voiceNote': {
+      pushMessage({id:uid(), from:'me', type:'voice', text:'', dur: 3+rand(20), time:Date.now(), status:'sent', reactions:{}});
+      simulateDelivery(); if(chatCtx.kind==='dm') simulateReply();
+      toast('Voice note sent');
+      break;
+    }
+    case 'attach': {
+      openSheet(`
+        <div class="sheet-title">Attach</div>
+        <div class="sheet-body">
+          <div class="sheet-item" data-act="attachType" data-t="image"><span class="set-ic">${I.image}</span> Photo</div>
+          <div class="sheet-item" data-act="attachType" data-t="file"><span class="set-ic">${I.file}</span> Document</div>
+          <div class="sheet-item" data-act="attachType" data-t="gif"><span class="set-ic">${I.gif}</span> GIF</div>
+        </div>`);
+      break;
+    }
+    case 'attachType': {
+      const t = el.dataset.t;
+      closeSheet();
+      const map = {
+        image:{type:'image', text:''},
+        file:{type:'file', text:'Code1008-spec.pdf', size:'248 KB'},
+        gif:{type:'gif', text:''}
+      };
+      setTimeout(()=>{
+        pushMessage({id:uid(), from:'me', ...map[t], time:Date.now(), status:'sent', reactions:{}});
+        simulateDelivery(); if(chatCtx.kind==='dm') simulateReply();
+      }, 260);
+      break;
+    }
+    case 'msgMenu': openMsgMenu(el.dataset.id); break;
+    case 'react': {
+      const t = chatTarget();
+      const m = t.messages.find(x=>x.id===el.dataset.id);
+      const emo = el.dataset.emoji;
+      if(m){
+        m.reactions = m.reactions || {};
+        if(m._mine === emo){ m.reactions[emo] = Math.max(0,(m.reactions[emo]||1)-1); m._mine = null; }
+        else { m.reactions[emo] = (m.reactions[emo]||0)+1; m._mine = emo; }
+        save(); renderMessages();
+      }
+      closeSheet();
+      break;
+    }
+    case 'copyMsg': {
+      const t = chatTarget();
+      const m = t.messages.find(x=>x.id===el.dataset.id);
+      if(m?.text) navigator.clipboard?.writeText(m.text);
+      closeSheet(); toast('Copied');
+      break;
+    }
+    case 'deleteMsg': {
+      const t = chatTarget();
+      t.messages = t.messages.filter(x=>x.id!==el.dataset.id);
+      closeSheet(); save(); renderMessages();
+      break;
+    }
+    case 'chatMenu': openChatMenu(); break;
+    case 'searchChat': {
+      closeSheet();
+      setTimeout(()=>{
+        $('#chatSearchBar').classList.remove('hidden');
+        $('#chatSearchInput').value='';
+        $('#chatSearchInput').focus();
+        renderMessages();
+      },260);
+      break;
+    }
+    case 'pinChat': {
+      const t = chatTarget();
+      closeSheet();
+      if(t.pinned?.length) toast('📌 ' + t.pinned.join(' · ').slice(0,60));
+      else toast('No pinned messages');
+      break;
+    }
+    case 'muteChat': {
+      const t = chatTarget();
+      t.muted = !t.muted;
+      closeSheet(); save(); toast(t.muted?'Chat muted':'Chat unmuted');
+      break;
+    }
+    case 'archiveChat': {
+      const t = chatTarget();
+      t.archived = true;
+      closeSheet(); closeChat(); toast('Chat archived');
+      break;
+    }
+    case 'clearChat': {
+      const t = chatTarget();
+      t.messages = [];
+      closeSheet(); save(); renderMessages(); toast('Chat cleared');
+      break;
+    }
+    case 'openPeerProfile': {
+      if(chatCtx.kind!=='dm') return;
+      const d = S.directory.find(x=>x.code===chatCtx.id);
+      if(!d) return;
+      openSheet(`
+        <div class="sheet-title">${esc(d.alias)}</div>
+        <div class="sheet-body">
+          <div class="result-top" style="margin-bottom:6px">
+            ${avHTML(d.alias,d.online,'lg')}
+          </div>
+          <div class="center" style="margin:10px 0 4px">
+            <div class="result-code" style="font-size:16px">&lt;${esc(d.code)}</div>
+            <div class="muted" style="margin-top:8px">${esc(d.bio||'')}</div>
+          </div>
+          <div class="info-grid" style="padding:12px 0">
+            <div class="info-cell"><div class="k">Skills</div><div class="v">${esc(d.skills||'—')}</div></div>
+            <div class="info-cell"><div class="k">Location</div><div class="v">${esc(d.location||'—')}</div></div>
+            <div class="info-cell"><div class="k">Joined</div><div class="v">${esc(d.joined||'—')}</div></div>
+            <div class="info-cell"><div class="k">Status</div><div class="v" style="color:var(--green)">${d.online?'Online':'Offline'}</div></div>
+          </div>
+          <div class="result-actions">
+            <button class="mini-btn" data-act="call" data-code="${esc(d.code)}" data-type="voice"><span class="ic" style="color:var(--gold)">${I.phone}</span>Voice</button>
+            <button class="mini-btn" data-act="call" data-code="${esc(d.code)}" data-type="video"><span class="ic" style="color:var(--gold)">${I.video}</span>Video</button>
+            <button class="mini-btn" data-act="addContact" data-code="${esc(d.code)}"><span class="ic" style="color:var(--gold)">${I.plus}</span>Add</button>
+          </div>
+        </div>`);
+      break;
+    }
+    case 'voiceCall': startCall(el.dataset.code,'voice'); break;
+    case 'videoCall': startCall(el.dataset.code,'video'); break;
+
+    /* ---- CALLS ---- */
+    case 'callMute': callState.muted = !callState.muted; updateCallButtons(); break;
+    case 'callSpeaker': callState.speaker = !callState.speaker; updateCallButtons(); break;
+    case 'callVideo': callState.video = !callState.video; updateCallButtons(); break;
+    case 'callEnd': endCall(); break;
+    case 'startCall': startCall(el.dataset.code, el.dataset.type); break;
+
+    /* ---- GROUPS ---- */
+    case 'seg': groupsSeg = el.dataset.seg; render(); break;
+    case 'newGroup': openNewGroup(); break;
+    case 'addMember': {
+      const inp = $('#gCode');
+      const c = inp.value.trim().replace(/^</,'');
+      if(!c) return;
+      const exists = S.directory.find(d=>d.code===c);
+      if(!exists) return toast('No member with Code <'+c);
+      if(!groupDraft.members.includes(c)) groupDraft.members.push(c);
+      inp.value='';
+      $('#gChips').innerHTML = groupDraft.members.map(mc=>{
+        const d = S.directory.find(x=>x.code===mc);
+        return `<span class="chip">${esc(d.alias)} &lt;${esc(mc)}<span class="x" data-act="rmMember" data-code="${esc(mc)}">×</span></span>`;
+      }).join('');
+      break;
+    }
+    case 'rmMember': {
+      groupDraft.members = groupDraft.members.filter(x=>x!==el.dataset.code);
+      $('#gChips').innerHTML = groupDraft.members.map(mc=>{
+        const d = S.directory.find(x=>x.code===mc);
+        return `<span class="chip">${esc(d.alias)} &lt;${esc(mc)}<span class="x" data-act="rmMember" data-code="${esc(mc)}">×</span></span>`;
+      }).join('');
+      break;
+    }
+    case 'createGroup': {
+      const name = $('#gName').value.trim();
+      if(!name) return toast('Group name required');
+      const g = {
+        id: 'g'+uid(),
+        name,
+        desc: $('#gDesc').value.trim() || 'No description',
+        members: [...new Set([...groupDraft.members, S.me.code])],
+        messages: [{id:uid(), from:'me', type:'text', text:'Group created. Code IDs only. 👑', time:Date.now(), status:'read', reactions:{}}]
+      };
+      S.groups.push(g);
+      closeSheet(); save();
+      groupsSeg='groups'; tab='groups'; render();
+      toast('Group "'+name+'" created');
+      break;
+    }
+
+    /* ---- CHALLENGES ---- */
+    case 'newChallenge': openNewChallenge(); break;
+    case 'createChallenge': {
+      const title = $('#cTitle').value.trim();
+      if(!title) return toast('Title required');
+      S.challenges.unshift({
+        id:'c'+uid(), title,
+        desc: $('#cDesc').value.trim() || 'No description',
+        reward: $('#cReward').value.trim() || '$1008',
+        deadline: $('#cDeadline').value.trim() || '7 days',
+        by: S.me.code, status:'open', assigned:null
+      });
+      closeSheet(); save(); render();
+      toast('Challenge posted');
+      break;
+    }
+    case 'claim': {
+      const c = S.challenges.find(x=>x.id===el.dataset.id);
+      if(!c || c.status!=='open') return;
+      c.status='locked'; c.assigned = S.me.code;
+      save(); render();
+      toast('Locked to <'+S.me.code+' 🔒');
+      break;
+    }
+    case 'complete': {
+      const c = S.challenges.find(x=>x.id===el.dataset.id);
+      if(!c) return;
+      c.status='completed';
+      save(); render();
+      toast('Completed — reward processing 💰');
+      break;
+    }
+    case 'fail': {
+      const c = S.challenges.find(x=>x.id===el.dataset.id);
+      if(!c) return;
+      c.status='open'; c.assigned=null;
+      save(); render();
+      toast('Challenge reopened for the network');
+      break;
+    }
+
+    /* ---- PROFILE / SETTINGS ---- */
+    case 'editProfile': openEditProfile(); break;
+    case 'saveProfile': {
+      S.me.alias = ($('#pAlias').value.trim()||'MEMBER').toUpperCase();
+      S.me.bio = $('#pBio').value.trim();
+      S.me.skills = $('#pSkills').value.trim();
+      S.me.location = $('#pLoc').value.trim();
+      S.me.status = $('#pStatus').value.trim() || 'Available';
+      closeSheet(); save(); render();
+      toast('Profile updated');
+      break;
+    }
+    case 'shareCode': {
+      const text = `${S.me.alias}<>${S.me.code}`;
+      navigator.clipboard?.writeText(text);
+      toast('Copied: ' + text);
+      break;
+    }
+    case 'toggleTheme': {
+      S.settings.theme = S.settings.theme==='dark' ? 'light' : 'dark';
+      applyTheme(); save(); render();
+      break;
+    }
+    case 'toggle': {
+      const k = el.dataset.key;
+      S.settings[k] = !S.settings[k];
+      save(); render();
+      break;
+    }
+    case 'blockedList': {
+      openSheet(`
+        <div class="sheet-title">Blocked Users</div>
+        <div class="sheet-body">
+          ${S.blocked.length ? S.blocked.map(c=>`<div class="sheet-item">${ctag(c)}</div>`).join('')
+            : '<p class="muted">No blocked users. Your Code stays private.</p>'}
+        </div>`);
+      break;
+    }
+    case 'language': {
+      const langs = ['English','Arabic','Hindi','Spanish','French','German'];
+      openSheet(`
+        <div class="sheet-title">Language</div>
+        <div class="sheet-body">
+          ${langs.map(l=>`<div class="sheet-item" data-act="setLang" data-lang="${l}">
+            <span class="set-ic">${l===S.settings.lang?I.check:I.globe}</span> ${l}</div>`).join('')}
+        </div>`);
+      break;
+    }
+    case 'setLang': {
+      S.settings.lang = el.dataset.lang;
+      closeSheet(); save(); render();
+      toast('Language: ' + S.settings.lang);
+      break;
+    }
+    case 'logout': {
+      if(confirm('Sign out of Code1008? Your Code ID stays yours.')){
+        localStorage.removeItem(KEY);
+        S = null; chatCtx = null;
+        $('#mainScreen').classList.add('hidden');
+        $('#authScreen').classList.remove('hidden');
+        $('#chatScreen').classList.remove('open');
+        document.body.classList.remove('light');
+        renderAuth('email');
+      }
+      break;
+    }
+  }
+});
+
+/* backdrop / sheet close */
+$('#backdrop').addEventListener('click', closeSheet);
+
+/* chat search input */
+document.addEventListener('input', e=>{
+  if(e.target.id === 'chatSearchInput') renderMessages();
+});
+
+/* long-press on message → reaction menu */
+let pressTimer = null;
+$('#chatBody').addEventListener('pointerdown', e=>{
+  const b = e.target.closest('.bubble');
+  if(!b || b.classList.contains('typing')) return;
+  pressTimer = setTimeout(()=>{
+    const msgEl = b.closest('.msg');
+    if(msgEl) openMsgMenu(msgEl.dataset.msg);
+  }, 550);
+});
+['pointerup','pointerleave','pointercancel','scroll'].forEach(ev=>{
+  $('#chatBody').addEventListener(ev, ()=>clearTimeout(pressTimer));
+});
+$('#chatBody').addEventListener('dblclick', e=>{
+  const b = e.target.closest('.bubble');
+  if(!b) return;
+  const msgEl = b.closest('.msg');
+  if(msgEl) openMsgMenu(msgEl.dataset.msg);
+});
+
+/* keyboard: escape closes overlays */
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    if($('#sheet').classList.contains('on')) closeSheet();
+    else if($('#chatScreen').classList.contains('open')) closeChat();
+  }
+});
+
+/* ---------- GO ---------- */
+boot();
+</script>
+</body>
+</html>
