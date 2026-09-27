@@ -1,931 +1,943 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Code 1008 · Identity Platform</title>
-  <style>
-    /* ----- CSS Reset & Variables (Light / Dark) ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>> >< · 1008</title>
+<style>
+  /* ---------- RESET ---------- */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 1.4;
+    background: var(--bg);
+    color: var(--text);
+    transition: background .25s ease, color .25s ease;
+    overflow-x: hidden;
+  }
 
-    :root {
-      /* light theme (default) */
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-alt: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --accent: #7c3aed;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
-      --badge-bg: #e2e8f0;
-    }
+  /* ---------- THEMES ---------- */
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f7f7f8;
+    --surface: #ffffff;
+    --surface-2: #f2f2f4;
+    --border: #e5e5e7;
+    --text: #000000;
+    --text-2: #6b7280;
+    --text-3: #9ca3af;
+    --accent: #000000;
+    --accent-inv: #ffffff;
+    --bubble-me: #000000;
+    --bubble-me-text: #ffffff;
+    --bubble-them: #f2f2f4;
+    --bubble-them-text: #000000;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.06);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,.10);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  body.dark {
+    --bg: #000000;
+    --bg-alt: #0a0a0a;
+    --surface: #0e0e0e;
+    --surface-2: #1a1a1a;
+    --border: #262626;
+    --text: #ffffff;
+    --text-2: #a1a1aa;
+    --text-3: #71717a;
+    --accent: #ffffff;
+    --accent-inv: #000000;
+    --bubble-me: #ffffff;
+    --bubble-me-text: #000000;
+    --bubble-them: #1a1a1a;
+    --bubble-them-text: #ffffff;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.5);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,.6);
+  }
 
-    body.dark {
-      --bg: #0b1120;
-      --surface: #111827;
-      --surface-alt: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --border: #1e293b;
-      --primary: #3b82f6;
-      --primary-hover: #60a5fa;
-      --accent: #a78bfa;
-      --success: #34d399;
-      --warning: #fbbf24;
-      --danger: #f87171;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      --badge-bg: #1e293b;
-    }
+  /* ---------- LOGO ---------- */
+  .logo {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-weight: 700;
+    letter-spacing: -0.08em;
+    font-size: 22px;
+    color: var(--text);
+    user-select: none;
+    display: inline-block;
+  }
+  .logo-lg { font-size: 42px; letter-spacing: -0.12em; }
 
-    body {
-      background: var(--bg);
-      color: var(--text-primary);
-      transition: background 0.2s, color 0.2s;
-      padding-bottom: 70px; /* space for sticky support icon */
-      min-height: 100vh;
-    }
+  /* ---------- APP SHELL ---------- */
+  #app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--bg);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
-    /* ----- Typography & Layout ----- */
-    .app-container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 12px 16px 20px;
-    }
+  /* ---------- SCROLLING BANNER ---------- */
+  .banner {
+    background: var(--text);
+    color: var(--bg);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    padding: 7px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    flex-shrink: 0;
+  }
+  .banner-track {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 28s linear infinite;
+  }
+  .banner-track span { padding-right: 60px; }
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
 
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+  /* ---------- TOP BAR ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    flex-shrink: 0;
+  }
+  .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .topbar-actions { display: flex; gap: 6px; align-items: center; }
+  .icon-btn {
+    background: transparent;
+    border: none;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 17px;
+    transition: background .15s;
+  }
+  .icon-btn:hover { background: var(--surface-2); }
+  .icon-btn:active { transform: scale(.94); }
 
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin: 20px 0 12px;
-    }
+  /* ---------- VIEWS ---------- */
+  .view {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(90px + var(--safe-bottom));
+    display: none;
+    animation: fade .2s ease;
+  }
+  .view.active { display: block; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+  /* ---------- BOTTOM NAV ---------- */
+  .bottomnav {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 6px 4px calc(6px + var(--safe-bottom));
+    z-index: 55;
+    flex-shrink: 0;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 2px;
+    background: none;
+    border: none;
+    color: var(--text-3);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: color .15s;
+  }
+  .nav-item .nav-icon { font-size: 20px; line-height: 1; }
+  .nav-item.active { color: var(--text); }
+  .nav-item:active { transform: scale(.96); }
+  .nav-badge {
+    position: absolute;
+    top: 2px; right: calc(50% - 18px);
+    background: var(--text);
+    color: var(--bg);
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
 
-    .text-sm {
-      font-size: 0.85rem;
-    }
+  /* ---------- SUPPORT FAB ---------- */
+  .support-fab {
+    position: fixed;
+    bottom: calc(88px + var(--safe-bottom));
+    right: calc(50% - 240px + 16px);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 70;
+    box-shadow: var(--shadow-md);
+    transition: transform .18s ease;
+  }
+  @media (max-width: 480px) {
+    .support-fab { right: 16px; }
+  }
+  .support-fab:active { transform: scale(.9); }
 
-    .text-muted {
-      color: var(--text-muted);
-    }
+  /* ---------- SUPPORT SHEET ---------- */
+  .sheet-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  .sheet-backdrop.show { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed;
+    left: 50%; bottom: 0;
+    transform: translateX(-50%) translateY(100%);
+    width: 100%;
+    max-width: 480px;
+    background: var(--surface);
+    border-radius: 22px 22px 0 0;
+    padding: 8px 16px calc(20px + var(--safe-bottom));
+    z-index: 95;
+    transition: transform .28s cubic-bezier(.32,.72,0,1);
+    box-shadow: var(--shadow-lg);
+  }
+  .sheet.show { transform: translateX(-50%) translateY(0); }
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin: 6px auto 14px;
+  }
+  .sheet-title {
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -.01em;
+  }
+  .sheet-list { display: flex; flex-direction: column; gap: 2px; }
+  .sheet-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 10px;
+    border-radius: 12px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background .12s;
+  }
+  .sheet-item:hover { background: var(--surface-2); }
+  .sheet-item .sheet-emoji {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
 
-    .flex {
-      display: flex;
-    }
+  /* ---------- AUTH / ONBOARDING ---------- */
+  .center-wrap {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px calc(24px + var(--safe-bottom));
+    background: var(--bg);
+  }
+  .center-spacer { flex: 1; }
+  .brand-block { text-align: center; padding: 32px 0 40px; }
+  .brand-sub {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-2);
+    letter-spacing: .02em;
+  }
 
-    .flex-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  .field {
+    width: 100%;
+    padding: 15px 16px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+    transition: border-color .15s, background .15s;
+    font-family: inherit;
+  }
+  .field:focus { border-color: var(--text); }
+  .field::placeholder { color: var(--text-3); }
+  textarea.field { resize: none; min-height: 80px; }
 
-    .flex-col {
-      display: flex;
-      flex-direction: column;
-    }
+  .btn {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 14px;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    cursor: pointer;
+    transition: opacity .15s, transform .1s;
+    font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn:hover { opacity: .88; }
+  .btn:active { transform: scale(.985); }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface-2); opacity: 1; }
+  .btn-sm {
+    width: auto;
+    padding: 9px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
 
-    .gap-2 {
-      gap: 8px;
-    }
+  .otp-row {
+    display: flex; gap: 8px; justify-content: center;
+    margin: 8px 0 20px;
+  }
+  .otp-input {
+    width: 46px; height: 54px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+  .otp-input:focus { border-color: var(--text); }
 
-    .gap-3 {
-      gap: 12px;
-    }
+  .help-text {
+    font-size: 12.5px;
+    color: var(--text-2);
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .help-text b { color: var(--text); font-weight: 600; }
 
-    .mt-2 {
-      margin-top: 8px;
-    }
+  /* ---------- IDENTITY CARDS ---------- */
+  .identity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px 0 12px;
+  }
+  .idcard {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 18px;
+    transition: border-color .18s, transform .12s;
+  }
+  .idcard:active { transform: scale(.995); }
+  .idcard.featured { border-color: var(--text); }
+  .idcard-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .idcard-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .idcard-price {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--surface-2);
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .idcard-price.free { background: var(--text); color: var(--bg); }
+  .idcard-desc {
+    font-size: 13.5px;
+    color: var(--text-2);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .idcard-code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface-2);
+    padding: 7px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .idcard-meta {
+    font-size: 11.5px;
+    color: var(--text-3);
+    margin-bottom: 14px;
+    letter-spacing: .01em;
+  }
 
-    .mt-3 {
-      margin-top: 12px;
-    }
+  /* ---------- SECTION ---------- */
+  .section {
+    padding: 18px 16px 8px;
+  }
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
 
-    .mb-2 {
-      margin-bottom: 8px;
-    }
+  /* ---------- SEARCH ---------- */
+  .search-wrap {
+    padding: 10px 16px 6px;
+  }
+  .search-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    border: 1.5px solid transparent;
+    transition: border-color .15s;
+  }
+  .search-inner:focus-within { border-color: var(--text); }
+  .search-inner input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    font-family: inherit;
+  }
+  .search-inner input::placeholder { color: var(--text-3); }
 
-    .p-3 {
-      padding: 12px;
-    }
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 16px 4px;
+    scrollbar-width: none;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .chip.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
 
-    .rounded {
-      border-radius: var(--radius-md);
-    }
+  /* ---------- LIST ITEMS ---------- */
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background .12s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .list-item:hover { background: var(--surface-2); }
+  .list-item + .list-item { border-top: 1px solid var(--border); }
 
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
+  .avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--surface-2);
+    color: var(--text);
+    letter-spacing: -.02em;
+    overflow: hidden;
+    position: relative;
+  }
+  .avatar.mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .avatar-sm { width: 40px; height: 40px; font-size: 13px; }
+  .avatar-xs { width: 32px; height: 32px; font-size: 11px; }
+  .avatar-dot {
+    position: absolute;
+    bottom: 1px; right: 1px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2.5px solid var(--bg);
+  }
 
-    .badge {
-      display: inline-block;
-      background: var(--badge-bg);
-      padding: 4px 10px;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: var(--text-secondary);
-    }
+  .list-body { flex: 1; min-width: 0; }
+  .list-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  .list-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-time {
+    font-size: 11.5px;
+    color: var(--text-3);
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .list-sub {
+    font-size: 13.5px;
+    color: var(--text-2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+  }
+  .list-sub .alias {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    color: var(--text-3);
+  }
+  .unread {
+    background: var(--text);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
 
-    /* ----- Theme toggle ----- */
-    .theme-toggle {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      cursor: pointer;
-      transition: 0.2s;
-      color: var(--text-primary);
-    }
+  /* ---------- CHAT VIEW ---------- */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px 10px 6px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+  .chat-header .list-body { padding-right: 4px; }
 
-    .theme-toggle:hover {
-      background: var(--border);
-    }
+  .messages {
+    padding: 16px 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 100%;
+  }
+  .msg-row {
+    display: flex;
+    margin-bottom: 2px;
+  }
+  .msg-row.me { justify-content: flex-end; }
+  .msg {
+    max-width: 78%;
+    padding: 9px 13px;
+    border-radius: 18px;
+    font-size: 14.5px;
+    line-height: 1.42;
+    word-wrap: break-word;
+    position: relative;
+    letter-spacing: -.005em;
+  }
+  .msg.them {
+    background: var(--bubble-them);
+    color: var(--bubble-them-text);
+    border-bottom-left-radius: 5px;
+  }
+  .msg.me {
+    background: var(--bubble-me);
+    color: var(--bubble-me-text);
+    border-bottom-right-radius: 5px;
+  }
+  .msg-meta {
+    font-size: 10.5px;
+    margin-top: 3px;
+    opacity: .55;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    font-weight: 500;
+  }
+  .msg.me .msg-meta { color: var(--bubble-me-text); opacity: .7; }
+  .msg.them .msg-meta { color: var(--bubble-them-text); }
 
-    /* ----- Announcement bar (scrolling) ----- */
-    .announce-bar {
-      background: var(--primary);
-      color: white;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      margin-bottom: 16px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      position: relative;
-    }
+  .typing-dots {
+    display: inline-flex;
+    gap: 3px;
+    padding: 4px 2px;
+  }
+  .typing-dots span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: .4;
+    animation: typing 1.2s infinite ease-in-out;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: .15s; }
+  .typing-dots span:nth-child(3) { animation-delay: .3s; }
+  @keyframes typing {
+    0%, 60%, 100% { opacity: .3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-3px); }
+  }
 
-    .scrolling-text {
-      display: inline-block;
-      animation: scroll-left 18s linear infinite;
-      padding-left: 100%;
-    }
+  .composer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px 10px calc(8px + var(--safe-bottom));
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    z-index: 45;
+  }
+  .composer input {
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: 22px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+  .composer input:focus { border-color: var(--text); }
+  .composer-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform .1s;
+  }
+  .composer-btn:active { transform: scale(.92); }
 
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
+  .bubble-img {
+    max-width: 220px;
+    border-radius: 12px;
+    display: block;
+    margin-bottom: 4px;
+    background: var(--surface-2);
+    height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--text-3);
+  }
 
-    .support-chat-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-      flex-shrink: 0;
-      margin-left: auto;
-    }
+  /* ---------- CALLS ---------- */
+  .call-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .call-type {
+    font-size: 12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .call-in { color: #22c55e; }
+  .call-out { color: #3b82f6; }
+  .call-miss { color: #ef4444; }
 
-    /* ----- Identity cards ----- */
-    .identity-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+  /* ---------- GROUPS ---------- */
+  .group-hero {
+    margin: 8px 16px 4px;
+    padding: 20px;
+    border-radius: 20px;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+  }
+  .group-hero h3 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 4px; }
+  .group-hero p { font-size: 13px; color: var(--text-2); line-height: 1.5; }
 
-    .id-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      border-left: 5px solid var(--primary);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+  /* ---------- PROFILE ---------- */
+  .profile-hero {
+    padding: 28px 20px 22px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .profile-avatar {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.04em;
+    border: 2px solid var(--border);
+  }
+  .profile-name {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-bottom: 4px;
+  }
+  .profile-alias {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13.5px;
+    color: var(--text-2);
+    letter-spacing: .01em;
+    margin-bottom: 8px;
+  }
+  .profile-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
 
-    .id-card .id-code {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: 0.5px;
-      color: var(--primary);
-    }
+  .profile-actions {
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+  }
+  .profile-actions .btn {
+    flex: 1;
+    padding: 12px 8px;
+    font-size: 13px;
+    border-radius: 12px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .profile-actions .btn .act-emoji { font-size: 18px; }
 
-    .id-card .id-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+  .kv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .kv-row .k { font-size: 13.5px; color: var(--text-2); flex-shrink: 0; }
+  .kv-row .v { font-size: 13.5px; color: var(--text); font-weight: 500; text-align: right; }
+  .kv-row .v.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
 
-    .id-card .badge {
-      align-self: flex-start;
-    }
+  .tag-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 4px 0 0;
+  }
+  .tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--surface-2);
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
 
-    .wildcard-note {
-      background: var(--surface-alt);
-      border-left: 4px solid var(--warning);
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin: 12px 0;
-    }
+  /* ---------- MODAL ---------- */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 24px 20px 20px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: var(--shadow-lg);
+    transform: scale(.95);
+    transition: transform .2s;
+  }
+  .modal-backdrop.show .modal { transform: scale(1); }
+  .modal h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; text-align: center; }
+  .modal p { font-size: 13.5px; color: var(--text-2); text-align: center; margin-bottom: 18px; line-height: 1.5; }
 
-    /* ----- Language chips ----- */
-    .lang-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
+  /* ---------- UTIL ---------- */
+  .hidden { display: none !important; }
+  .text-center { text-align: center; }
+  .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+  .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+  .px-16 { padding-left: 16px; padding-right: 16px; }
+  .muted { color: var(--text-2); }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
 
-    .chip {
-      background: var(--surface-alt);
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
+  ::-webkit-scrollbar { width: 0; height: 0; }
 
-    /* ----- Profile buttons ----- */
-    .action-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 0.75rem;
-    }
-
-    .btn-block {
-      width: 100%;
-      justify-content: center;
-    }
-
-    /* ----- Voice translation mock ----- */
-    .translation-demo {
-      background: var(--surface-alt);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin-top: 12px;
-    }
-
-    .translation-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .avatar-sm {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
-
-    .bubble {
-      background: var(--surface);
-      padding: 10px 14px;
-      border-radius: 18px;
-      font-size: 0.85rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      max-width: 80%;
-    }
-
-    .bubble.hindi {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    body.dark .bubble.hindi {
-      background: #78350f;
-      color: #fde68a;
-    }
-
-    .bubble.english {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-
-    body.dark .bubble.english {
-      background: #1e3a8a;
-      color: #bfdbfe;
-    }
-
-    /* ----- Admin dashboard card (preview) ----- */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .stat-item {
-      background: var(--surface-alt);
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-
-    /* ----- Support sticky icon ----- */
-    .support-sticky {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--primary);
-      color: white;
-      width: 56px;
-      height: 56px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-      cursor: pointer;
-      z-index: 100;
-      transition: 0.2s;
-      border: none;
-    }
-
-    .support-sticky:hover {
-      transform: scale(1.05);
-    }
-
-    .support-menu {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 1px solid var(--border);
-      padding: 8px;
-      display: none;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 101;
-      min-width: 180px;
-    }
-
-    .support-menu.show {
-      display: flex;
-    }
-
-    .support-menu button {
-      background: transparent;
-      border: none;
-      padding: 10px 14px;
-      text-align: left;
-      border-radius: var(--radius-sm);
-      font-size: 0.9rem;
-      color: var(--text-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .support-menu button:hover {
-      background: var(--surface-alt);
-    }
-
-    /* ----- Payment grid ----- */
-    .payment-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .payment-option {
-      background: var(--surface-alt);
-      padding: 8px;
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-
-    /* ----- Misc ----- */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 16px 0;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .text-accent {
-      color: var(--accent);
-      font-weight: 600;
-    }
-  </style>
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: calc(100px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    white-space: nowrap;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
 </head>
 <body>
-  <!-- ===== TOP SCROLLING ANNOUNCEMENT BAR ===== -->
-  <div class="announce-bar">
-    <span>📢</span>
-    <div class="scrolling-text">
-      If you need help, support, or wish to speak with the team directly, chat with us using Code 1008 Support.
-    </div>
-    <button class="support-chat-btn" onclick="alert('Opening support chat...')">Chat</button>
-  </div>
 
-  <div class="app-container">
-    <!-- Header with theme toggle -->
-    <div class="flex-between" style="margin-bottom: 16px;">
-      <h1>Code 1008</h1>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
-    </div>
+<div id="app">
 
-    <!-- ===== IDENTITY STRUCTURE ===== -->
-    <h2>Identity Selection</h2>
-    <div class="wildcard-note">
-      ⚡ Wildcard entries may be approved in any segment including Real World, Creator, Maker or Investor.
-    </div>
-
-    <div class="identity-grid">
-      <!-- Real World -->
-      <div class="id-card" style="border-left-color: #64748b;">
-        <div class="flex-between">
-          <span class="badge">Real World</span>
-          <span class="text-sm text-muted">Free</span>
-        </div>
-        <div class="id-code">100000008 · 100000018 · 100000108</div>
-        <div class="id-meta">
-          <span>9 Digit Identity</span>
-          <span>Max: 100,000,008</span>
-        </div>
-        <div class="text-sm text-muted">Open access layer for everyone.</div>
+  <!-- ============ AUTH: EMAIL ============ -->
+  <div id="view-auth" class="view active" style="padding-bottom:0;">
+    <div class="center-wrap">
+      <div class="center-spacer"></div>
+      <div class="brand-block">
+        <div class="logo logo-lg">&gt; &gt;&lt;</div>
+        <div class="brand-sub">Private. By invitation of identity.</div>
       </div>
-
-      <!-- Creator -->
-      <div class="id-card" style="border-left-color: #7c3aed;">
-        <div class="flex-between">
-          <span class="badge">Creator</span>
-          <span class="text-sm text-muted">₹108</span>
-        </div>
-        <div class="id-code">001 · 008 · 108</div>
-        <div class="id-meta">
-          <span>3 Digit Identity</span>
-          <span>Max: 108</span>
-        </div>
-        <div class="text-sm text-muted">Founding creators and contributors.</div>
+      <div style="margin-bottom:12px;">
+        <input id="authEmail" class="field" type="email" placeholder="Email address" autocomplete="email" />
       </div>
-
-      <!-- Maker -->
-      <div class="id-card" style="border-left-color: #2563eb;">
-        <div class="flex-between">
-          <span class="badge">Maker</span>
-          <span class="text-sm text-muted">₹1008</span>
-        </div>
-        <div class="id-code">1008 · 0888 · 0999</div>
-        <div class="id-meta">
-          <span>4 Digit Identity</span>
-          <span>Max: 1008</span>
-        </div>
-        <div class="text-sm text-muted">Builders, operators, developers and makers.</div>
+      <button class="btn" onclick="sendOtp()">Continue with Email</button>
+      <div class="help-text">
+        You will receive a one-time code.<br/>
+        No passwords. No usernames.
       </div>
-
-      <!-- Investor -->
-      <div class="id-card" style="border-left-color: #10b981;">
-        <div class="flex-between">
-          <span class="badge">Investor</span>
-          <span class="text-sm text-muted">Application</span>
-        </div>
-        <div class="id-code">01 · 08 · 18</div>
-        <div class="id-meta">
-          <span>2 Digit Identity</span>
-          <span>Max: 18</span>
-        </div>
-        <div class="text-sm text-muted">Investors and ecosystem supporters.</div>
+      <div class="center-spacer"></div>
+      <div class="help-text" style="font-size:11px;">
+        By continuing you agree to the 1008 Community Terms.
       </div>
-    </div>
-
-    <!-- ===== LANGUAGE SYSTEM ===== -->
-    <h2>Language System</h2>
-    <div class="card">
-      <div class="flex-col gap-2">
-        <div class="flex-between">
-          <span class="text-sm text-muted">Native Language</span>
-          <span class="chip">Hindi</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm text-muted">Secondary Language</span>
-          <span class="chip">English</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm text-muted">Preferred Communication</span>
-          <span class="chip">English</span>
-        </div>
-      </div>
-      <div class="lang-chips mt-2">
-        <span class="chip">Hindi</span>
-        <span class="chip">English</span>
-        <span class="chip">Punjabi</span>
-        <span class="chip">Tamil</span>
-        <span class="chip">Spanish</span>
-        <span class="chip">Arabic</span>
-        <span class="chip">French</span>
-        <span class="chip">Japanese</span>
-      </div>
-    </div>
-
-    <!-- ===== REAL-TIME VOICE TRANSLATION ===== -->
-    <h2>Voice Translation</h2>
-    <div class="card">
-      <div class="flex-between">
-        <span class="text-sm">🎤 Record · Translate · Playback</span>
-        <span class="badge">Superflow</span>
-      </div>
-      <div class="translation-demo mt-2">
-        <div class="translation-row">
-          <div class="avatar-sm">C</div>
-          <div class="bubble hindi">नमस्ते, मैं हिंदी बोलता हूँ</div>
-          <span class="text-sm text-muted">🇮🇳</span>
-        </div>
-        <div class="translation-row" style="justify-content: flex-end;">
-          <span class="text-sm text-muted">🇬🇧</span>
-          <div class="bubble english">Hello, I speak Hindi</div>
-          <div class="avatar-sm" style="background: #2563eb;">M</div>
-        </div>
-      </div>
-      <div class="flex gap-2 mt-3">
-        <button class="btn btn-sm">🎙️ Record</button>
-        <button class="btn btn-sm">🔊 Playback</button>
-        <button class="btn btn-sm btn-primary">Translate</button>
-      </div>
-      <div class="text-sm text-muted mt-2">Supports: Hindi, English, Spanish, Arabic, French, Japanese, Chinese, German + expandable</div>
-    </div>
-
-    <!-- ===== CREATOR PROFILE ===== -->
-    <h2>Creator Profile</h2>
-    <div class="card">
-      <div class="flex-between">
-        <div>
-          <h3>Priya Sharma</h3>
-          <span class="badge">Creator · 001</span>
-        </div>
-        <div class="avatar-sm" style="width: 48px; height: 48px; font-size: 1rem;">PS</div>
-      </div>
-      <div class="mt-2">
-        <div class="text-sm text-muted">Portfolio · Projects · Skills · Languages</div>
-        <div class="lang-chips mt-1">
-          <span class="chip">Hindi (Native)</span>
-          <span class="chip">English</span>
-        </div>
-        <div class="mt-2 text-accent">Starting from ₹108 per project</div>
-      </div>
-      <div class="action-buttons">
-        <button class="btn btn-sm">💬 Chat</button>
-        <button class="btn btn-sm">📞 Voice Call</button>
-        <button class="btn btn-sm">🎥 Video Call</button>
-        <button class="btn btn-sm">🌐 Translate Voice</button>
-        <button class="btn btn-sm">➕ Invite to Group</button>
-        <button class="btn btn-sm">📁 Portfolio</button>
-      </div>
-    </div>
-
-    <!-- ===== MAKER PROFILE ===== -->
-    <h2>Maker Profile</h2>
-    <div class="card">
-      <div class="flex-between">
-        <div>
-          <h3>Arjun Mehta</h3>
-          <span class="badge">Maker · 1008</span>
-        </div>
-        <div class="avatar-sm" style="width: 48px; height: 48px; font-size: 1rem; background: #2563eb;">AM</div>
-      </div>
-      <div class="mt-2">
-        <div class="text-sm text-muted">Projects · Skills · Languages</div>
-        <div class="lang-chips mt-1">
-          <span class="chip">Punjabi (Native)</span>
-          <span class="chip">English</span>
-        </div>
-        <!-- No minimum project fee display -->
-      </div>
-      <div class="action-buttons">
-        <button class="btn btn-sm">💬 Chat</button>
-        <button class="btn btn-sm">📞 Voice Call</button>
-        <button class="btn btn-sm">🎥 Video Call</button>
-        <button class="btn btn-sm">🌐 Translate Voice</button>
-        <button class="btn btn-sm">➕ Invite to Group</button>
-      </div>
-    </div>
-
-    <!-- ===== INVESTOR PROFILE ===== -->
-    <h2>Investor Profile</h2>
-    <div class="card">
-      <div class="flex-between">
-        <div>
-          <h3>Neha Kapoor</h3>
-          <span class="badge">Investor · 08</span>
-        </div>
-        <div class="avatar-sm" style="width: 48px; height: 48px; font-size: 1rem; background: #10b981;">NK</div>
-      </div>
-      <div class="mt-2">
-        <div class="text-sm text-muted">Investment Interests · Portfolio · Industries · Languages</div>
-        <div class="lang-chips mt-1">
-          <span class="chip">English (Native)</span>
-          <span class="chip">Spanish</span>
-        </div>
-      </div>
-      <div class="action-buttons">
-        <button class="btn btn-sm">💬 Chat</button>
-        <button class="btn btn-sm">📞 Voice Call</button>
-        <button class="btn btn-sm">🎥 Video Call</button>
-        <button class="btn btn-sm">🌐 Translate Voice</button>
-        <button class="btn btn-sm">👥 Join Investor Group</button>
-        <button class="btn btn-sm">📅 Book Meeting</button>
-      </div>
-    </div>
-
-    <!-- ===== PAYMENT GATEWAY ===== -->
-    <h2>Payment Gateway</h2>
-    <div class="card">
-      <div class="text-sm text-muted">Integration ready: Razorpay, Cashfree, Stripe, PhonePe</div>
-      <div class="payment-grid">
-        <div class="payment-option">UPI</div>
-        <div class="payment-option">Bank Transfer</div>
-        <div class="payment-option">Credit Card</div>
-        <div class="payment-option">Debit Card</div>
-        <div class="payment-option">Net Banking</div>
-      </div>
-      <div class="mt-3 flex-col gap-2">
-        <div class="flex-between">
-          <span class="text-sm">Creator</span>
-          <span class="font-weight-bold">₹108</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Maker</span>
-          <span class="font-weight-bold">₹1008</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Investor</span>
-          <span class="font-weight-bold">Application Based</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Real World</span>
-          <span class="font-weight-bold" style="color: var(--success);">Free</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== ADMIN SYSTEM (preview) ===== -->
-    <h2>Admin Preview</h2>
-    <div class="card">
-      <div class="flex-between">
-        <span class="badge" style="background: var(--accent); color: white;">CEO</span>
-        <span class="badge" style="background: var(--warning); color: #000;">Founder / Artist</span>
-      </div>
-      <div class="text-sm text-muted mt-2">No public admin login. Accounts created via backend.</div>
-      <div class="stats-grid mt-3">
-        <div class="stat-item">
-          <div class="stat-number">108K</div>
-          <div class="text-sm text-muted">Members</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">₹1.2Cr</div>
-          <div class="text-sm text-muted">Revenue</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">108</div>
-          <div class="text-sm text-muted">Creators</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">1008</div>
-          <div class="text-sm text-muted">Makers</div>
-        </div>
-      </div>
-      <div class="mt-2 text-sm text-muted">View Members · KYC · Approvals · Payments · Reports · Broadcast</div>
-    </div>
-
-    <!-- ===== KYC SYSTEM ===== -->
-    <h2>KYC System</h2>
-    <div class="card">
-      <div class="flex-col gap-2">
-        <div class="flex-between">
-          <span class="text-sm">Name</span>
-          <span class="text-sm text-muted">Priya Sharma</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Government ID</span>
-          <span class="text-sm text-muted">XXXX-XXXX-1234</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Country</span>
-          <span class="text-sm text-muted">India</span>
-        </div>
-        <div class="flex-between">
-          <span class="text-sm">Verification Status</span>
-          <span class="badge" style="background: #10b981; color: white;">Approved</span>
-        </div>
-      </div>
-      <div class="text-sm text-muted mt-2">Admins can review and approve KYC records.</div>
-    </div>
-
-    <!-- ===== SECURITY ===== -->
-    <h2>Security</h2>
-    <div class="card">
-      <div class="flex gap-2" style="flex-wrap: wrap;">
-        <span class="chip">JWT Auth</span>
-        <span class="chip">OTP</span>
-        <span class="chip">Encrypted</span>
-        <span class="chip">RBAC</span>
-        <span class="chip">Rate Limiting</span>
-        <span class="chip">Audit Logs</span>
-        <span class="chip">Admin Activity</span>
-      </div>
-    </div>
-
-    <!-- Final note -->
-    <div class="text-sm text-muted" style="text-align: center; margin: 28px 0 12px;">
-      Code 1008 · Mobile-first communication platform
     </div>
   </div>
 
-  <!-- ===== STICKY SUPPORT ICON ===== -->
-  <button class="support-sticky" id="supportToggle">💬</button>
-  <div class="support-menu" id="supportMenu">
-    <button>🗨️ Live Chat</button>
-    <button>📱 WhatsApp</button>
-    <button>✉️ Email</button>
-    <button>🎫 Support Ticket</button>
-    <button>🚨 Emergency Contact</button>
-  </div>
-
-  <script>
-    (function() {
-      // ----- THEME SYSTEM (with system detection & localStorage) -----
-      const themeToggle = document.getElementById('themeToggle');
-      const body = document.body;
-
-      // Function to set theme
-      function setTheme(theme) {
-        if (theme === 'dark') {
-          body.classList.add('dark');
-          themeToggle.textContent = '☀️';
-        } else {
-          body.classList.remove('dark');
-          themeToggle.textContent = '🌙';
-        }
-        localStorage.setItem('theme', theme);
-      }
-
-      // Determine initial theme
-      function getInitialTheme() {
-        const stored = localStorage.getItem('theme');
-        if (stored) return stored;
-        // System theme detection
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-
-      // Apply initial theme
-      setTheme(getInitialTheme());
-
-      // Toggle on click
-      themeToggle.addEventListener('click', () => {
-        const isDark = body.classList.contains('dark');
-        setTheme(isDark ? 'light' : 'dark');
-      });
-
-      // Listen for system theme changes (if no stored preference)
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
-          setTheme(e.matches ? 'dark' : 'light');
-        }
-      });
-
-      // ----- SUPPORT MENU TOGGLE -----
-      const supportToggle = document.getElementById('supportToggle');
-      const supportMenu = document.getElementById('supportMenu');
-
-      supportToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        supportMenu.classList.toggle('show');
-      });
-
-      // Close menu on outside click
-      document.addEventListener('click', (e) => {
-        if (!supportMenu.contains(e.target) && e.target !== supportToggle) {
-          supportMenu.classList.remove('show');
-        }
-      });
-
-      // Support menu actions (demo)
-      supportMenu.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          alert(`Support: ${btn.textContent.trim()} selected. (Demo)`);
-          supportMenu.classList.remove('show');
-        });
-      });
-
-      // ----- SMOOTH SCROLL BEHAVIOR FOR ANNOUNCEMENT (already CSS) -----
-      // Additional interaction: broadcast announcement chat button
-      document.querySelector('.support-chat-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        alert('Connecting you to Code 1008 Support...');
-      });
-
-      // ----- VOICE TRANSLATION DEMO (alert mock) -----
-      document.querySelectorAll('.btn').forEach(btn => {
-        if (btn.textContent.includes('Record') || btn.textContent.includes('Playback') || btn.textContent.includes('Translate')) {
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const action = btn.textContent.trim();
-            alert(`🎤 Voice translation: ${action} (demo)`);
-          });
-        }
-      });
-
-      // Profile action buttons demo
-      document.querySelectorAll('.action-buttons .btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          alert(`Action: ${btn.textContent.trim()} (demo)`);
-        });
-      });
-    })();
-  </script>
-</body>
-</html>
+  <!-- ============ AUTH: OTP ============ -->
+  <div id="view-otp" class="view" style="padding-bottom:0;">
+    <div class="center-wrap">
+      <div class="center-spacer"></div>
+      <div class="brand-block" style="padding-bottom:20px;">
+        <div class="logo logo-lg">&gt; &gt;&lt;</div>
+      </div>
+      <h2 style="font-size:20px;font-weight:700;letter-spacing:-.02em;text-align:center;margin-bottom:6px;">Enter verification code</h2>
+      <p class="help-text" style="margin-top:0;margin-bottom:22px;">Sent to <b id="otpEmail">your email</b></p>
+      <div class="otp-row" id="otpRow">
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+        <input class="ot
