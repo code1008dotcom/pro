@@ -1,40 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<title>> >< · 1008</title>
-<style>
-  /* ---------- RESET ---------- */
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    font-size: 15px;
-    line-height: 1.4;
-    background: var(--bg);
-    color: var(--text);
-    transition: background .25s ease, color .25s ease;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Advanced Theme System · ><</title>
+  <style>
+    /* ---------- RESET & GLOBAL ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+    }
 
-  /* ---------- THEMES ---------- */
-  :root {
-    --bg: #ffffff;
-    --bg-alt: #f7f7f8;
-    --surface: #ffffff;
-    --surface-2: #f2f2f4;
-    --border: #e5e5e7;
-    --text: #000000;
-    --text-2: #6b7280;
-    --text-3: #9ca3af;
-    --accent: #000000;
-    --accent-inv: #ffffff;
-    --bubble-me: #000000;
-    --bubble-me-text: #ffffff;
-    --bubble-them: #f2f2f4;
-    --bubble-them-text: #000000;
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 12px;
+      background: #000;
+      /* will be overridden by theme */
+    }
+
+    /* ---------- THEME VARIABLES (default black) ---------- */
+    :root {
+      --bg: #000000;
+      --text: #FFFFFF;
+      --card: #111111;
+      --border: #333333;
+      --icon: #FFFFFF;
+      --bubble-in: #222222;
+      --bubble-out: #005c4b;
+      --scroll-bg: #1a1a1a;
+      --scroll-text: #eeeeee;
+      --support-bg: #222;
+      --support-icon: #fff;
+    }
+
+    body[data-theme="white"] {
+      --bg: #FFFFFF;
+      --text: #000000;
+      --card: #F5F5F5;
+      --border: #DDDDDD;
+      --icon: #000000;
+      --bubble-in: #e5e5ea;
+      --bubble-out: #dcf8c5;
+      --scroll-bg: #f0f0f0;
+      --scroll-text: #111;
+      --support-bg: #e0e0e0;
+      --support-icon: #000;
+    }
+
+    /* ---------- MAIN APP CONTAINER (mobile style) ---------- */
+    .app {
+      width: 100%;
+      max-width: 420px;
+      height: 780px;
+      max-height: 95vh;
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    /* ---------- TOP SCROLLING BANNER (infinite marquee) ---------- */
+    .banner {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    .banner-track {
+      display: inline-block;
+      animation: scrollBanner 22s linear infinite;
+      padding-left: 0;
+    }
+
+    .banner-track span {
+      margin-right: 36px;
+      opacity: 0.9;
+    }
+
+    @keyframes scrollBanner {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ---------- HEADER (logo, theme toggles) ---------- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--bg);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .logo span {
+      color: var(--text);
+    }
+
+    .theme-switcher {
+      display: flex;
+      gap: 8px;
+      background: var(--card);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .theme-btn {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.7;
+    }
+
+    .theme-btn.active {
+      background: var(--bg);
+      color: var(--text);
+      opacity: 1;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+    }
+
+    /* ---------- MAIN SCROLLABLE AREA ---------- */
+    .main-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 80px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      background: var(--bg);
+    }
+
+    .main-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 8px;
+    }
+
+    /* ---------- SECTIONS / CARDS ---------- */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+      opacity: 0.7;
+      letter-spacing: 0.3px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    /* ---------- LOGIN / IDENTITY CARD ---------- */
+    .identity-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .alias-badge {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 16px;
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .alias-badge .code {
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.8;
+    }
+
+    /* ---------- CHAT INTERFACE (WhatsApp style) ---------- */
+    .chat-preview {
+      border-radius: 16px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .msg {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+      color: var(--text);
+    }
+
+    .msg.in {
+      align-self: flex-start;
+      background: var(--bubble-in);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg.out {
+      align-self: flex-end;
+      background: var(--bubble-out);
+      color: #000;
+      border-bottom-right-radius: 4px;
+    }
+
+    /* WhatsApp style for white theme out-bubble text */
+    body[data-theme="white"] .msg.out {
+      color: #000;
+    }
+
+    /* ---------- COMMUNITIES (Telegram style) ---------- */
+    .community-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .community-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .community-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .community-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .community-info p {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--border);
+      color: var(--text);
+      margin-left: 6px;
+    }
+
+    /* ---------- SUPPORT BUTTON (floating) ---------- */
+    .support-fab {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 30px;
+      background: var(--support-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 100;
+      font-size: 26px;
+      transition: all 0.2s;
+      color: var(--support-icon);
+    }
+
+    .support-fab:hover {
+      transform: scale(1.03);
+    }
+
+    /* ---------- PROFILE / CALL UI / PAYMENT SECTIONS ---------- */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .call-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .call-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .payment-row:last-child {
+      border-bottom: none;
+    }
+
+    .membership-badge {
+      background: var(--text);
+      color: var(--bg);
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ---------- SMALL RESPONSIVE ---------- */
+    @media (max-width: 420px) {
+      .app {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        border: none;
+      }
+      body {
+        padding: 0;
+      }
+    }
+
+    /* ---------- UTILS ---------- */
+    .flex {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mt-2 { margin-top: 10px; }
+    .mb-2 { margin-bottom: 10px; }
+    .opacity-70 { opacity: 0.7; }
+    .text-small { font-size: 12px; }
+    .text-mono { font-family: monospace; }
+  </style>
+</head>
+<body data-theme="black">
+  <div class="app" id="app">
+    <!-- TOP SCROLLING BANNER (theme adaptive) -->
+    <div class="banner">
+      <div class="banner-track">
+        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
+        <span>LEO<>001</span>
+        <span>MAKER<>1008</span>
+        <span>PANKAJ<>100000008</span>
+        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
+        <span>LEO<>001</span>
+        <span>MAKER<>1008</span>
+        <span>PANKAJ<>100000008</span>
+        <!-- duplicated for seamless loop -->
+        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
+        <span>LEO<>001</span>
+        <span>MAKER<>1008</span>
+        <span>PANKAJ<>100000008</span>
+      </div>
+    </div>
+
+    <!-- HEADER with logo >< and theme switcher -->
+    <div class="header">
+      <div class="logo">&gt;&lt;</div>
+      <div class="theme-switcher">
+        <button class="theme-btn active" data-theme="black" id="themeBlackBtn">Black</button>
+        <button class="theme-btn" data-theme="white" id="themeWhiteBtn">White</button>
+      </div>
+    </div>
+
+    <!-- SCROLLABLE MAIN CONTENT (all screens combined) -->
+    <div class="main-scroll">
+      <!-- LOGIN / IDENTITY SECTION -->
+      <div class="card">
+        <div style="font-weight: 600; margin-bottom: 12px;">Login / Identity</div>
+        <div class="identity-row">
+          <div class="alias-badge">
+            <span>LEO</span><span class="code">&lt;&gt;001</span>
+          </div>
+          <button class="btn" style="margin-left: auto;">Switch</button>
+        </div>
+        <div class="flex mt-2 text-small opacity-70">
+          <span>Your identity code: LEO<>001</span>
+        </div>
+      </div>
+
+      <!-- PROFILE SECTION + MEMBERSHIP -->
+      <div class="card">
+        <div class="profile-header">
+          <div class="profile-avatar">L</div>
+          <div>
+            <div style="font-weight: 600; font-size: 18px;">LEO</div>
+            <div class="flex" style="gap: 6px; margin-top: 4px;">
+              <span class="membership-badge">Creator</span>
+              <span class="tag">Real World</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex" style="justify-content: space-between;">
+          <span class="text-small opacity-70">Investor / Maker / Creator</span>
+          <span class="text-mono text-small">ID: LEO<>001</span>
+        </div>
+        <!-- call ui -->
+        <div class="call-actions">
+          <div class="call-btn">📞 Call</div>
+          <div class="call-btn">📹 Video</div>
+        </div>
+      </div>
+
+      <!-- CHAT INTERFACE (WhatsApp style) -->
+      <div class="section-title">💬 Recent Chat</div>
+      <div class="chat-preview">
+        <div class="chat-messages">
+          <div class="msg in">Hey! How's the new theme?</div>
+          <div class="msg out">Black mode is 🔥</div>
+          <div class="msg in">Check the communities.</div>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <input type="text" placeholder="Message..." style="flex:1; background: var(--bg); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); outline: none;">
+          <button class="btn" style="padding: 10px 16px;">➤</button>
+        </div>
+      </div>
+
+      <!-- COMMUNITIES (Telegram style) -->
+      <div class="section-title">👥 Communities</div>
+      <div class="community-list">
+        <div class="community-item">
+          <div class="community-avatar">C</div>
+          <div class="community-info">
+            <h4>Code1008 Lounge <span class="tag">Private</span></h4>
+            <p>1,208 members · 12 online</p>
+          </div>
+        </div>
+        <div class="community-item">
+          <div class="community-avatar">M</div>
+          <div class="community-info">
+            <h4>Makers Guild <span class="tag">Public</span></h4>
+            <p>854 members · 5 online</p>
+          </div>
+        </div>
+        <div class="community-item">
+          <div class="community-avatar">R</div>
+          <div class="community-info">
+            <h4>Real World Investors <span class="tag">Private</span></h4>
+            <p>322 members · 1 online</p>
+          </div>
+        </div>
+      </div>
+      <!-- community creation UI -->
+      <div class="card" style="margin-top: 10px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-weight: 500;">Create Community</span>
+          <button class="btn" style="padding: 6px 16px;">+ New</button>
+        </div>
+      </div>
+
+      <!-- PAYMENT FLOW (simple) -->
+      <div class="section-title">💳 Payment / Membership</div>
+      <div class="card">
+        <div class="payment-row">
+          <span>Investor Plan</span>
+          <span class="membership-badge" style="background: var(--text); color: var(--bg);">Active</span>
+        </div>
+        <div class="payment-row">
+          <span>Creator Pro</span>
+          <span class="text-small opacity-70">Renew</span>
+        </div>
+        <div class="payment-row">
+          <span>Maker Pass</span>
+          <span class="text-small opacity-70">$9.99</span>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 12px;">Upgrade Membership</button>
+      </div>
+
+      <!-- CALL & VIDEO CALL UI (extended) -->
+      <div class="section-title">📞 Calls</div>
+      <div class="card flex" style="justify-content: space-between;">
+        <div class="flex">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">📞</div>
+          <div>
+            <div>LEO<>001</div>
+            <div class="text-small opacity-70">Missed call · 2m ago</div>
+          </div>
+        </div>
+        <button class="btn" style="padding: 6px 16px;">Call</button>
+      </div>
+      <div class="card flex" style="justify-content: space-between;">
+        <div class="flex">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">📹</div>
+          <div>
+            <div>MAKER<>1008</div>
+            <div class="text-small opacity-70">Video call · 1h ago</div>
+          </div>
+        </div>
+        <button class="btn" style="padding: 6px 16px;">Video</button>
+      </div>
+    </div>
+
+    <!-- FLOATING SUPPORT BUTTON -->
+    <div class="support-fab" id="supportBtn" title="1008 Support">
+      <span>💬</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- THEME MANAGEMENT ----------
+      const body = document.body;
+      const themeBlackBtn = document.getElementById('themeBlackBtn');
+      const themeWhiteBtn = document.getElementById('themeWhiteBtn');
+      
+      // Load saved theme from localStorage, default 'black'
+      const savedTheme = localStorage.getItem('app-theme') || 'black';
+      setTheme(savedTheme);
+
+      // Update button active states
+      function updateActiveButton(theme) {
+        if (theme === 'black') {
+          themeBlackBtn.classList.add('active');
+          themeWhiteBtn.classList.remove('active');
+        } else {
+          themeWhiteBtn.classList.add('active');
+          themeBlackBtn.classList.remove('active');
+        }
+      }
+
+      // Set theme function
+      function setTheme(theme) {
+        if (theme === 'white') {
+          body.setAttribute('data-theme', 'white');
+        } else {
+          body.setAttribute('data-theme', 'black');
+        }
+        updateActiveButton(theme);
+        // Save to localStorage
+        localStorage.setItem('app-theme', theme);
+      }
+
+      // Event listeners for theme buttons
+      themeBlackBtn.addEventListener('click', () => setTheme('black'));
+      themeWhiteBtn.addEventListener('click', () => setTheme('white'));
+
+      // Also ensure the login screen theme switcher works (already in header)
+
+      // Support button interaction (sample)
+      document.getElementById('supportBtn').addEventListener('click', () => {
+        alert('1008 Support\nUse your Alias Name and Identity Code.\nExample: LEO<>001');
+      });
+
+      // Make all .theme-btn clickable everywhere (if any appear later)
+      // Smooth transition already in CSS
+
+      // Optional: simulate instant switching from login/ profile (already same buttons)
+      // Additional: if any element with data-theme-toggle, we could attach, but not needed.
+
+      // ---- DEMO: Add a quick identity change on click of "Switch" button (optional) ----
+      const switchBtn = document.querySelector('.identity-row .btn');
+      if (switchBtn) {
+        switchBtn.addEventListener('click', () => {
+          const badge = document.querySelector('.alias-badge');
+          if (badge) {
+            // just for demo: toggle between LEO<>001 and MAKER<>1008
+            const current = badge.textContent.includes('LEO') ? 'MAKER' : 'LEO';
+            const newCode = current === 'LEO' ? 'MAKER' : 'LEO';
+            const idCode = current === 'LEO' ? '001' : '1008';
+            badge.innerHTML = `<span>${newCode}</span><span class="code">&lt;&gt;${idCode}</span>`;
+          }
+        });
+      }
+
+      // Update profile avatar text when identity changes? not necessary but fun
+      // Also change profile name? Optional.
+      // But keep it minimal.
+
+      // Make the logo strictly >< (no text) — already done.
+
+      // Any extra: ensure banner text adapts, already via CSS variables.
+
+      console.log('Advanced Theme System ready · ><');
+    })();
+  </script>
+</body>
+</html>    --bubble-them-text: #000000;
     --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
     --shadow-md: 0 4px 16px rgba(0,0,0,.06);
     --shadow-lg: 0 12px 32px rgba(0,0,0,.10);
