@@ -940,4 +940,931 @@
         <input class="otp-input" maxlength="1" inputmode="numeric" />
         <input class="otp-input" maxlength="1" inputmode="numeric" />
         <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="ot
+        <input class="otp-input" maxlength="1" inputmode="numeric" />
+      </div>
+      <button class="btn" onclick="verifyOtp()">Verify & Continue</button>
+      <div class="help-text">Didn't receive it? <b onclick="toast('Code resent')">Resend</b></div>
+      <div class="center-spacer"></div>
+    </div>
+  </div>
+
+  <!-- ============ ONBOARDING: IDENTITY ============ -->
+  <div id="view-identity" class="view" style="padding-bottom:20px;">
+    <div style="padding:24px 20px 8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
+        <div class="logo">&gt; &gt;&lt;</div>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn1">☾</button>
+      </div>
+      <h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;">Choose Your Identity</h2>
+      <p class="help-text" style="text-align:left;margin-top:0;">You can only hold one identity at a time. Choose carefully.</p>
+    </div>
+    <div class="section" style="padding-top:6px;">
+      <div class="identity-list" id="identityList"></div>
+    </div>
+  </div>
+
+  <!-- ============ ONBOARDING: ALIAS ============ -->
+  <div id="view-alias" class="view" style="padding-bottom:20px;">
+    <div style="padding:24px 20px 8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
+        <button class="icon-btn" onclick="showView('view-identity')">‹</button>
+        <div class="logo">&gt; &gt;&lt;</div>
+        <div style="width:36px;"></div>
+      </div>
+      <div id="aliasCategoryLabel" class="profile-badge mb-12">MAKER</div>
+      <h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;">Create your alias</h2>
+      <p class="help-text" style="text-align:left;margin-top:0;margin-bottom:22px;">Your alias and code will be your only public identity. No real names required.</p>
+    </div>
+    <div class="px-16" style="display:flex;flex-direction:column;gap:12px;">
+      <input id="aliasName" class="field" placeholder="Alias Name (e.g. LEO)" maxlength="20" />
+      <input id="aliasBio" class="field" placeholder="Short bio" maxlength="120" />
+      <input id="aliasCountry" class="field" placeholder="Country" />
+      <input id="aliasSkills" class="field" placeholder="Skills (comma separated)" />
+      <select id="aliasLang" class="field" style="appearance:none;">
+        <option value="English">Native Language · English</option>
+        <option value="Hindi">Native Language · Hindi</option>
+        <option value="Punjabi">Native Language · Punjabi</option>
+        <option value="Tamil">Native Language · Tamil</option>
+        <option value="Spanish">Native Language · Spanish</option>
+        <option value="Arabic">Native Language · Arabic</option>
+        <option value="French">Native Language · French</option>
+        <option value="Japanese">Native Language · Japanese</option>
+      </select>
+      <div class="card" style="padding:14px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border);">
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:6px;">Your identity preview</div>
+        <div id="aliasPreview" class="mono" style="font-size:15px;font-weight:700;letter-spacing:.01em;">YOURALIAS&lt;&gt;0000</div>
+      </div>
+      <button class="btn" onclick="createIdentity()">Create My Identity</button>
+      <div style="height:8px;"></div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN APP ============ -->
+  <div id="view-main" class="view" style="padding-bottom:0;display:none;flex-direction:column;">
+
+    <!-- Banner -->
+    <div class="banner">
+      <div class="banner-track">
+        <span>Need help? Message us using your Alias Name and Code. Example: ARTIST&lt;&gt;108 or PANKAJ&lt;&gt;100000008. Our support team will assist you.</span>
+        <span>Need help? Message us using your Alias Name and Code. Example: ARTIST&lt;&gt;108 or PANKAJ&lt;&gt;100000008. Our support team will assist you.</span>
+      </div>
+    </div>
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="logo">&gt; &gt;&lt;</div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="toast('Search')">⌕</button>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn2">☾</button>
+      </div>
+    </div>
+
+    <!-- Sub-views -->
+    <div id="tab-chats" class="view active" style="padding-bottom:0;">
+      <div class="search-wrap">
+        <div class="search-inner">
+          <span style="color:var(--text-3);">⌕</span>
+          <input placeholder="Search by alias or code" oninput="filterChats(this.value)" />
+        </div>
+      </div>
+      <div id="chatList"></div>
+    </div>
+
+    <div id="tab-calls" class="view" style="padding-bottom:0;">
+      <div class="section" style="padding-top:16px;">
+        <div class="section-title">Recent</div>
+      </div>
+      <div id="callList"></div>
+    </div>
+
+    <div id="tab-groups" class="view" style="padding-bottom:0;">
+      <div class="section" style="padding-top:16px;">
+        <div class="section-title">Your Communities</div>
+      </div>
+      <div id="groupList"></div>
+      <div class="section">
+        <div class="section-title">Discover Communities</div>
+      </div>
+      <div id="discoverGroups"></div>
+    </div>
+
+    <div id="tab-discover" class="view" style="padding-bottom:0;">
+      <div class="search-wrap">
+        <div class="search-inner">
+          <span style="color:var(--text-3);">⌕</span>
+          <input id="discoverSearch" placeholder="Alias, code, skill, language" oninput="renderDiscover()" />
+        </div>
+      </div>
+      <div class="chip-row" id="discoverFilters">
+        <button class="chip active" data-cat="All" onclick="setDiscoverFilter(this)">All</button>
+        <button class="chip" data-cat="Investor" onclick="setDiscoverFilter(this)">Investors</button>
+        <button class="chip" data-cat="Creator" onclick="setDiscoverFilter(this)">Creators</button>
+        <button class="chip" data-cat="Maker" onclick="setDiscoverFilter(this)">Makers</button>
+        <button class="chip" data-cat="Real World" onclick="setDiscoverFilter(this)">Real World</button>
+      </div>
+      <div id="discoverList" style="padding-top:4px;"></div>
+    </div>
+
+    <div id="tab-profile" class="view" style="padding-bottom:0;">
+      <div id="profileContent"></div>
+    </div>
+
+    <!-- Chat detail (overlays) -->
+    <div id="chatDetail" class="view" style="padding-bottom:0;position:absolute;inset:0;background:var(--bg);z-index:80;display:none;flex-direction:column;">
+      <div class="chat-header" id="chatHeader"></div>
+      <div class="messages" id="messages" style="flex:1;overflow-y:auto;"></div>
+      <div class="composer">
+        <input id="composerInput" placeholder="Message" onkeydown="if(event.key==='Enter')sendMessage()" />
+        <button class="composer-btn" onclick="sendMessage()">↑</button>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottomnav" id="bottomNav">
+      <button class="nav-item active" data-tab="chats" onclick="switchTab('chats')">
+        <span class="nav-icon">◐</span><span>Chats</span>
+      </button>
+      <button class="nav-item" data-tab="calls" onclick="switchTab('calls')">
+        <span class="nav-icon">☎</span><span>Calls</span>
+      </button>
+      <button class="nav-item" data-tab="groups" onclick="switchTab('groups')">
+        <span class="nav-icon">◇</span><span>Groups</span>
+      </button>
+      <button class="nav-item" data-tab="discover" onclick="switchTab('discover')">
+        <span class="nav-icon">⌕</span><span>Discover</span>
+      </button>
+      <button class="nav-item" data-tab="profile" onclick="switchTab('profile')">
+        <span class="nav-icon">○</span><span>Profile</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Support FAB -->
+  <button class="support-fab" id="supportFab" style="display:none;" onclick="openSupport()">?</button>
+  <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSupport()"></div>
+  <div class="sheet" id="supportSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Support</div>
+    <div class="sheet-list">
+      <button class="sheet-item" onclick="toast('Opening support chat…')">
+        <span class="sheet-emoji">✦</span><span>Support Chat</span>
+      </button>
+      <button class="sheet-item" onclick="toast('Opening email composer…')">
+        <span class="sheet-emoji">✉</span><span>Email Support</span>
+      </button>
+      <button class="sheet-item" onclick="toast('Report an issue')">
+        <span class="sheet-emoji">!</span><span>Report Issue</span>
+      </button>
+      <button class="sheet-item" onclick="toast('Callback requested')">
+        <span class="sheet-emoji">☎</span><span>Request Callback</span>
+      </button>
+      <button class="sheet-item" onclick="toast('Ticket created')">
+        <span class="sheet-emoji">▤</span><span>Support Ticket</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+/* ============================================================
+   1008 · Single-file prototype
+   ============================================================ */
+
+/* ---------- THEME ---------- */
+(function initTheme() {
+  const stored = localStorage.getItem('theme-1008');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = stored || (prefersDark ? 'dark' : 'light');
+  if (theme === 'dark') document.body.classList.add('dark');
+  updateThemeIcon();
+})();
+
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  localStorage.setItem('theme-1008', isDark ? 'dark' : 'light');
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const isDark = document.body.classList.contains('dark');
+  const icon = isDark ? '☀' : '☾';
+  ['themeBtn1','themeBtn2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = icon;
+  });
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  if (!localStorage.getItem('theme-1008')) {
+    document.body.classList.toggle('dark', e.matches);
+    updateThemeIcon();
+  }
+});
+
+/* ---------- VIEW HELPERS ---------- */
+function showView(id) {
+  document.querySelectorAll('#app > .view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ---------- AUTH ---------- */
+function sendOtp() {
+  const email = document.getElementById('authEmail').value.trim();
+  if (!email || !email.includes('@')) { toast('Enter a valid email'); return; }
+  document.getElementById('otpEmail').textContent = email;
+  showView('view-otp');
+  // autofocus first OTP
+  setTimeout(() => document.querySelector('.otp-input')?.focus(), 300);
+  setupOtp();
+}
+
+function setupOtp() {
+  const inputs = document.querySelectorAll('.otp-input');
+  inputs.forEach((inp, i) => {
+    inp.oninput = () => {
+      if (inp.value && i < inputs.length - 1) inputs[i+1].focus();
+    };
+    inp.onkeydown = (e) => {
+      if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus();
+    };
+  });
+}
+
+function verifyOtp() {
+  const vals = [...document.querySelectorAll('.otp-input')].map(i => i.value).join('');
+  if (vals.length < 6) { toast('Enter all 6 digits'); return; }
+  // proceed to identity selection
+  showView('view-identity');
+  renderIdentities();
+}
+
+/* ---------- IDENTITY DATA ---------- */
+const identities = [
+  {
+    key: 'investor',
+    title: 'INVESTORS',
+    codeFormat: '01 · 02 · 03 · 18',
+    max: '18 members',
+    price: 'FREE',
+    priceFree: true,
+    desc: 'Reserved for investors and ecosystem partners.',
+    cta: 'Apply As Investor'
+  },
+  {
+    key: 'creator',
+    title: 'CREATORS',
+    codeFormat: '001 · 008 · 108',
+    max: '108 members',
+    price: '₹108',
+    priceFree: false,
+    desc: 'For creators, artists, educators and contributors.',
+    cta: 'Become Creator'
+  },
+  {
+    key: 'maker',
+    title: 'MAKERS',
+    codeFormat: '1000 · 1008 · 1999',
+    max: '1008 members',
+    price: '₹1008',
+    priceFree: false,
+    desc: 'For builders, developers, founders and operators.',
+    cta: 'Become Maker'
+  },
+  {
+    key: 'real',
+    title: 'REAL WORLD',
+    codeFormat: 'xxxxxxxxx  (9 digit)',
+    max: '1000000008 max',
+    price: 'FREE',
+    priceFree: true,
+    desc: 'Open access for everyone. Choose your own alias.',
+    cta: 'Enter Real World'
+  }
+];
+
+function renderIdentities() {
+  const list = document.getElementById('identityList');
+  list.innerHTML = '';
+  identities.forEach((it, idx) => {
+    const el = document.createElement('div');
+    el.className = 'idcard' + (idx === 2 ? ' featured' : '');
+    el.innerHTML = `
+      <div class="idcard-head">
+        <div class="idcard-title">${it.title}</div>
+        <div class="idcard-price ${it.priceFree ? 'free' : ''}">${it.price}</div>
+      </div>
+      <div class="idcard-desc">${it.desc}</div>
+      <div class="idcard-code">${it.codeFormat}</div>
+      <div class="idcard-meta">${it.max}</div>
+      <button class="btn" data-key="${it.key}" data-title="${it.title}" onclick="chooseIdentity(event)">${it.cta}</button>
+    `;
+    list.appendChild(el);
+  });
+}
+
+function chooseIdentity(e) {
+  const btn = e.currentTarget;
+  const key = btn.dataset.key;
+  const title = btn.dataset.title;
+  currentIdentity = { key, title };
+  document.getElementById('aliasCategoryLabel').textContent = title;
+  showView('view-alias');
+  updateAliasPreview();
+}
+
+let currentIdentity = null;
+
+/* ---------- ALIAS PREVIEW ---------- */
+document.addEventListener('input', e => {
+  if (e.target && e.target.id === 'aliasName') updateAliasPreview();
+});
+
+function updateAliasPreview() {
+  const name = (document.getElementById('aliasName')?.value || 'YOURALIAS').trim().toUpperCase() || 'YOURALIAS';
+  const samples = { investor: '01', creator: '001', maker: '1008', real: '100000008' };
+  const code = samples[currentIdentity?.key] || '0000';
+  const preview = document.getElementById('aliasPreview');
+  if (preview) preview.textContent = `${name}<>${code}`;
+}
+
+/* ---------- CREATE IDENTITY ---------- */
+function createIdentity() {
+  const name = (document.getElementById('aliasName').value || '').trim().toUpperCase();
+  const bio = document.getElementById('aliasBio').value.trim();
+  const country = document.getElementById('aliasCountry').value.trim();
+  const skills = document.getElementById('aliasSkills').value.trim();
+  const lang = document.getElementById('aliasLang').value;
+  if (!name) { toast('Enter an alias name'); return; }
+  const samples = { investor: '01', creator: '108', maker: '1008', real: '100000008' };
+  const code = samples[currentIdentity?.key] || '0000';
+
+  currentUser = {
+    alias: name,
+    code,
+    fullAlias: `${name}<>${code}`,
+    category: currentIdentity.title,
+    categoryKey: currentIdentity.key,
+    bio: bio || 'Member of 1008.',
+    country: country || '—',
+    skills: skills ? skills.split(',').map(s => s.trim()).filter(Boolean) : [],
+    language: lang,
+    preferred: 'English',
+    online: true
+  };
+
+  // Show main app
+  showView('view-main');
+  document.getElementById('view-main').style.display = 'flex';
+  document.getElementById('bottomNav').style.display = 'flex';
+  document.getElementById('supportFab').style.display = 'flex';
+  renderChatList();
+  renderCallList();
+  renderGroups();
+  renderDiscover();
+  renderProfile();
+  switchTab('chats');
+}
+
+/* ---------- SAMPLE DATA ---------- */
+const sampleUsers = [
+  // Investors
+  {alias:'AARAV',   code:'01', cat:'Investor',  lang:'Hindi',    skills:['Fintech','Strategy'],   bio:'Early-stage investor. 12 yrs.'},
+  {alias:'MAYA',    code:'02', cat:'Investor',  lang:'English',  skills:['SaaS','Growth'],        bio:'Backing founders with calm capital.'},
+  {alias:'KABIR',   code:'05', cat:'Investor',  lang:'Punjabi',  skills:['Consumer','D2C'],       bio:'Investor & operator.'},
+  {alias:'RIYA',    code:'08', cat:'Investor',  lang:'English',  skills:['DeepTech','AI'],        bio:'Thesis-driven investor.'},
+  {alias:'ARJUN',   code:'18', cat:'Investor',  lang:'Hindi',    skills:['Climate','Energy'],     bio:'Planet-first capital.'},
+
+  // Creators
+  {alias:'LEO',     code:'001', cat:'Creator',  lang:'English',  skills:['Illustration','Design'],bio:'Visual storyteller.'},
+  {alias:'ARTIST',  code:'108', cat:'Creator',  lang:'Hindi',    skills:['Music','Production'],   bio:'Sound & silence.'},
+  {alias:'NOVA',    code:'008', cat:'Creator',  lang:'English',  skills:['Writing','Essays'],     bio:'Words that stay.'},
+  {alias:'ZARA',    code:'047', cat:'Creator',  lang:'Arabic',   skills:['Film','Direction'],     bio:'Cinema as language.'},
+  {alias:'OM',      code:'077', cat:'Creator',  lang:'Hindi',    skills:['Photography'],          bio:'Frames & light.'},
+  {alias:'SAKURA',  code:'095', cat:'Creator',  lang:'Japanese', skills:['Ceramics','Craft'],     bio:'Hands, clay, patience.'},
+  {alias:'LUNA',    code:'099', cat:'Creator',  lang:'Spanish',  skills:['Poetry','Spoken Word'], bio:'Night thoughts.'},
+  {alias:'YUSUF',   code:'100', cat:'Creator',  lang:'Arabic',   skills:['Calligraphy'],          bio:'Ink as devotion.'},
+  {alias:'VERA',    code:'104', cat:'Creator',  lang:'French',   skills:['Painting'],             bio:'Color fields.'},
+  {alias:'RAVI',    code:'106', cat:'Creator',  lang:'Tamil',    skills:['Classical Music'],      bio:'Tradition in motion.'},
+
+  // Makers
+  {alias:'MAKER',   code:'1008', cat:'Maker',   lang:'English',  skills:['Product','Engineering'],bio:'Ship, learn, repeat.'},
+  {alias:'IRA',     code:'1000', cat:'Maker',   lang:'Hindi',    skills:['iOS','Swift'],          bio:'Design-led engineering.'},
+  {alias:'NEEL',    code:'1001', cat:'Maker',   lang:'Hindi',    skills:['Backend','Rust'],       bio:'Systems that scale.'},
+  {alias:'ANAYA',   code:'1002', cat:'Maker',   lang:'English',  skills:['ML','LLMs'],            bio:'Building intelligence.'},
+  {alias:'VIKRAM',  code:'1003', cat:'Maker',   lang:'Punjabi',  skills:['DevOps','Cloud'],       bio:'Infra quietly.'},
+  {alias:'SARA',    code:'1004', cat:'Maker',   lang:'English',  skills:['Frontend','React'],     bio:'Interfaces with soul.'},
+  {alias:'DEV',     code:'1005', cat:'Maker',   lang:'Hindi',    skills:['Android','Kotlin'],     bio:'Mobile-first thinking.'},
+  {alias:'MIRA',    code:'1006', cat:'Maker',   lang:'English',  skills:['Product','Strategy'],   bio:'0→1 and 1→10.'},
+  {alias:'ROHAN',   code:'1007', cat:'Maker',   lang:'Hindi',    skills:['Data','Pipelines'],     bio:'Data as infrastructure.'},
+  {alias:'TARA',    code:'1009', cat:'Maker',   lang:'Tamil',    skills:['Security','Crypto'],    bio:'Paranoid by default.'},
+  {alias:'ARYA',    code:'1010', cat:'Maker',   lang:'Hindi',    skills:['Design','Systems'],     bio:'Design systems thinker.'},
+  {alias:'JAI',     code:'1011', cat:'Maker',   lang:'Punjabi',  skills:['Robotics','Hardware'],  bio:'Atoms & bits.'},
+  {alias:'NISHA',   code:'1012', cat:'Maker',   lang:'English',  skills:['Growth','Analytics'],   bio:'Compounding loops.'},
+  {alias:'OMKAR',   code:'1013', cat:'Maker',   lang:'Hindi',    skills:['Founder','Ops'],        bio:'Operator at heart.'},
+  {alias:'PRIYA',   code:'1014', cat:'Maker',   lang:'English',  skills:['AI','Research'],        bio:'Curious by default.'},
+  {alias:'KARAN',   code:'1015', cat:'Maker',   lang:'Hindi',    skills:['Payments','Fintech'],   bio:'Money rails.'},
+  {alias:'ISHAN',   code:'1016', cat:'Maker',   lang:'English',  skills:['Gaming','Unity'],       bio:'Worlds in code.'},
+  {alias:'MEERA',   code:'1017', cat:'Maker',   lang:'Tamil',    skills:['QA','Automation'],      bio:'Quality is a habit.'},
+  {alias:'VIR',     code:'1018', cat:'Maker',   lang:'Hindi',    skills:['Web3','Protocols'],     bio:'Trustless systems.'},
+  {alias:'AAROHI',  code:'1019', cat:'Maker',   lang:'English',  skills:['AR','VR'],              bio:'Spatial interfaces.'},
+
+  // Real World
+  {alias:'PANKAJ',  code:'100000008', cat:'Real World', lang:'Hindi',  skills:['Writing'],           bio:'Curious observer.'},
+  {alias:'SIYA',    code:'100000018', cat:'Real World', lang:'English',skills:['Reading'],           bio:'Book club regular.'},
+  {alias:'MANAV',   code:'100000028', cat:'Real World', lang:'Hindi',  skills:['Music'],             bio:'Bedroom producer.'},
+  {alias:'TANVI',   code:'100000038', cat:'Real World', lang:'Marathi',skills:['Cooking'],           bio:'Food is memory.'},
+  {alias:'AARON',   code:'100000048', cat:'Real World', lang:'English',skills:['Running'],           bio:'Marathon in progress.'},
+  {alias:'DIYA',    code:'100000058', cat:'Real World', lang:'Hindi',  skills:['Dance'],             bio:'Movement is language.'},
+  {alias:'KIAN',    code:'100000068', cat:'Real World', lang:'English',skills:['Skateboarding'],     bio:'Concrete waves.'},
+  {alias:'NAVYA',   code:'100000078', cat:'Real World', lang:'Telugu', skills:['Coding'],            bio:'Self-taught dev.'},
+  {alias:'REYAN',   code:'100000088', cat:'Real World', lang:'Hindi',  skills:['Cricket'],           bio:'Weekend cricketer.'},
+  {alias:'MYRA',    code:'100000098', cat:'Real World', lang:'English',skills:['Art'],               bio:'Doodles & dreams.'},
+  {alias:'VEER',    code:'100000108', cat:'Real World', lang:'Punjabi',skills:['Travel'],            bio:'Mountains > cities.'},
+  {alias:'ANIKA',   code:'100000118', cat:'Real World', lang:'Hindi',  skills:['Yoga'],              bio:'Breath & balance.'},
+  {alias:'RUDRA',   code:'100000128', cat:'Real World', lang:'English',skills:['Chess'],             bio:'Slow thinker.'},
+  {alias:'ISHITA',  code:'100000138', cat:'Real World', lang:'Bengali',skills:['Theatre'],           bio:'Stage is home.'},
+  {alias:'KABIR',   code:'100000148', cat:'Real World', lang:'Hindi',  skills:['Fitness'],           bio:'Stronger every day.'},
+  {alias:'AANYA',   code:'100000158', cat:'Real World', lang:'English',skills:['Photography'],       bio:'Chasing light.'},
+  {alias:'YASH',    code:'100000168', cat:'Real World', lang:'Hindi',  skills:['Guitar'],            bio:'Six strings, endless.'},
+  {alias:'RIYA',    code:'100000178', cat:'Real World', lang:'English',skills:['Volunteering'],      bio:'Community first.'},
+  {alias:'ARNAV',   code:'100000188', cat:'Real World', lang:'Hindi',  skills:['Cooking'],           bio:'Home chef.'},
+  {alias:'KIARA',   code:'100000198', cat:'Real World', lang:'English',skills:['Journaling'],        bio:'Notes to self.'}
+];
+
+let currentUser = null;
+
+/* ---------- CHATS ---------- */
+const chats = [
+  { user: sampleUsers.find(u=>u.alias==='ARTIST'), last:'The new track is almost done.', time:'09:42', unread:2, pinned:true },
+  { user: sampleUsers.find(u=>u.alias==='MAKER'),  last:'Pushed the build. Can you review?', time:'09:15', unread:1, pinned:true },
+  { user: sampleUsers.find(u=>u.alias==='LEO'),    last:'Sent you the moodboard.', time:'Yesterday', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='AARAV'),  last:'Let’s set up a call this week.', time:'Yesterday', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='NOVA'),   last:'That essay you shared — beautiful.', time:'Mon', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='IRA'),    last:'Shipped the new onboarding flow.', time:'Mon', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='PANKAJ'), last:'Hey, are you around?', time:'Sun', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='ZARA'),   last:'The short film is screening Friday.', time:'Sun', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='ANAYA'),  last:'Model evals look promising.', time:'Sat', unread:0 },
+  { user: sampleUsers.find(u=>u.alias==='VERA'),   last:'New paintings up on the studio wall.', time:'Sat', unread:0 }
+];
+
+function filterChats(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#chatList .list-item').forEach(el => {
+    const text = el.dataset.search || '';
+    el.style.display = text.includes(q) ? 'flex' : 'none';
+  });
+}
+
+function renderChatList() {
+  const wrap = document.getElementById('chatList');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const pinned = chats.filter(c=>c.pinned).sort((a,b)=>a.time.localeCompare(b.time));
+  const rest = chats.filter(c=>!c.pinned);
+  const ordered = [...pinned, ...rest];
+  ordered.forEach((c, idx) => {
+    if (!c.user) return;
+    const initial = c.user.alias.slice(0,2);
+    const el = document.createElement('button');
+    el.className = 'list-item';
+    el.dataset.search = (c.user.alias + ' ' + c.user.code + ' ' + c.last).toLowerCase();
+    el.onclick = () => openChat(c.user);
+    el.innerHTML = `
+      <div class="avatar mono">${initial}<span class="avatar-dot"></span></div>
+      <div class="list-body">
+        <div class="list-title-row">
+          <div class="list-title">${c.user.alias} <span class="list-sub alias" style="font-size:12px;">&lt;&gt;${c.user.code}</span></div>
+          <div class="list-time">${c.time}</div>
+        </div>
+        <div class="list-sub">${c.last}</div>
+      </div>
+      ${c.unread ? `<div class="unread">${c.unread}</div>` : ''}
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+/* ---------- CHAT DETAIL ---------- */
+let activeChatUser = null;
+let chatMessages = [];
+
+function openChat(user) {
+  activeChatUser = user;
+  document.getElementById('chatDetail').style.display = 'flex';
+  const header = document.getElementById('chatHeader');
+  header.innerHTML = `
+    <button class="icon-btn" onclick="closeChat()">‹</button>
+    <div class="avatar avatar-sm mono">${user.alias.slice(0,2)}<span class="avatar-dot"></span></div>
+    <div class="list-body">
+      <div class="list-title" style="font-size:15px;">${user.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${user.code}</span></div>
+      <div class="list-sub" style="font-size:12px;">online</div>
+    </div>
+    <button class="icon-btn" onclick="toast('Voice call')">☎</button>
+    <button class="icon-btn" onclick="toast('Video call')">▣</button>
+  `;
+  loadMessages(user);
+  document.getElementById('chatDetail').classList.add('active');
+  setTimeout(() => document.getElementById('composerInput').focus(), 100);
+}
+
+function closeChat() {
+  document.getElementById('chatDetail').style.display = 'none';
+  document.getElementById('chatDetail').classList.remove('active');
+  activeChatUser = null;
+}
+
+function loadMessages(user) {
+  const seed = [
+    {me:false, text:'Hey — good to see you here.', time:'09:30'},
+    {me:true,  text:'Likewise. This platform feels calm.', time:'09:31'},
+    {me:false, text:'That was the idea. No noise, just people.', time:'09:32'},
+  ];
+  if (user.cat === 'Maker') {
+    seed.push({me:false, text:'Pushed the build. Can you review when free?', time:'09:35'});
+    seed.push({me:true,  text:'On it. Give me 20 minutes.', time:'09:36'});
+  } else if (user.cat === 'Creator') {
+    seed.push({me:false, text:'The new track is almost done. Want to listen?', time:'09:40'});
+    seed.push({me:true,  text:'Always. Send it over.', time:'09:41'});
+  } else if (user.cat === 'Investor') {
+    seed.push({me:false, text:'Let’s set up a call this week.', time:'09:38'});
+    seed.push({me:true,  text:'Thursday afternoon works.', time:'09:39'});
+  } else {
+    seed.push({me:false, text:'Hey, are you around?', time:'09:37'});
+  }
+  chatMessages = seed;
+  renderMessages();
+}
+
+function renderMessages() {
+  const wrap = document.getElementById('messages');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  chatMessages.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'msg-row ' + (m.me ? 'me' : '');
+    row.innerHTML = `
+      <div class="msg ${m.me ? 'me' : 'them'}">
+        ${m.text}
+        <div class="msg-meta">${m.time} ${m.me ? '✓✓' : ''}</div>
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById('composerInput');
+  const text = input.value.trim();
+  if (!text || !activeChatUser) return;
+  const now = new Date();
+  const time = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  chatMessages.push({me:true, text, time});
+  input.value = '';
+  renderMessages();
+
+  // typing indicator + auto reply
+  const wrap = document.getElementById('messages');
+  const typing = document.createElement('div');
+  typing.className = 'msg-row';
+  typing.id = 'typingRow';
+  typing.innerHTML = `<div class="msg them"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  wrap.appendChild(typing);
+  wrap.scrollTop = wrap.scrollHeight;
+
+  setTimeout(() => {
+    document.getElementById('typingRow')?.remove();
+    const replies = [
+      'Noted — thanks for the quick reply.',
+      'Got it. I’ll take a look.',
+      'Sounds good to me.',
+      'Perfect. Let’s keep moving.',
+      'Appreciate it.'
+    ];
+    const reply = replies[Math.floor(Math.random()*replies.length)];
+    const t2 = new Date();
+    const time2 = String(t2.getHours()).padStart(2,'0') + ':' + String(t2.getMinutes()).padStart(2,'0');
+    chatMessages.push({me:false, text:reply, time:time2});
+    renderMessages();
+  }, 1400);
+}
+
+/* ---------- CALLS ---------- */
+const calls = [
+  { user: sampleUsers.find(u=>u.alias==='ARTIST'), type:'in',   kind:'Voice', time:'09:20' },
+  { user: sampleUsers.find(u=>u.alias==='MAKER'),  type:'out',  kind:'Video', time:'08:45' },
+  { user: sampleUsers.find(u=>u.alias==='LEO'),    type:'miss', kind:'Voice', time:'Yesterday' },
+  { user: sampleUsers.find(u=>u.alias==='AARAV'),  type:'in',   kind:'Video', time:'Yesterday' },
+  { user: sampleUsers.find(u=>u.alias==='IRA'),    type:'out',  kind:'Voice', time:'Mon' },
+  { user: sampleUsers.find(u=>u.alias==='NOVA'),   type:'miss', kind:'Voice', time:'Sun' },
+  { user: sampleUsers.find(u=>u.alias==='ANAYA'),  type:'in',   kind:'Video', time:'Sat' },
+  { user: sampleUsers.find(u=>u.alias==='PANKAJ'), type:'out',  kind:'Voice', time:'Fri' }
+];
+
+function renderCallList() {
+  const wrap = document.getElementById('callList');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  calls.forEach(c => {
+    if (!c.user) return;
+    const arrow = c.type === 'in' ? '↙' : c.type === 'out' ? '↗' : '✕';
+    const cls = c.type === 'in' ? 'call-in' : c.type === 'out' ? 'call-out' : 'call-miss';
+    const el = document.createElement('button');
+    el.className = 'list-item';
+    el.onclick = () => toast(`Calling ${c.user.alias}…`);
+    el.innerHTML = `
+      <div class="avatar mono">${c.user.alias.slice(0,2)}</div>
+      <div class="list-body">
+        <div class="list-title-row">
+          <div class="list-title">${c.user.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${c.user.code}</span></div>
+          <div class="list-time">${c.time}</div>
+        </div>
+        <div class="list-sub call-type ${cls}">${arrow} ${c.kind} call</div>
+      </div>
+      <button class="icon-btn" onclick="event.stopPropagation();toast('Calling…')">☎</button>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+/* ---------- GROUPS ---------- */
+const myGroups = [
+  { name:'Creator Circle', members: 87, desc:'Work-in-progress, feedback, and quiet encouragement.' },
+  { name:'Maker Hub', members: 214, desc:'Shipping notes, build logs, and late-night fixes.' },
+  { name:'Investor Network', members: 18, desc:'Private. Long-horizon conversations.' },
+  { name:'Real World Community', members: 1208, desc:'Open access. Everyday life, everyday people.' }
+];
+
+const discoverGroups = [
+  { name:'Design Systems Guild', members: 340, desc:'Tokens, patterns, and craft.' },
+  { name:'Sound & Silence', members: 96, desc:'Music, production, listening.' },
+  { name:'Climate Builders', members: 128, desc:'Planet-first engineering.' },
+  { name:'Language Exchange', members: 402, desc:'Learn, teach, translate.' }
+];
+
+function renderGroups() {
+  const wrap = document.getElementById('groupList');
+  const dwrap = document.getElementById('discoverGroups');
+  if (!wrap || !dwrap) return;
+
+  wrap.innerHTML = '';
+  myGroups.forEach(g => {
+    const el = document.createElement('button');
+    el.className = 'list-item';
+    el.onclick = () => toast(`Opening ${g.name}`);
+    el.innerHTML = `
+      <div class="avatar mono">${g.name.slice(0,2).toUpperCase()}</div>
+      <div class="list-body">
+        <div class="list-title-row">
+          <div class="list-title">${g.name}</div>
+        </div>
+        <div class="list-sub">${g.desc}</div>
+      </div>
+      <div class="unread" style="background:var(--surface-2);color:var(--text-2);">${g.members}</div>
+    `;
+    wrap.appendChild(el);
+  });
+
+  dwrap.innerHTML = '';
+  discoverGroups.forEach(g => {
+    const el = document.createElement('button');
+    el.className = 'list-item';
+    el.onclick = () => toast(`Requested to join ${g.name}`);
+    el.innerHTML = `
+      <div class="avatar mono">${g.name.slice(0,2).toUpperCase()}</div>
+      <div class="list-body">
+        <div class="list-title-row">
+          <div class="list-title">${g.name}</div>
+        </div>
+        <div class="list-sub">${g.desc}</div>
+      </div>
+      <div class="unread" style="background:var(--surface-2);color:var(--text-2);">${g.members}</div>
+    `;
+    dwrap.appendChild(el);
+  });
+}
+
+/* ---------- DISCOVER ---------- */
+let discoverFilter = 'All';
+
+function setDiscoverFilter(el) {
+  document.querySelectorAll('#discoverFilters .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  discoverFilter = el.dataset.cat;
+  renderDiscover();
+}
+
+function renderDiscover() {
+  const wrap = document.getElementById('discoverList');
+  if (!wrap) return;
+  const q = (document.getElementById('discoverSearch')?.value || '').toLowerCase().trim();
+  wrap.innerHTML = '';
+  const filtered = sampleUsers.filter(u => {
+    if (discoverFilter !== 'All' && u.cat !== discoverFilter) return false;
+    if (!q) return true;
+    return (
+      u.alias.toLowerCase().includes(q) ||
+      u.code.toLowerCase().includes(q) ||
+      u.skills.join(' ').toLowerCase().includes(q) ||
+      u.lang.toLowerCase().includes(q)
+    );
+  });
+
+  if (filtered.length === 0) {
+    wrap.innerHTML = `<div class="text-center muted" style="padding:40px 20px;font-size:13px;">No identities found.</div>`;
+    return;
+  }
+
+  filtered.forEach(u => {
+    const el = document.createElement('button');
+    el.className = 'list-item';
+    el.onclick = () => openProfile(u);
+    el.innerHTML = `
+      <div class="avatar mono">${u.alias.slice(0,2)}</div>
+      <div class="list-body">
+        <div class="list-title-row">
+          <div class="list-title">${u.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${u.code}</span></div>
+          <div class="list-time">${u.cat}</div>
+        </div>
+        <div class="list-sub">${u.skills.slice(0,2).join(' · ')} · ${u.lang}</div>
+      </div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+/* ---------- PROFILE ---------- */
+function renderProfile() {
+  const wrap = document.getElementById('profileContent');
+  if (!wrap || !currentUser) return;
+  const u = currentUser;
+  wrap.innerHTML = `
+    <div class="profile-hero">
+      <div class="profile-avatar mono">${u.alias.slice(0,2)}</div>
+      <div class="profile-name">${u.alias}</div>
+      <div class="profile-alias">&lt;&gt;${u.code}</div>
+      <div class="profile-badge">${u.category}</div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn btn-ghost" onclick="toast('Message')"><span class="act-emoji">✎</span>Message</button>
+      <button class="btn btn-ghost" onclick="toast('Voice call')"><span class="act-emoji">☎</span>Voice</button>
+      <button class="btn btn-ghost" onclick="toast('Video call')"><span class="act-emoji">▣</span>Video</button>
+      <button class="btn btn-ghost" onclick="toast('Invite to group')"><span class="act-emoji">＋</span>Invite</button>
+    </div>
+
+    <div class="kv-row"><span class="k">Bio</span><span class="v">${u.bio}</span></div>
+    <div class="kv-row"><span class="k">Country</span><span class="v">${u.country}</span></div>
+    <div class="kv-row"><span class="k">Native Language</span><span class="v">${u.language}</span></div>
+    <div class="kv-row"><span class="k">Preferred Language</span><span class="v">${u.preferred}</span></div>
+    <div class="kv-row" style="align-items:flex-start;">
+      <span class="k">Skills</span>
+      <span class="v">
+        <div class="tag-row">
+          ${(u.skills.length ? u.skills : ['—']).map(s => `<span class="tag">${s}</span>`).join('')}
+        </div>
+      </span>
+    </div>
+    <div class="kv-row"><span class="k">Status</span><span class="v" style="color:#22c55e;">● Online</span></div>
+
+    <div class="section" style="padding-top:24px;">
+      <div class="section-title">Language Settings</div>
+    </div>
+    <div class="kv-row">
+      <span class="k">Native Language</span>
+      <span class="v">${u.language}</span>
+    </div>
+    <div class="kv-row">
+      <span class="k">Preferred Language</span>
+      <span class="v">${u.preferred}</span>
+    </div>
+    <div class="help-text" style="text-align:left;padding:14px 16px;margin:0;">Real-time voice translation and speech-to-text are coming soon.</div>
+
+    <div style="padding:20px 16px 8px;">
+      <button class="btn btn-ghost" onclick="logout()">Log out</button>
+    </div>
+    <div style="height:20px;"></div>
+  `;
+}
+
+function openProfile(user) {
+  const wrap = document.getElementById('profileContent');
+  wrap.innerHTML = `
+    <div style="padding:16px;">
+      <button class="icon-btn" onclick="renderProfile()">‹</button>
+    </div>
+    <div class="profile-hero" style="padding-top:8px;">
+      <div class="profile-avatar mono">${user.alias.slice(0,2)}</div>
+      <div class="profile-name">${user.alias}</div>
+      <div class="profile-alias">&lt;&gt;${user.code}</div>
+      <div class="profile-badge">${user.cat}</div>
+    </div>
+    <div class="profile-actions">
+      <button class="btn btn-ghost" onclick="closeChat();openChat(sampleUsers.find(u=>u.alias==='${user.alias}'));switchTab('chats');"><span class="act-emoji">✎</span>Message</button>
+      <button class="btn btn-ghost" onclick="toast('Voice call')"><span class="act-emoji">☎</span>Voice</button>
+      <button class="btn btn-ghost" onclick="toast('Video call')"><span class="act-emoji">▣</span>Video</button>
+      <button class="btn btn-ghost" onclick="toast('Invite to group')"><span class="act-emoji">＋</span>Invite</button>
+    </div>
+    <div class="kv-row"><span class="k">Bio</span><span class="v">${user.bio}</span></div>
+    <div class="kv-row"><span class="k">Native Language</span><span class="v">${user.lang}</span></div>
+    <div class="kv-row" style="align-items:flex-start;">
+      <span class="k">Skills</span>
+      <span class="v">
+        <div class="tag-row">
+          ${user.skills.map(s => `<span class="tag">${s}</span>`).join('')}
+        </div>
+      </span>
+    </div>
+    <div class="kv-row"><span class="k">Category</span><span class="v">${user.cat}</span></div>
+  `;
+  switchTab('profile');
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById('view-main').style.display = 'none';
+  document.getElementById('supportFab').style.display = 'none';
+  document.getElementById('aliasName').value = '';
+  document.getElementById('aliasBio').value = '';
+  document.getElementById('aliasCountry').value = '';
+  document.getElementById('aliasSkills').value = '';
+  showView('view-auth');
+}
+
+/* ---------- TABS ---------- */
+function switchTab(tab) {
+  document.querySelectorAll('#view-main > .view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById('tab-' + tab);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.tab === tab);
+  });
+  // hide chat detail if switching
+  if (tab !== 'chats') {
+    document.getElementById('chatDetail').style.display = 'none';
+  }
+}
+
+/* ---------- SUPPORT ---------- */
+function openSupport() {
+  document.getElementById('sheetBackdrop').classList.add('show');
+  document.getElementById('supportSheet').classList.add('show');
+}
+function closeSupport() {
+  document.getElementById('sheetBackdrop').classList.remove('show');
+  document.getElementById('supportSheet').classList.remove('show');
+}
+
+/* ---------- TOAST ---------- */
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ---------- INIT ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // OTP autofocus setup on view
+  setupOtp();
+  // Enter key on email field
+  document.getElementById('authEmail')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendOtp();
+  });
+  // alias input live preview
+  document.getElementById('aliasName')?.addEventListener('input', updateAliasPreview);
+});
+
+/* ---------- EXPOSE TO GLOBAL for inline handlers ---------- */
+window.sendOtp = sendOtp;
+window.verifyOtp = verifyOtp;
+window.chooseIdentity = chooseIdentity;
+window.createIdentity = createIdentity;
+window.toggleTheme = toggleTheme;
+window.switchTab = switchTab;
+window.openChat = openChat;
+window.closeChat = closeChat;
+window.sendMessage = sendMessage;
+window.filterChats = filterChats;
+window.setDiscoverFilter = setDiscoverFilter;
+window.renderDiscover = renderDiscover;
+window.openProfile = openProfile;
+window.renderProfile = renderProfile;
+window.openSupport = openSupport;
+window.closeSupport = closeSupport;
+window.toast = toast;
+window.logout = logout;
+window.updateAliasPreview = updateAliasPreview;
+window.showView = showView;
+</script>
+</body>
+</html>
