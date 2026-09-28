@@ -3,2522 +3,1412 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Advanced Theme System · ><</title>
+  <title>1008 · Real World × Skill Man</title>
   <style>
-    /* ---------- RESET & GLOBAL ---------- */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --card: #1c1c1e;
+      --card-light: #2c2c2e;
+      --border: #38383a;
+      --accent: #0a84ff;
+      --secondary-text: #8e8e93;
+      --logo: #ffffff;
+      --banner-bg: #0a84ff;
+      --banner-text: #ffffff;
+      --success: #30d158;
+      --warning: #ff9f0a;
+      --danger: #ff453a;
+      --tab-bar: #0c0c0d;
+      --input-bg: #1c1c1e;
+    }
+
+    .light {
+      --bg: #ffffff;
+      --text: #000000;
+      --card: #f2f2f7;
+      --card-light: #e5e5ea;
+      --border: #d1d1d6;
+      --accent: #007aff;
+      --secondary-text: #8e8e93;
+      --logo: #000000;
+      --banner-bg: #007aff;
+      --banner-text: #ffffff;
+      --tab-bar: #f2f2f7;
+      --input-bg: #e5e5ea;
     }
 
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 12px;
-      background: #000;
-      /* will be overridden by theme */
-    }
-
-    /* ---------- THEME VARIABLES (default black) ---------- */
-    :root {
-      --bg: #000000;
-      --text: #FFFFFF;
-      --card: #111111;
-      --border: #333333;
-      --icon: #FFFFFF;
-      --bubble-in: #222222;
-      --bubble-out: #005c4b;
-      --scroll-bg: #1a1a1a;
-      --scroll-text: #eeeeee;
-      --support-bg: #222;
-      --support-icon: #fff;
-    }
-
-    body[data-theme="white"] {
-      --bg: #FFFFFF;
-      --text: #000000;
-      --card: #F5F5F5;
-      --border: #DDDDDD;
-      --icon: #000000;
-      --bubble-in: #e5e5ea;
-      --bubble-out: #dcf8c5;
-      --scroll-bg: #f0f0f0;
-      --scroll-text: #111;
-      --support-bg: #e0e0e0;
-      --support-icon: #000;
-    }
-
-    /* ---------- MAIN APP CONTAINER (mobile style) ---------- */
-    .app {
-      width: 100%;
-      max-width: 420px;
-      height: 780px;
-      max-height: 95vh;
       background: var(--bg);
       color: var(--text);
-      border-radius: 36px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      transition: background 0.2s, color 0.2s;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 0 70px 0;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--bg);
+      position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid var(--border);
     }
 
-    /* ---------- TOP SCROLLING BANNER (infinite marquee) ---------- */
-    .banner {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      font-size: 12px;
+    /* top banner */
+    .top-banner {
+      background: var(--banner-bg);
+      color: var(--banner-text);
+      padding: 10px 16px;
+      font-size: 13px;
+      text-align: center;
       font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.3px;
-      flex-shrink: 0;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      letter-spacing: 0.2px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
 
-    .banner-track {
-      display: inline-block;
-      animation: scrollBanner 22s linear infinite;
-      padding-left: 0;
+    .top-banner::-webkit-scrollbar {
+      display: none;
     }
 
-    .banner-track span {
-      margin-right: 36px;
+    .top-banner span {
+      margin: 0 8px;
       opacity: 0.9;
     }
 
-    @keyframes scrollBanner {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ---------- HEADER (logo, theme toggles) ---------- */
-    .header {
+    /* main scroll area */
+    .screen-container {
+      flex: 1;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      background: var(--bg);
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 16px 16px 20px;
     }
 
+    /* logo */
     .logo {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      color: var(--logo);
+      line-height: 1;
+      margin-bottom: 8px;
+      user-select: none;
+    }
+
+    .logo-small {
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--text);
-      line-height: 1;
+      letter-spacing: -1px;
+      color: var(--logo);
     }
 
-    .logo span {
-      color: var(--text);
+    /* typography */
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
     }
 
-    .theme-switcher {
-      display: flex;
-      gap: 8px;
-      background: var(--card);
-      padding: 4px;
-      border-radius: 30px;
-      border: 1px solid var(--border);
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
-    .theme-btn {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
+    h3 {
+      font-size: 18px;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      opacity: 0.7;
+      margin-bottom: 8px;
     }
 
-    .theme-btn.active {
-      background: var(--bg);
-      color: var(--text);
-      opacity: 1;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-      border: 1px solid var(--border);
+    .subtitle {
+      font-size: 16px;
+      color: var(--secondary-text);
+      margin-bottom: 24px;
+      line-height: 1.4;
     }
 
-    /* ---------- MAIN SCROLLABLE AREA ---------- */
-    .main-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 14px 80px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-      background: var(--bg);
-    }
-
-    .main-scroll::-webkit-scrollbar {
-      width: 4px;
-    }
-    .main-scroll::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 8px;
-    }
-
-    /* ---------- SECTIONS / CARDS ---------- */
-    .section-title {
+    .secondary {
+      color: var(--secondary-text);
       font-size: 14px;
-      font-weight: 600;
-      margin: 16px 0 8px;
-      opacity: 0.7;
-      letter-spacing: 0.3px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    /* ---------- LOGIN / IDENTITY CARD ---------- */
-    .identity-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .alias-badge {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 8px 16px;
-      font-family: monospace;
-      font-weight: 600;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text);
-    }
-
-    .alias-badge .code {
-      font-weight: 400;
-      opacity: 0.7;
-    }
-
+    /* buttons */
     .btn {
-      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      background: var(--accent);
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .btn:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: var(--card);
       color: var(--text);
       border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 10px 20px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-sm {
+      padding: 10px 16px;
+      font-size: 15px;
+      width: auto;
+      border-radius: 20px;
+    }
+
+    /* inputs */
+    input, select, textarea {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 16px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    ::placeholder {
+      color: var(--secondary-text);
+    }
+
+    label {
       font-size: 14px;
       font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
+      color: var(--secondary-text);
+      margin-bottom: 6px;
+      display: block;
     }
 
-    .btn-primary {
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.8;
-    }
-
-    /* ---------- CHAT INTERFACE (WhatsApp style) ---------- */
-    .chat-preview {
+    /* cards */
+    .card {
+      background: var(--card);
       border-radius: 16px;
-      padding: 12px;
-      background: var(--card);
+      padding: 16px;
+      margin-bottom: 12px;
       border: 1px solid var(--border);
     }
 
-    .chat-messages {
+    .card-header {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .msg {
-      max-width: 80%;
-      padding: 8px 12px;
-      border-radius: 18px;
-      font-size: 14px;
-      line-height: 1.4;
-      word-break: break-word;
-      color: var(--text);
-    }
-
-    .msg.in {
-      align-self: flex-start;
-      background: var(--bubble-in);
-      border-bottom-left-radius: 4px;
-    }
-
-    .msg.out {
-      align-self: flex-end;
-      background: var(--bubble-out);
-      color: #000;
-      border-bottom-right-radius: 4px;
-    }
-
-    /* WhatsApp style for white theme out-bubble text */
-    body[data-theme="white"] .msg.out {
-      color: #000;
-    }
-
-    /* ---------- COMMUNITIES (Telegram style) ---------- */
-    .community-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .community-item {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      margin-bottom: 10px;
     }
 
-    .community-avatar {
-      width: 44px;
-      height: 44px;
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .badge-green {
+      background: var(--success);
+      color: #000;
+    }
+
+    .badge-orange {
+      background: var(--warning);
+      color: #000;
+    }
+
+    .badge-grey {
+      background: var(--secondary-text);
+      color: #fff;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: var(--card-light);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 18px;
       color: var(--text);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
     }
 
-    .community-info h4 {
-      font-size: 15px;
+    .avatar-sm {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+
+    .avatar-lg {
+      width: 72px;
+      height: 72px;
+      font-size: 26px;
+    }
+
+    /* identity */
+    .identity-code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      color: var(--accent);
       font-weight: 600;
-      margin-bottom: 2px;
     }
 
-    .community-info p {
-      font-size: 12px;
-      opacity: 0.6;
+    /* tab bar */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: var(--tab-bar);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 12px;
+      z-index: 30;
     }
 
-    .tag {
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 20px;
-      background: var(--border);
-      color: var(--text);
-      margin-left: 6px;
+      color: var(--secondary-text);
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.2s;
+      border: none;
+      background: none;
     }
 
-    /* ---------- SUPPORT BUTTON (floating) ---------- */
-    .support-fab {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+    .tab-item.active {
+      color: var(--accent);
+    }
+
+    .tab-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    /* floating support */
+    .support-btn {
+      position: fixed;
+      bottom: 80px;
+      right: calc(50% - 240px + 16px);
       width: 56px;
       height: 56px;
-      border-radius: 30px;
-      background: var(--support-bg);
-      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      font-size: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
       cursor: pointer;
-      z-index: 100;
-      font-size: 26px;
-      transition: all 0.2s;
-      color: var(--support-icon);
+      z-index: 25;
+      border: none;
     }
 
-    .support-fab:hover {
-      transform: scale(1.03);
+    @media (max-width: 480px) {
+      .support-btn {
+        right: 16px;
+      }
     }
 
-    /* ---------- PROFILE / CALL UI / PAYMENT SECTIONS ---------- */
+    /* chats */
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .chat-item:last-child {
+      border-bottom: none;
+    }
+
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-name {
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-msg {
+      font-size: 14px;
+      color: var(--secondary-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .chat-time {
+      font-size: 12px;
+      color: var(--secondary-text);
+      flex-shrink: 0;
+    }
+
+    /* task */
+    .task-reward {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--secondary-text);
+    }
+
+    .task-meta span {
+      background: var(--card-light);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* profile */
     .profile-header {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
-    .profile-avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 1px solid var(--border);
+    .profile-stats {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+      gap: 20px;
+      margin-top: 8px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 20px;
       font-weight: 700;
-      color: var(--text);
     }
 
-    .call-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
+    .stat-label {
+      font-size: 12px;
+      color: var(--secondary-text);
     }
 
-    .call-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 10px 18px;
+    /* community */
+    .community-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .payment-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
+      gap: 12px;
+      padding: 12px 0;
       border-bottom: 1px solid var(--border);
     }
 
-    .payment-row:last-child {
-      border-bottom: none;
+    /* support modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
     }
 
-    .membership-badge {
-      background: var(--text);
-      color: var(--bg);
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 600;
+    .modal-content {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 440px;
+      border: 1px solid var(--border);
+      margin-bottom: 70px;
     }
 
-    /* ---------- SMALL RESPONSIVE ---------- */
-    @media (max-width: 420px) {
-      .app {
-        height: 100vh;
-        max-height: 100vh;
-        border-radius: 0;
-        border: none;
-      }
-      body {
-        padding: 0;
-      }
+    .modal-content .btn {
+      margin-bottom: 8px;
     }
 
-    /* ---------- UTILS ---------- */
+    .hidden {
+      display: none !important;
+    }
+
+    /* utility */
     .flex {
       display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .mt-2 { margin-top: 10px; }
-    .mb-2 { margin-bottom: 10px; }
-    .opacity-70 { opacity: 0.7; }
-    .text-small { font-size: 12px; }
-    .text-mono { font-family: monospace; }
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .gap-8 {
+      gap: 8px;
+    }
+
+    .gap-12 {
+      gap: 12px;
+    }
+
+    .gap-16 {
+      gap: 16px;
+    }
+
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .p-16 { padding: 16px; }
+    .text-center { text-align: center; }
+    .w-full { width: 100%; }
+    .relative { position: relative; }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--text);
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* tag */
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: var(--card-light);
+      font-size: 12px;
+      margin: 2px;
+    }
+
+    /* success screen */
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .otp-inputs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .otp-input {
+      width: 48px;
+      height: 56px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      padding: 0;
+    }
   </style>
 </head>
-<body data-theme="black">
-  <div class="app" id="app">
-    <!-- TOP SCROLLING BANNER (theme adaptive) -->
-    <div class="banner">
-      <div class="banner-track">
-        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
-        <span>LEO<>001</span>
-        <span>MAKER<>1008</span>
-        <span>PANKAJ<>100000008</span>
-        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
-        <span>LEO<>001</span>
-        <span>MAKER<>1008</span>
-        <span>PANKAJ<>100000008</span>
-        <!-- duplicated for seamless loop -->
-        <span>Need help? Message us using your Alias Name and Identity Code through 1008 Support.</span>
-        <span>LEO<>001</span>
-        <span>MAKER<>1008</span>
-        <span>PANKAJ<>100000008</span>
-      </div>
-    </div>
-
-    <!-- HEADER with logo >< and theme switcher -->
-    <div class="header">
-      <div class="logo">&gt;&lt;</div>
-      <div class="theme-switcher">
-        <button class="theme-btn active" data-theme="black" id="themeBlackBtn">Black</button>
-        <button class="theme-btn" data-theme="white" id="themeWhiteBtn">White</button>
-      </div>
-    </div>
-
-    <!-- SCROLLABLE MAIN CONTENT (all screens combined) -->
-    <div class="main-scroll">
-      <!-- LOGIN / IDENTITY SECTION -->
-      <div class="card">
-        <div style="font-weight: 600; margin-bottom: 12px;">Login / Identity</div>
-        <div class="identity-row">
-          <div class="alias-badge">
-            <span>LEO</span><span class="code">&lt;&gt;001</span>
-          </div>
-          <button class="btn" style="margin-left: auto;">Switch</button>
-        </div>
-        <div class="flex mt-2 text-small opacity-70">
-          <span>Your identity code: LEO<>001</span>
-        </div>
-      </div>
-
-      <!-- PROFILE SECTION + MEMBERSHIP -->
-      <div class="card">
-        <div class="profile-header">
-          <div class="profile-avatar">L</div>
-          <div>
-            <div style="font-weight: 600; font-size: 18px;">LEO</div>
-            <div class="flex" style="gap: 6px; margin-top: 4px;">
-              <span class="membership-badge">Creator</span>
-              <span class="tag">Real World</span>
-            </div>
-          </div>
-        </div>
-        <div class="flex" style="justify-content: space-between;">
-          <span class="text-small opacity-70">Investor / Maker / Creator</span>
-          <span class="text-mono text-small">ID: LEO<>001</span>
-        </div>
-        <!-- call ui -->
-        <div class="call-actions">
-          <div class="call-btn">📞 Call</div>
-          <div class="call-btn">📹 Video</div>
-        </div>
-      </div>
-
-      <!-- CHAT INTERFACE (WhatsApp style) -->
-      <div class="section-title">💬 Recent Chat</div>
-      <div class="chat-preview">
-        <div class="chat-messages">
-          <div class="msg in">Hey! How's the new theme?</div>
-          <div class="msg out">Black mode is 🔥</div>
-          <div class="msg in">Check the communities.</div>
-        </div>
-        <div style="display: flex; gap: 8px; margin-top: 12px;">
-          <input type="text" placeholder="Message..." style="flex:1; background: var(--bg); border: 1px solid var(--border); border-radius: 30px; padding: 10px 16px; color: var(--text); outline: none;">
-          <button class="btn" style="padding: 10px 16px;">➤</button>
-        </div>
-      </div>
-
-      <!-- COMMUNITIES (Telegram style) -->
-      <div class="section-title">👥 Communities</div>
-      <div class="community-list">
-        <div class="community-item">
-          <div class="community-avatar">C</div>
-          <div class="community-info">
-            <h4>Code1008 Lounge <span class="tag">Private</span></h4>
-            <p>1,208 members · 12 online</p>
-          </div>
-        </div>
-        <div class="community-item">
-          <div class="community-avatar">M</div>
-          <div class="community-info">
-            <h4>Makers Guild <span class="tag">Public</span></h4>
-            <p>854 members · 5 online</p>
-          </div>
-        </div>
-        <div class="community-item">
-          <div class="community-avatar">R</div>
-          <div class="community-info">
-            <h4>Real World Investors <span class="tag">Private</span></h4>
-            <p>322 members · 1 online</p>
-          </div>
-        </div>
-      </div>
-      <!-- community creation UI -->
-      <div class="card" style="margin-top: 10px;">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <span style="font-weight: 500;">Create Community</span>
-          <button class="btn" style="padding: 6px 16px;">+ New</button>
-        </div>
-      </div>
-
-      <!-- PAYMENT FLOW (simple) -->
-      <div class="section-title">💳 Payment / Membership</div>
-      <div class="card">
-        <div class="payment-row">
-          <span>Investor Plan</span>
-          <span class="membership-badge" style="background: var(--text); color: var(--bg);">Active</span>
-        </div>
-        <div class="payment-row">
-          <span>Creator Pro</span>
-          <span class="text-small opacity-70">Renew</span>
-        </div>
-        <div class="payment-row">
-          <span>Maker Pass</span>
-          <span class="text-small opacity-70">$9.99</span>
-        </div>
-        <button class="btn btn-primary" style="width: 100%; margin-top: 12px;">Upgrade Membership</button>
-      </div>
-
-      <!-- CALL & VIDEO CALL UI (extended) -->
-      <div class="section-title">📞 Calls</div>
-      <div class="card flex" style="justify-content: space-between;">
-        <div class="flex">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">📞</div>
-          <div>
-            <div>LEO<>001</div>
-            <div class="text-small opacity-70">Missed call · 2m ago</div>
-          </div>
-        </div>
-        <button class="btn" style="padding: 6px 16px;">Call</button>
-      </div>
-      <div class="card flex" style="justify-content: space-between;">
-        <div class="flex">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">📹</div>
-          <div>
-            <div>MAKER<>1008</div>
-            <div class="text-small opacity-70">Video call · 1h ago</div>
-          </div>
-        </div>
-        <button class="btn" style="padding: 6px 16px;">Video</button>
-      </div>
-    </div>
-
-    <!-- FLOATING SUPPORT BUTTON -->
-    <div class="support-fab" id="supportBtn" title="1008 Support">
-      <span>💬</span>
-    </div>
-  </div>
-
-  <script>
-    (function() {
-      // ---------- THEME MANAGEMENT ----------
-      const body = document.body;
-      const themeBlackBtn = document.getElementById('themeBlackBtn');
-      const themeWhiteBtn = document.getElementById('themeWhiteBtn');
-      
-      // Load saved theme from localStorage, default 'black'
-      const savedTheme = localStorage.getItem('app-theme') || 'black';
-      setTheme(savedTheme);
-
-      // Update button active states
-      function updateActiveButton(theme) {
-        if (theme === 'black') {
-          themeBlackBtn.classList.add('active');
-          themeWhiteBtn.classList.remove('active');
-        } else {
-          themeWhiteBtn.classList.add('active');
-          themeBlackBtn.classList.remove('active');
-        }
-      }
-
-      // Set theme function
-      function setTheme(theme) {
-        if (theme === 'white') {
-          body.setAttribute('data-theme', 'white');
-        } else {
-          body.setAttribute('data-theme', 'black');
-        }
-        updateActiveButton(theme);
-        // Save to localStorage
-        localStorage.setItem('app-theme', theme);
-      }
-
-      // Event listeners for theme buttons
-      themeBlackBtn.addEventListener('click', () => setTheme('black'));
-      themeWhiteBtn.addEventListener('click', () => setTheme('white'));
-
-      // Also ensure the login screen theme switcher works (already in header)
-
-      // Support button interaction (sample)
-      document.getElementById('supportBtn').addEventListener('click', () => {
-        alert('1008 Support\nUse your Alias Name and Identity Code.\nExample: LEO<>001');
-      });
-
-      // Make all .theme-btn clickable everywhere (if any appear later)
-      // Smooth transition already in CSS
-
-      // Optional: simulate instant switching from login/ profile (already same buttons)
-      // Additional: if any element with data-theme-toggle, we could attach, but not needed.
-
-      // ---- DEMO: Add a quick identity change on click of "Switch" button (optional) ----
-      const switchBtn = document.querySelector('.identity-row .btn');
-      if (switchBtn) {
-        switchBtn.addEventListener('click', () => {
-          const badge = document.querySelector('.alias-badge');
-          if (badge) {
-            // just for demo: toggle between LEO<>001 and MAKER<>1008
-            const current = badge.textContent.includes('LEO') ? 'MAKER' : 'LEO';
-            const newCode = current === 'LEO' ? 'MAKER' : 'LEO';
-            const idCode = current === 'LEO' ? '001' : '1008';
-            badge.innerHTML = `<span>${newCode}</span><span class="code">&lt;&gt;${idCode}</span>`;
-          }
-        });
-      }
-
-      // Update profile avatar text when identity changes? not necessary but fun
-      // Also change profile name? Optional.
-      // But keep it minimal.
-
-      // Make the logo strictly >< (no text) — already done.
-
-      // Any extra: ensure banner text adapts, already via CSS variables.
-
-      console.log('Advanced Theme System ready · ><');
-    })();
-  </script>
-</body>
-</html>    --bubble-them-text: #000000;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
-    --shadow-md: 0 4px 16px rgba(0,0,0,.06);
-    --shadow-lg: 0 12px 32px rgba(0,0,0,.10);
-    --radius: 18px;
-    --radius-sm: 12px;
-    --radius-xs: 8px;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  body.dark {
-    --bg: #000000;
-    --bg-alt: #0a0a0a;
-    --surface: #0e0e0e;
-    --surface-2: #1a1a1a;
-    --border: #262626;
-    --text: #ffffff;
-    --text-2: #a1a1aa;
-    --text-3: #71717a;
-    --accent: #ffffff;
-    --accent-inv: #000000;
-    --bubble-me: #ffffff;
-    --bubble-me-text: #000000;
-    --bubble-them: #1a1a1a;
-    --bubble-them-text: #ffffff;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-    --shadow-md: 0 4px 16px rgba(0,0,0,.5);
-    --shadow-lg: 0 12px 32px rgba(0,0,0,.6);
-  }
-
-  /* ---------- LOGO ---------- */
-  .logo {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-weight: 700;
-    letter-spacing: -0.08em;
-    font-size: 22px;
-    color: var(--text);
-    user-select: none;
-    display: inline-block;
-  }
-  .logo-lg { font-size: 42px; letter-spacing: -0.12em; }
-
-  /* ---------- APP SHELL ---------- */
-  #app {
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    min-height: 100dvh;
-    background: var(--bg);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* ---------- SCROLLING BANNER ---------- */
-  .banner {
-    background: var(--text);
-    color: var(--bg);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: .01em;
-    padding: 7px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 60;
-    flex-shrink: 0;
-  }
-  .banner-track {
-    display: inline-block;
-    padding-left: 100%;
-    animation: marquee 28s linear infinite;
-  }
-  .banner-track span { padding-right: 60px; }
-  @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
-
-  /* ---------- TOP BAR ---------- */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px 12px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    flex-shrink: 0;
-  }
-  .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
-  .topbar-actions { display: flex; gap: 6px; align-items: center; }
-  .icon-btn {
-    background: transparent;
-    border: none;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text);
-    cursor: pointer;
-    font-size: 17px;
-    transition: background .15s;
-  }
-  .icon-btn:hover { background: var(--surface-2); }
-  .icon-btn:active { transform: scale(.94); }
-
-  /* ---------- VIEWS ---------- */
-  .view {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: calc(90px + var(--safe-bottom));
-    display: none;
-    animation: fade .2s ease;
-  }
-  .view.active { display: block; }
-  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-
-  /* ---------- BOTTOM NAV ---------- */
-  .bottomnav {
-    position: sticky;
-    bottom: 0;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding: 6px 4px calc(6px + var(--safe-bottom));
-    z-index: 55;
-    flex-shrink: 0;
-  }
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 6px 2px;
-    background: none;
-    border: none;
-    color: var(--text-3);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: .01em;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: color .15s;
-  }
-  .nav-item .nav-icon { font-size: 20px; line-height: 1; }
-  .nav-item.active { color: var(--text); }
-  .nav-item:active { transform: scale(.96); }
-  .nav-badge {
-    position: absolute;
-    top: 2px; right: calc(50% - 18px);
-    background: var(--text);
-    color: var(--bg);
-    font-size: 9px;
-    font-weight: 700;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  /* ---------- SUPPORT FAB ---------- */
-  .support-fab {
-    position: fixed;
-    bottom: calc(88px + var(--safe-bottom));
-    right: calc(50% - 240px + 16px);
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: var(--text);
-    color: var(--bg);
-    border: none;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 70;
-    box-shadow: var(--shadow-md);
-    transition: transform .18s ease;
-  }
-  @media (max-width: 480px) {
-    .support-fab { right: 16px; }
-  }
-  .support-fab:active { transform: scale(.9); }
-
-  /* ---------- SUPPORT SHEET ---------- */
-  .sheet-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.4);
-    z-index: 90;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s;
-  }
-  .sheet-backdrop.show { opacity: 1; pointer-events: auto; }
-  .sheet {
-    position: fixed;
-    left: 50%; bottom: 0;
-    transform: translateX(-50%) translateY(100%);
-    width: 100%;
-    max-width: 480px;
-    background: var(--surface);
-    border-radius: 22px 22px 0 0;
-    padding: 8px 16px calc(20px + var(--safe-bottom));
-    z-index: 95;
-    transition: transform .28s cubic-bezier(.32,.72,0,1);
-    box-shadow: var(--shadow-lg);
-  }
-  .sheet.show { transform: translateX(-50%) translateY(0); }
-  .sheet-handle {
-    width: 36px; height: 4px;
-    background: var(--border);
-    border-radius: 4px;
-    margin: 6px auto 14px;
-  }
-  .sheet-title {
-    font-size: 15px; font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -.01em;
-  }
-  .sheet-list { display: flex; flex-direction: column; gap: 2px; }
-  .sheet-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 13px 10px;
-    border-radius: 12px;
-    background: none;
-    border: none;
-    color: var(--text);
-    font-size: 15px;
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
-    transition: background .12s;
-  }
-  .sheet-item:hover { background: var(--surface-2); }
-  .sheet-item .sheet-emoji {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 17px;
-    flex-shrink: 0;
-  }
-
-  /* ---------- AUTH / ONBOARDING ---------- */
-  .center-wrap {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    padding: 24px 24px calc(24px + var(--safe-bottom));
-    background: var(--bg);
-  }
-  .center-spacer { flex: 1; }
-  .brand-block { text-align: center; padding: 32px 0 40px; }
-  .brand-sub {
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--text-2);
-    letter-spacing: .02em;
-  }
-
-  .field {
-    width: 100%;
-    padding: 15px 16px;
-    border-radius: 14px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 16px;
-    outline: none;
-    transition: border-color .15s, background .15s;
-    font-family: inherit;
-  }
-  .field:focus { border-color: var(--text); }
-  .field::placeholder { color: var(--text-3); }
-  textarea.field { resize: none; min-height: 80px; }
-
-  .btn {
-    width: 100%;
-    padding: 15px 20px;
-    border-radius: 14px;
-    border: none;
-    background: var(--text);
-    color: var(--bg);
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -.005em;
-    cursor: pointer;
-    transition: opacity .15s, transform .1s;
-    font-family: inherit;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn:hover { opacity: .88; }
-  .btn:active { transform: scale(.985); }
-  .btn:disabled { opacity: .35; cursor: not-allowed; }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1.5px solid var(--border);
-  }
-  .btn-ghost:hover { background: var(--surface-2); opacity: 1; }
-  .btn-sm {
-    width: auto;
-    padding: 9px 16px;
-    font-size: 13px;
-    border-radius: 10px;
-  }
-
-  .otp-row {
-    display: flex; gap: 8px; justify-content: center;
-    margin: 8px 0 20px;
-  }
-  .otp-input {
-    width: 46px; height: 54px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    border-radius: 12px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    font-family: inherit;
-    transition: border-color .15s;
-  }
-  .otp-input:focus { border-color: var(--text); }
-
-  .help-text {
-    font-size: 12.5px;
-    color: var(--text-2);
-    text-align: center;
-    margin-top: 16px;
-    line-height: 1.5;
-  }
-  .help-text b { color: var(--text); font-weight: 600; }
-
-  /* ---------- IDENTITY CARDS ---------- */
-  .identity-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 4px 0 12px;
-  }
-  .idcard {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 20px;
-    padding: 18px;
-    transition: border-color .18s, transform .12s;
-  }
-  .idcard:active { transform: scale(.995); }
-  .idcard.featured { border-color: var(--text); }
-  .idcard-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-  .idcard-title {
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-  .idcard-price {
-    font-size: 12.5px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: var(--surface-2);
-    color: var(--text);
-    white-space: nowrap;
-  }
-  .idcard-price.free { background: var(--text); color: var(--bg); }
-  .idcard-desc {
-    font-size: 13.5px;
-    color: var(--text-2);
-    line-height: 1.5;
-    margin-bottom: 12px;
-  }
-  .idcard-code {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    background: var(--surface-2);
-    padding: 7px 10px;
-    border-radius: 10px;
-    display: inline-block;
-    margin-bottom: 4px;
-  }
-  .idcard-meta {
-    font-size: 11.5px;
-    color: var(--text-3);
-    margin-bottom: 14px;
-    letter-spacing: .01em;
-  }
-
-  /* ---------- SECTION ---------- */
-  .section {
-    padding: 18px 16px 8px;
-  }
-  .section-title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--text-3);
-    margin-bottom: 10px;
-  }
-
-  /* ---------- SEARCH ---------- */
-  .search-wrap {
-    padding: 10px 16px 6px;
-  }
-  .search-inner {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface-2);
-    border-radius: 12px;
-    padding: 10px 14px;
-    border: 1.5px solid transparent;
-    transition: border-color .15s;
-  }
-  .search-inner:focus-within { border-color: var(--text); }
-  .search-inner input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    color: var(--text);
-    font-size: 15px;
-    outline: none;
-    font-family: inherit;
-  }
-  .search-inner input::placeholder { color: var(--text-3); }
-
-  .chip-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 10px 16px 4px;
-    scrollbar-width: none;
-  }
-  .chip-row::-webkit-scrollbar { display: none; }
-  .chip {
-    padding: 7px 14px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--text-2);
-    font-size: 12.5px;
-    font-weight: 600;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: all .15s;
-    font-family: inherit;
-  }
-  .chip.active {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
-  }
-
-  /* ---------- LIST ITEMS ---------- */
-  .list-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: background .12s;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    font-family: inherit;
-  }
-  .list-item:hover { background: var(--surface-2); }
-  .list-item + .list-item { border-top: 1px solid var(--border); }
-
-  .avatar {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-    font-weight: 700;
-    background: var(--surface-2);
-    color: var(--text);
-    letter-spacing: -.02em;
-    overflow: hidden;
-    position: relative;
-  }
-  .avatar.mono {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .avatar-sm { width: 40px; height: 40px; font-size: 13px; }
-  .avatar-xs { width: 32px; height: 32px; font-size: 11px; }
-  .avatar-dot {
-    position: absolute;
-    bottom: 1px; right: 1px;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: #22c55e;
-    border: 2.5px solid var(--bg);
-  }
-
-  .list-body { flex: 1; min-width: 0; }
-  .list-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 2px;
-  }
-  .list-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .list-time {
-    font-size: 11.5px;
-    color: var(--text-3);
-    flex-shrink: 0;
-    font-weight: 500;
-  }
-  .list-sub {
-    font-size: 13.5px;
-    color: var(--text-2);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.35;
-  }
-  .list-sub .alias {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12.5px;
-    color: var(--text-3);
-  }
-  .unread {
-    background: var(--text);
-    color: var(--bg);
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-left: 8px;
-  }
-
-  /* ---------- CHAT VIEW ---------- */
-  .chat-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px 10px 6px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 40;
-  }
-  .chat-header .list-body { padding-right: 4px; }
-
-  .messages {
-    padding: 16px 14px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-height: 100%;
-  }
-  .msg-row {
-    display: flex;
-    margin-bottom: 2px;
-  }
-  .msg-row.me { justify-content: flex-end; }
-  .msg {
-    max-width: 78%;
-    padding: 9px 13px;
-    border-radius: 18px;
-    font-size: 14.5px;
-    line-height: 1.42;
-    word-wrap: break-word;
-    position: relative;
-    letter-spacing: -.005em;
-  }
-  .msg.them {
-    background: var(--bubble-them);
-    color: var(--bubble-them-text);
-    border-bottom-left-radius: 5px;
-  }
-  .msg.me {
-    background: var(--bubble-me);
-    color: var(--bubble-me-text);
-    border-bottom-right-radius: 5px;
-  }
-  .msg-meta {
-    font-size: 10.5px;
-    margin-top: 3px;
-    opacity: .55;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 4px;
-    font-weight: 500;
-  }
-  .msg.me .msg-meta { color: var(--bubble-me-text); opacity: .7; }
-  .msg.them .msg-meta { color: var(--bubble-them-text); }
-
-  .typing-dots {
-    display: inline-flex;
-    gap: 3px;
-    padding: 4px 2px;
-  }
-  .typing-dots span {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: .4;
-    animation: typing 1.2s infinite ease-in-out;
-  }
-  .typing-dots span:nth-child(2) { animation-delay: .15s; }
-  .typing-dots span:nth-child(3) { animation-delay: .3s; }
-  @keyframes typing {
-    0%, 60%, 100% { opacity: .3; transform: translateY(0); }
-    30% { opacity: 1; transform: translateY(-3px); }
-  }
-
-  .composer {
-    position: sticky;
-    bottom: 0;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding: 8px 10px calc(8px + var(--safe-bottom));
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    z-index: 45;
-  }
-  .composer input {
-    flex: 1;
-    padding: 11px 16px;
-    border-radius: 22px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 15px;
-    outline: none;
-    font-family: inherit;
-    transition: border-color .15s;
-  }
-  .composer input:focus { border-color: var(--text); }
-  .composer-btn {
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    border: none;
-    background: var(--text);
-    color: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 17px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform .1s;
-  }
-  .composer-btn:active { transform: scale(.92); }
-
-  .bubble-img {
-    max-width: 220px;
-    border-radius: 12px;
-    display: block;
-    margin-bottom: 4px;
-    background: var(--surface-2);
-    height: 140px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: var(--text-3);
-  }
-
-  /* ---------- CALLS ---------- */
-  .call-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .call-type {
-    font-size: 12px;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .call-in { color: #22c55e; }
-  .call-out { color: #3b82f6; }
-  .call-miss { color: #ef4444; }
-
-  /* ---------- GROUPS ---------- */
-  .group-hero {
-    margin: 8px 16px 4px;
-    padding: 20px;
-    border-radius: 20px;
-    background: var(--surface-2);
-    border: 1.5px solid var(--border);
-  }
-  .group-hero h3 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 4px; }
-  .group-hero p { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-
-  /* ---------- PROFILE ---------- */
-  .profile-hero {
-    padding: 28px 20px 22px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .profile-avatar {
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    margin: 0 auto 14px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface-2);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -.04em;
-    border: 2px solid var(--border);
-  }
-  .profile-name {
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: -.02em;
-    margin-bottom: 4px;
-  }
-  .profile-alias {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13.5px;
-    color: var(--text-2);
-    letter-spacing: .01em;
-    margin-bottom: 8px;
-  }
-  .profile-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    background: var(--text);
-    color: var(--bg);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .profile-actions {
-    display: flex;
-    gap: 8px;
-    padding: 16px;
-  }
-  .profile-actions .btn {
-    flex: 1;
-    padding: 12px 8px;
-    font-size: 13px;
-    border-radius: 12px;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .profile-actions .btn .act-emoji { font-size: 18px; }
-
-  .kv-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--border);
-    gap: 12px;
-  }
-  .kv-row .k { font-size: 13.5px; color: var(--text-2); flex-shrink: 0; }
-  .kv-row .v { font-size: 13.5px; color: var(--text); font-weight: 500; text-align: right; }
-  .kv-row .v.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
-
-  .tag-row {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    padding: 4px 0 0;
-  }
-  .tag {
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: var(--surface-2);
-    color: var(--text-2);
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid var(--border);
-  }
-
-  /* ---------- MODAL ---------- */
-  .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s;
-  }
-  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-  .modal {
-    background: var(--surface);
-    border-radius: 24px;
-    padding: 24px 20px 20px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: var(--shadow-lg);
-    transform: scale(.95);
-    transition: transform .2s;
-  }
-  .modal-backdrop.show .modal { transform: scale(1); }
-  .modal h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; text-align: center; }
-  .modal p { font-size: 13.5px; color: var(--text-2); text-align: center; margin-bottom: 18px; line-height: 1.5; }
-
-  /* ---------- UTIL ---------- */
-  .hidden { display: none !important; }
-  .text-center { text-align: center; }
-  .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
-  .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
-  .px-16 { padding-left: 16px; padding-right: 16px; }
-  .muted { color: var(--text-2); }
-  .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
-
-  ::-webkit-scrollbar { width: 0; height: 0; }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: calc(100px + var(--safe-bottom));
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--text);
-    color: var(--bg);
-    padding: 10px 20px;
-    border-radius: 24px;
-    font-size: 13px;
-    font-weight: 600;
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s, transform .2s;
-    white-space: nowrap;
-    box-shadow: var(--shadow-lg);
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-</style>
-</head>
 <body>
-
 <div id="app">
-
-  <!-- ============ AUTH: EMAIL ============ -->
-  <div id="view-auth" class="view active" style="padding-bottom:0;">
-    <div class="center-wrap">
-      <div class="center-spacer"></div>
-      <div class="brand-block">
-        <div class="logo logo-lg">&gt; &gt;&lt;</div>
-        <div class="brand-sub">Private. By invitation of identity.</div>
-      </div>
-      <div style="margin-bottom:12px;">
-        <input id="authEmail" class="field" type="email" placeholder="Email address" autocomplete="email" />
-      </div>
-      <button class="btn" onclick="sendOtp()">Continue with Email</button>
-      <div class="help-text">
-        You will receive a one-time code.<br/>
-        No passwords. No usernames.
-      </div>
-      <div class="center-spacer"></div>
-      <div class="help-text" style="font-size:11px;">
-        By continuing you agree to the 1008 Community Terms.
-      </div>
-    </div>
+  <!-- Top scrolling banner -->
+  <div class="top-banner" id="topBanner">
+    <span>Need help?</span>
+    <span>Contact us using your Alias Name and Identity Code.</span>
+    <span>Real Skills. Real Builders. Real Results.</span>
   </div>
 
-  <!-- ============ AUTH: OTP ============ -->
-  <div id="view-otp" class="view" style="padding-bottom:0;">
-    <div class="center-wrap">
-      <div class="center-spacer"></div>
-      <div class="brand-block" style="padding-bottom:20px;">
-        <div class="logo logo-lg">&gt; &gt;&lt;</div>
-      </div>
-      <h2 style="font-size:20px;font-weight:700;letter-spacing:-.02em;text-align:center;margin-bottom:6px;">Enter verification code</h2>
-      <p class="help-text" style="margin-top:0;margin-bottom:22px;">Sent to <b id="otpEmail">your email</b></p>
-      <div class="otp-row" id="otpRow">
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-        <input class="otp-input" maxlength="1" inputmode="numeric" />
-      </div>
-      <button class="btn" onclick="verifyOtp()">Verify & Continue</button>
-      <div class="help-text">Didn't receive it? <b onclick="toast('Code resent')">Resend</b></div>
-      <div class="center-spacer"></div>
-    </div>
+  <!-- Main screens container -->
+  <div class="screen-container" id="screenContainer">
+    <!-- dynamic content -->
   </div>
 
-  <!-- ============ ONBOARDING: IDENTITY ============ -->
-  <div id="view-identity" class="view" style="padding-bottom:20px;">
-    <div style="padding:24px 20px 8px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
-        <div class="logo">&gt; &gt;&lt;</div>
-        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn1">☾</button>
-      </div>
-      <h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;">Choose Your Identity</h2>
-      <p class="help-text" style="text-align:left;margin-top:0;">You can only hold one identity at a time. Choose carefully.</p>
-    </div>
-    <div class="section" style="padding-top:6px;">
-      <div class="identity-list" id="identityList"></div>
-    </div>
+  <!-- Bottom tab bar (hidden until logged in) -->
+  <div class="tab-bar hidden" id="tabBar">
+    <button class="tab-item active" data-tab="home">
+      <span class="tab-icon">🏠</span>
+      <span>Home</span>
+    </button>
+    <button class="tab-item" data-tab="tasks">
+      <span class="tab-icon">📋</span>
+      <span>Tasks</span>
+    </button>
+    <button class="tab-item" data-tab="chats">
+      <span class="tab-icon">💬</span>
+      <span>Chats</span>
+    </button>
+    <button class="tab-item" data-tab="communities">
+      <span class="tab-icon">👥</span>
+      <span>Communities</span>
+    </button>
+    <button class="tab-item" data-tab="profile">
+      <span class="tab-icon">👤</span>
+      <span>Profile</span>
+    </button>
   </div>
 
-  <!-- ============ ONBOARDING: ALIAS ============ -->
-  <div id="view-alias" class="view" style="padding-bottom:20px;">
-    <div style="padding:24px 20px 8px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
-        <button class="icon-btn" onclick="showView('view-identity')">‹</button>
-        <div class="logo">&gt; &gt;&lt;</div>
-        <div style="width:36px;"></div>
-      </div>
-      <div id="aliasCategoryLabel" class="profile-badge mb-12">MAKER</div>
-      <h2 style="font-size:24px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px;">Create your alias</h2>
-      <p class="help-text" style="text-align:left;margin-top:0;margin-bottom:22px;">Your alias and code will be your only public identity. No real names required.</p>
-    </div>
-    <div class="px-16" style="display:flex;flex-direction:column;gap:12px;">
-      <input id="aliasName" class="field" placeholder="Alias Name (e.g. LEO)" maxlength="20" />
-      <input id="aliasBio" class="field" placeholder="Short bio" maxlength="120" />
-      <input id="aliasCountry" class="field" placeholder="Country" />
-      <input id="aliasSkills" class="field" placeholder="Skills (comma separated)" />
-      <select id="aliasLang" class="field" style="appearance:none;">
-        <option value="English">Native Language · English</option>
-        <option value="Hindi">Native Language · Hindi</option>
-        <option value="Punjabi">Native Language · Punjabi</option>
-        <option value="Tamil">Native Language · Tamil</option>
-        <option value="Spanish">Native Language · Spanish</option>
-        <option value="Arabic">Native Language · Arabic</option>
-        <option value="French">Native Language · French</option>
-        <option value="Japanese">Native Language · Japanese</option>
-      </select>
-      <div class="card" style="padding:14px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border);">
-        <div style="font-size:12px;color:var(--text-2);margin-bottom:6px;">Your identity preview</div>
-        <div id="aliasPreview" class="mono" style="font-size:15px;font-weight:700;letter-spacing:.01em;">YOURALIAS&lt;&gt;0000</div>
-      </div>
-      <button class="btn" onclick="createIdentity()">Create My Identity</button>
-      <div style="height:8px;"></div>
+  <!-- Floating support button -->
+  <button class="support-btn hidden" id="supportBtn" onclick="toggleSupportModal()">?</button>
+
+  <!-- Support modal -->
+  <div class="modal-overlay hidden" id="supportModal" onclick="if(event.target===this)toggleSupportModal()">
+    <div class="modal-content">
+      <h3 style="margin-bottom:16px;">Support</h3>
+      <button class="btn" onclick="alert('Chat support coming soon')">💬 Chat Support</button>
+      <button class="btn" onclick="alert('WhatsApp support: +1 000 1008')">📱 WhatsApp Support</button>
+      <button class="btn" onclick="alert('Email: support@1008.network')">✉️ Email Support</button>
+      <button class="btn btn-secondary" onclick="alert('Report issue submitted')">⚠️ Report Issue</button>
+      <button class="btn btn-outline" style="margin-top:8px;" onclick="toggleSupportModal()">Close</button>
     </div>
   </div>
-
-  <!-- ============ MAIN APP ============ -->
-  <div id="view-main" class="view" style="padding-bottom:0;display:none;flex-direction:column;">
-
-    <!-- Banner -->
-    <div class="banner">
-      <div class="banner-track">
-        <span>Need help? Message us using your Alias Name and Code. Example: ARTIST&lt;&gt;108 or PANKAJ&lt;&gt;100000008. Our support team will assist you.</span>
-        <span>Need help? Message us using your Alias Name and Code. Example: ARTIST&lt;&gt;108 or PANKAJ&lt;&gt;100000008. Our support team will assist you.</span>
-      </div>
-    </div>
-
-    <!-- Top bar -->
-    <div class="topbar">
-      <div class="logo">&gt; &gt;&lt;</div>
-      <div class="topbar-actions">
-        <button class="icon-btn" onclick="toast('Search')">⌕</button>
-        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn2">☾</button>
-      </div>
-    </div>
-
-    <!-- Sub-views -->
-    <div id="tab-chats" class="view active" style="padding-bottom:0;">
-      <div class="search-wrap">
-        <div class="search-inner">
-          <span style="color:var(--text-3);">⌕</span>
-          <input placeholder="Search by alias or code" oninput="filterChats(this.value)" />
-        </div>
-      </div>
-      <div id="chatList"></div>
-    </div>
-
-    <div id="tab-calls" class="view" style="padding-bottom:0;">
-      <div class="section" style="padding-top:16px;">
-        <div class="section-title">Recent</div>
-      </div>
-      <div id="callList"></div>
-    </div>
-
-    <div id="tab-groups" class="view" style="padding-bottom:0;">
-      <div class="section" style="padding-top:16px;">
-        <div class="section-title">Your Communities</div>
-      </div>
-      <div id="groupList"></div>
-      <div class="section">
-        <div class="section-title">Discover Communities</div>
-      </div>
-      <div id="discoverGroups"></div>
-    </div>
-
-    <div id="tab-discover" class="view" style="padding-bottom:0;">
-      <div class="search-wrap">
-        <div class="search-inner">
-          <span style="color:var(--text-3);">⌕</span>
-          <input id="discoverSearch" placeholder="Alias, code, skill, language" oninput="renderDiscover()" />
-        </div>
-      </div>
-      <div class="chip-row" id="discoverFilters">
-        <button class="chip active" data-cat="All" onclick="setDiscoverFilter(this)">All</button>
-        <button class="chip" data-cat="Investor" onclick="setDiscoverFilter(this)">Investors</button>
-        <button class="chip" data-cat="Creator" onclick="setDiscoverFilter(this)">Creators</button>
-        <button class="chip" data-cat="Maker" onclick="setDiscoverFilter(this)">Makers</button>
-        <button class="chip" data-cat="Real World" onclick="setDiscoverFilter(this)">Real World</button>
-      </div>
-      <div id="discoverList" style="padding-top:4px;"></div>
-    </div>
-
-    <div id="tab-profile" class="view" style="padding-bottom:0;">
-      <div id="profileContent"></div>
-    </div>
-
-    <!-- Chat detail (overlays) -->
-    <div id="chatDetail" class="view" style="padding-bottom:0;position:absolute;inset:0;background:var(--bg);z-index:80;display:none;flex-direction:column;">
-      <div class="chat-header" id="chatHeader"></div>
-      <div class="messages" id="messages" style="flex:1;overflow-y:auto;"></div>
-      <div class="composer">
-        <input id="composerInput" placeholder="Message" onkeydown="if(event.key==='Enter')sendMessage()" />
-        <button class="composer-btn" onclick="sendMessage()">↑</button>
-      </div>
-    </div>
-
-    <!-- Bottom Nav -->
-    <div class="bottomnav" id="bottomNav">
-      <button class="nav-item active" data-tab="chats" onclick="switchTab('chats')">
-        <span class="nav-icon">◐</span><span>Chats</span>
-      </button>
-      <button class="nav-item" data-tab="calls" onclick="switchTab('calls')">
-        <span class="nav-icon">☎</span><span>Calls</span>
-      </button>
-      <button class="nav-item" data-tab="groups" onclick="switchTab('groups')">
-        <span class="nav-icon">◇</span><span>Groups</span>
-      </button>
-      <button class="nav-item" data-tab="discover" onclick="switchTab('discover')">
-        <span class="nav-icon">⌕</span><span>Discover</span>
-      </button>
-      <button class="nav-item" data-tab="profile" onclick="switchTab('profile')">
-        <span class="nav-icon">○</span><span>Profile</span>
-      </button>
-    </div>
-
-  </div>
-
-  <!-- Support FAB -->
-  <button class="support-fab" id="supportFab" style="display:none;" onclick="openSupport()">?</button>
-  <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSupport()"></div>
-  <div class="sheet" id="supportSheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Support</div>
-    <div class="sheet-list">
-      <button class="sheet-item" onclick="toast('Opening support chat…')">
-        <span class="sheet-emoji">✦</span><span>Support Chat</span>
-      </button>
-      <button class="sheet-item" onclick="toast('Opening email composer…')">
-        <span class="sheet-emoji">✉</span><span>Email Support</span>
-      </button>
-      <button class="sheet-item" onclick="toast('Report an issue')">
-        <span class="sheet-emoji">!</span><span>Report Issue</span>
-      </button>
-      <button class="sheet-item" onclick="toast('Callback requested')">
-        <span class="sheet-emoji">☎</span><span>Request Callback</span>
-      </button>
-      <button class="sheet-item" onclick="toast('Ticket created')">
-        <span class="sheet-emoji">▤</span><span>Support Ticket</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
-
 </div>
 
 <script>
-/* ============================================================
-   1008 · Single-file prototype
-   ============================================================ */
+  // ============================================================
+  // 1008 – REAL WORLD × SKILL MAN
+  // ============================================================
 
-/* ---------- THEME ---------- */
-(function initTheme() {
-  const stored = localStorage.getItem('theme-1008');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
-  if (theme === 'dark') document.body.classList.add('dark');
-  updateThemeIcon();
-})();
+  // ---------- STATE ----------
+  let currentUser = null;
+  let currentScreen = 'welcome';
+  let activeTab = 'home';
+  let theme = localStorage.getItem('1008-theme') || 'dark';
 
-function toggleTheme() {
-  document.body.classList.toggle('dark');
-  const isDark = document.body.classList.contains('dark');
-  localStorage.setItem('theme-1008', isDark ? 'dark' : 'light');
-  updateThemeIcon();
-}
+  // ---------- DEMO DATA ----------
+  const skillMen = [
+    { id: 1, alias: 'SKILLMAN<>01', name: 'Ace', skills: ['Developer', 'Automation'], country: 'US', lang: 'English', bio: 'Full-stack builder. 10+ projects delivered.', successRate: 98, completed: 47 },
+    { id: 2, alias: 'SKILLMAN<>02', name: 'Nova', skills: ['Designer', 'Branding'], country: 'UK', lang: 'English', bio: 'Product designer focused on clean interfaces.', successRate: 95, completed: 32 },
+    { id: 3, alias: 'SKILLMAN<>03', name: 'Kai', skills: ['Marketer', 'Growth'], country: 'DE', lang: 'German', bio: 'Growth marketer. Scaled 3 startups.', successRate: 92, completed: 28 },
+    { id: 4, alias: 'SKILLMAN<>04', name: 'Zara', skills: ['Video Editor', 'Motion'], country: 'IN', lang: 'Hindi', bio: 'Video editor & motion designer.', successRate: 97, completed: 51 },
+    { id: 5, alias: 'SKILLMAN<>05', name: 'Rex', skills: ['Sales', 'Negotiation'], country: 'CA', lang: 'English', bio: 'B2B sales expert. Closed $2M+ deals.', successRate: 94, completed: 39 },
+    { id: 6, alias: 'SKILLMAN<>06', name: 'Luna', skills: ['Automation', 'AI'], country: 'AU', lang: 'English', bio: 'AI automation specialist. Building smart workflows.', successRate: 96, completed: 44 },
+    { id: 7, alias: 'SKILLMAN<>07', name: 'Orion', skills: ['Developer', 'CRM'], country: 'FR', lang: 'French', bio: 'CRM architect. Salesforce & HubSpot certified.', successRate: 91, completed: 23 },
+    { id: 8, alias: 'SKILLMAN<>08', name: 'Vega', skills: ['Consultant', 'Strategy'], country: 'SG', lang: 'English', bio: 'Business consultant. Helping founders scale.', successRate: 99, completed: 62 },
+    { id: 9, alias: 'SKILLMAN<>09', name: 'Atlas', skills: ['Developer', 'Mobile'], country: 'BR', lang: 'Portuguese', bio: 'Mobile app developer. iOS & Android.', successRate: 93, completed: 36 },
+    { id: 10, alias: 'SKILLMAN<>10', name: 'Iris', skills: ['Designer', 'UX'], country: 'JP', lang: 'Japanese', bio: 'UX researcher & designer.', successRate: 95, completed: 41 },
+    { id: 11, alias: 'SKILLMAN<>11', name: 'Flux', skills: ['Trader', 'Finance'], country: 'CH', lang: 'German', bio: 'Quant trader. Crypto & forex.', successRate: 89, completed: 19 },
+    { id: 12, alias: 'SKILLMAN<>12', name: 'Echo', skills: ['Marketer', 'SEO'], country: 'ES', lang: 'Spanish', bio: 'SEO specialist. Ranked 200+ keywords.', successRate: 94, completed: 33 },
+    { id: 13, alias: 'SKILLMAN<>13', name: 'Nyx', skills: ['Developer', 'AI'], country: 'NL', lang: 'Dutch', bio: 'AI engineer. LLMs & computer vision.', successRate: 97, completed: 48 },
+    { id: 14, alias: 'SKILLMAN<>14', name: 'Cruz', skills: ['Video Editor', 'YouTube'], country: 'MX', lang: 'Spanish', bio: 'YouTube video editor. 10M+ views.', successRate: 92, completed: 27 },
+    { id: 15, alias: 'SKILLMAN<>15', name: 'Sage', skills: ['Consultant', 'Product'], country: 'IL', lang: 'Hebrew', bio: 'Product consultant. 0→1 specialist.', successRate: 96, completed: 38 },
+    { id: 16, alias: 'SKILLMAN<>16', name: 'Jade', skills: ['Sales', 'Partnerships'], country: 'AE', lang: 'Arabic', bio: 'Partnerships lead. Building global networks.', successRate: 90, completed: 21 },
+    { id: 17, alias: 'SKILLMAN<>17', name: 'Wolf', skills: ['Developer', 'Security'], country: 'SE', lang: 'Swedish', bio: 'Security engineer. Ethical hacking.', successRate: 98, completed: 52 },
+    { id: 18, alias: 'SKILLMAN<>18', name: 'Star', skills: ['Founder', 'Vision'], country: 'KR', lang: 'Korean', bio: 'Serial founder. 2 exits.', successRate: 95, completed: 30 }
+  ];
 
-function updateThemeIcon() {
-  const isDark = document.body.classList.contains('dark');
-  const icon = isDark ? '☀' : '☾';
-  ['themeBtn1','themeBtn2'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = icon;
-  });
-}
-
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-  if (!localStorage.getItem('theme-1008')) {
-    document.body.classList.toggle('dark', e.matches);
-    updateThemeIcon();
-  }
-});
-
-/* ---------- VIEW HELPERS ---------- */
-function showView(id) {
-  document.querySelectorAll('#app > .view').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-/* ---------- AUTH ---------- */
-function sendOtp() {
-  const email = document.getElementById('authEmail').value.trim();
-  if (!email || !email.includes('@')) { toast('Enter a valid email'); return; }
-  document.getElementById('otpEmail').textContent = email;
-  showView('view-otp');
-  // autofocus first OTP
-  setTimeout(() => document.querySelector('.otp-input')?.focus(), 300);
-  setupOtp();
-}
-
-function setupOtp() {
-  const inputs = document.querySelectorAll('.otp-input');
-  inputs.forEach((inp, i) => {
-    inp.oninput = () => {
-      if (inp.value && i < inputs.length - 1) inputs[i+1].focus();
-    };
-    inp.onkeydown = (e) => {
-      if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus();
+  const realWorldUsers = Array.from({ length: 30 }, (_, i) => {
+    const code = 100000000 + (i * 10) + (i % 9 === 0 ? 8 : i % 7);
+    return {
+      id: 100 + i,
+      alias: `REAL<>${String(code).slice(-4)}`,
+      code: String(code),
+      name: ['Alex', 'Jordan', 'Taylor', 'Morgan', 'Casey', 'Riley', 'Quinn', 'Avery', 'Parker', 'Reese'][i % 10],
+      country: ['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'JP', 'CA', 'AU', 'SG'][i % 10],
+      lang: ['English', 'Hindi', 'German', 'French', 'Portuguese', 'Japanese'][i % 6],
+      bio: 'Looking for skilled builders.',
+      joined: '2025'
     };
   });
-}
 
-function verifyOtp() {
-  const vals = [...document.querySelectorAll('.otp-input')].map(i => i.value).join('');
-  if (vals.length < 6) { toast('Enter all 6 digits'); return; }
-  // proceed to identity selection
-  showView('view-identity');
-  renderIdentities();
-}
+  const tasks = [
+    { id: 1, title: 'Build Landing Page', reward: 1008, deadline: '7 Days', skill: 'Developer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1001', description: 'Responsive landing page with modern design.' },
+    { id: 2, title: 'Design Logo & Brand Kit', reward: 508, deadline: '5 Days', skill: 'Designer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1002', description: 'Minimal logo + brand guidelines.' },
+    { id: 3, title: 'Create AI Chatbot System', reward: 1508, deadline: '14 Days', skill: 'AI', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1003', description: 'Custom LLM integration for customer support.' },
+    { id: 4, title: 'Generate 1000 Leads', reward: 808, deadline: '10 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1004', description: 'B2B leads in SaaS space.' },
+    { id: 5, title: 'Build CRM Dashboard', reward: 1208, deadline: '12 Days', skill: 'Developer', difficulty: 'Advanced', status: 'locked', assignedTo: 'SKILLMAN<>08', creator: 'REAL<>1005', description: 'Custom CRM with analytics.' },
+    { id: 6, title: 'Video Editing – YouTube Series', reward: 708, deadline: '6 Days', skill: 'Video Editor', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1006', description: 'Edit 5 videos for YouTube channel.' },
+    { id: 7, title: 'Marketing Strategy Plan', reward: 908, deadline: '8 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1007', description: 'Full go-to-market strategy.' },
+    { id: 8, title: 'Automation Setup – Zapier/Make', reward: 608, deadline: '4 Days', skill: 'Automation', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1008', description: 'Connect 5 business tools.' },
+    { id: 9, title: 'Mobile App MVP', reward: 2008, deadline: '21 Days', skill: 'Developer', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1009', description: 'Cross-platform MVP for iOS/Android.' },
+    { id: 10, title: 'SEO Audit & Fix', reward: 508, deadline: '5 Days', skill: 'Marketer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1010', description: 'Technical SEO audit + fixes.' },
+    { id: 11, title: 'Sales Funnel Setup', reward: 1008, deadline: '9 Days', skill: 'Sales', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1011', description: 'Full funnel with email sequences.' },
+    { id: 12, title: 'Brand Identity Design', reward: 808, deadline: '7 Days', skill: 'Designer', difficulty: 'Intermediate', status: 'completed', assignedTo: 'SKILLMAN<>02', creator: 'REAL<>1012', description: 'Complete visual identity.' },
+    { id: 13, title: 'AI Model Fine-tuning', reward: 1808, deadline: '15 Days', skill: 'AI', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1013', description: 'Fine-tune Llama for domain-specific use.' },
+    { id: 14, title: 'Video Ads for Social Media', reward: 608, deadline: '5 Days', skill: 'Video Editor', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1014', description: '3 short-form video ads.' },
+    { id: 15, title: 'Business Plan & Financial Model', reward: 1108, deadline: '10 Days', skill: 'Consultant', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1015', description: 'Investor-ready business plan.' },
+    { id: 16, title: 'WordPress Website', reward: 708, deadline: '6 Days', skill: 'Developer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1016', description: '5-page WordPress site.' },
+    { id: 17, title: 'Cold Email Outreach', reward: 508, deadline: '4 Days', skill: 'Sales', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1017', description: 'Set up cold email campaign.' },
+    { id: 18, title: 'Community Growth Strategy', reward: 808, deadline: '8 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1018', description: 'Discord community growth plan.' },
+    { id: 19, title: 'API Integration', reward: 908, deadline: '7 Days', skill: 'Developer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1019', description: 'Connect 3 APIs into one dashboard.' },
+    { id: 20, title: 'Pitch Deck Design', reward: 608, deadline: '5 Days', skill: 'Designer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1020', description: '10-slide investor pitch deck.' }
+  ];
 
-/* ---------- IDENTITY DATA ---------- */
-const identities = [
-  {
-    key: 'investor',
-    title: 'INVESTORS',
-    codeFormat: '01 · 02 · 03 · 18',
-    max: '18 members',
-    price: 'FREE',
-    priceFree: true,
-    desc: 'Reserved for investors and ecosystem partners.',
-    cta: 'Apply As Investor'
-  },
-  {
-    key: 'creator',
-    title: 'CREATORS',
-    codeFormat: '001 · 008 · 108',
-    max: '108 members',
-    price: '₹108',
-    priceFree: false,
-    desc: 'For creators, artists, educators and contributors.',
-    cta: 'Become Creator'
-  },
-  {
-    key: 'maker',
-    title: 'MAKERS',
-    codeFormat: '1000 · 1008 · 1999',
-    max: '1008 members',
-    price: '₹1008',
-    priceFree: false,
-    desc: 'For builders, developers, founders and operators.',
-    cta: 'Become Maker'
-  },
-  {
-    key: 'real',
-    title: 'REAL WORLD',
-    codeFormat: 'xxxxxxxxx  (9 digit)',
-    max: '1000000008 max',
-    price: 'FREE',
-    priceFree: true,
-    desc: 'Open access for everyone. Choose your own alias.',
-    cta: 'Enter Real World'
+  const communities = [
+    { id: 1, name: 'AI Builders', type: 'Public', members: 1240, desc: 'Building with LLMs and AI agents.' },
+    { id: 2, name: 'Founders Circle', type: 'Private', members: 320, desc: 'Founders helping founders.' },
+    { id: 3, name: 'Skill Men Network', type: 'Private', members: 18, desc: 'Exclusive network of verified Skill Men.' },
+    { id: 4, name: 'Startup Community', type: 'Public', members: 2100, desc: 'Everything startups.' },
+    { id: 5, name: 'Marketing Masters', type: 'Public', members: 890, desc: 'Growth & marketing strategies.' },
+    { id: 6, name: 'Code & Coffee', type: 'Public', members: 560, desc: 'Developers sharing knowledge.' },
+    { id: 7, name: 'Design Lab', type: 'Public', members: 720, desc: 'UI/UX & product design.' },
+    { id: 8, name: 'Sales Signals', type: 'Private', members: 180, desc: 'B2B sales tactics.' },
+    { id: 9, name: 'Automation Nation', type: 'Public', members: 430, desc: 'No-code & automation.' },
+    { id: 10, name: 'Video Creators', type: 'Public', members: 950, desc: 'Video editing & content.' }
+  ];
+
+  const chats = [
+    { id: 1, name: 'SKILLMAN<>08', lastMsg: 'I can start on that CRM today.', time: '2m', unread: 2 },
+    { id: 2, name: 'REAL<>1001', lastMsg: 'Thanks for the landing page!', time: '15m', unread: 0 },
+    { id: 3, name: 'AI Builders', lastMsg: 'New model just dropped.', time: '1h', unread: 5 },
+    { id: 4, name: 'SKILLMAN<>02', lastMsg: 'Logo concepts attached.', time: '3h', unread: 0 },
+    { id: 5, name: 'REAL<>1005', lastMsg: 'When can you deliver?', time: '5h', unread: 1 }
+  ];
+
+  const calls = [
+    { id: 1, name: 'SKILLMAN<>08', type: 'Voice', duration: '12:34', time: 'Today' },
+    { id: 2, name: 'REAL<>1001', type: 'Video', duration: '05:20', time: 'Yesterday' },
+    { id: 3, name: 'SKILLMAN<>02', type: 'Voice', duration: '08:15', time: 'Yesterday' }
+  ];
+
+  // ---------- HELPERS ----------
+  function applyTheme() {
+    document.documentElement.className = theme === 'light' ? 'light' : '';
+    localStorage.setItem('1008-theme', theme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
   }
-];
 
-function renderIdentities() {
-  const list = document.getElementById('identityList');
-  list.innerHTML = '';
-  identities.forEach((it, idx) => {
-    const el = document.createElement('div');
-    el.className = 'idcard' + (idx === 2 ? ' featured' : '');
-    el.innerHTML = `
-      <div class="idcard-head">
-        <div class="idcard-title">${it.title}</div>
-        <div class="idcard-price ${it.priceFree ? 'free' : ''}">${it.price}</div>
+  function toggleTheme() {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    renderScreen();
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;z-index:999;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
+  }
+
+  // ---------- SCREEN RENDER ----------
+  function renderScreen() {
+    const container = document.getElementById('screenContainer');
+    const tabBar = document.getElementById('tabBar');
+    const supportBtn = document.getElementById('supportBtn');
+
+    if (!currentUser) {
+      tabBar.classList.add('hidden');
+      supportBtn.classList.add('hidden');
+    } else {
+      tabBar.classList.remove('hidden');
+      supportBtn.classList.remove('hidden');
+    }
+
+    switch (currentScreen) {
+      case 'welcome':
+        container.innerHTML = renderWelcome();
+        break;
+      case 'email':
+        container.innerHTML = renderEmail();
+        break;
+      case 'otp':
+        container.innerHTML = renderOTP();
+        break;
+      case 'identity':
+        container.innerHTML = renderIdentity();
+        break;
+      case 'profile-setup':
+        container.innerHTML = renderProfileSetup();
+        break;
+      case 'main':
+        container.innerHTML = renderMain();
+        break;
+    }
+  }
+
+  // ---------- WELCOME ----------
+  function renderWelcome() {
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px 0;">
+        <div style="position:absolute;top:20px;right:20px;">
+          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+        </div>
+        <div class="logo" style="font-size:72px;margin-bottom:24px;">&gt;&lt;</div>
+        <h1 style="font-size:32px;margin-bottom:12px;">The Real World<br>Needs Real Skills</h1>
+        <p class="subtitle" style="max-width:300px;">Connect skilled people with real-world opportunities.</p>
+        <button class="btn" style="max-width:340px;margin-top:20px;" onclick="goToEmail()">Continue With Email</button>
       </div>
-      <div class="idcard-desc">${it.desc}</div>
-      <div class="idcard-code">${it.codeFormat}</div>
-      <div class="idcard-meta">${it.max}</div>
-      <button class="btn" data-key="${it.key}" data-title="${it.title}" onclick="chooseIdentity(event)">${it.cta}</button>
     `;
-    list.appendChild(el);
+  }
+
+  // ---------- EMAIL ----------
+  function renderEmail() {
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
+        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
+        <h2 style="margin-bottom:24px;">Enter your email</h2>
+        <p class="secondary mb-16">We'll send a verification code.</p>
+        <input type="email" id="emailInput" placeholder="you@example.com" value="demo@1008.network" autocomplete="email">
+        <button class="btn" onclick="submitEmail()">Continue</button>
+        <button class="btn btn-secondary" onclick="currentScreen='welcome';renderScreen()">Back</button>
+      </div>
+    `;
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput')?.value?.trim();
+    if (!email || !email.includes('@')) {
+      showToast('Please enter a valid email');
+      return;
+    }
+    window._tempEmail = email;
+    currentScreen = 'otp';
+    renderScreen();
+  }
+
+  // ---------- OTP ----------
+  function renderOTP() {
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
+        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
+        <h2 style="margin-bottom:8px;">Verify your email</h2>
+        <p class="secondary mb-16">Code sent to ${window._tempEmail || 'your email'}</p>
+        <div class="otp-inputs">
+          <input class="otp-input" maxlength="1" inputmode="numeric" value="1">
+          <input class="otp-input" maxlength="1" inputmode="numeric" value="0">
+          <input class="otp-input" maxlength="1" inputmode="numeric" value="0">
+          <input class="otp-input" maxlength="1" inputmode="numeric" value="8">
+        </div>
+        <button class="btn" onclick="verifyOTP()">Verify</button>
+        <button class="btn btn-secondary" onclick="currentScreen='email';renderScreen()">Back</button>
+        <p class="secondary text-center mt-16" style="font-size:13px;">Demo: any code works</p>
+      </div>
+    `;
+  }
+
+  function verifyOTP() {
+    currentScreen = 'identity';
+    renderScreen();
+  }
+
+  // ---------- IDENTITY ----------
+  function renderIdentity() {
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
+        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
+        <h2 style="margin-bottom:24px;">Choose your identity</h2>
+
+        <div class="card" style="cursor:pointer;" onclick="selectIdentity('skillman')">
+          <div class="card-header">
+            <span class="badge">Skill Man</span>
+            <span class="identity-code">01 – 18</span>
+          </div>
+          <h3>SKILL MAN</h3>
+          <p class="secondary" style="font-size:14px;">People who can solve problems and create value.</p>
+          <p class="secondary mt-8" style="font-size:12px;">Developer · Designer · Marketer · Sales Expert · Video Editor · Automation Builder · Trader · Consultant · Founder</p>
+          <p class="secondary mt-8" style="font-size:12px;font-weight:600;">Membership limited and reviewed.</p>
+        </div>
+
+        <div class="card" style="cursor:pointer;" onclick="selectIdentity('realworld')">
+          <div class="card-header">
+            <span class="badge badge-grey">Real World</span>
+            <span class="identity-code">9-digit code</span>
+          </div>
+          <h3>REAL WORLD</h3>
+          <p class="secondary" style="font-size:14px;">People seeking solutions, services, knowledge, or collaboration.</p>
+          <p class="secondary mt-8" style="font-size:12px;">Example: 100000008 · 100000018 · 100000108</p>
+          <p class="secondary mt-8" style="font-size:12px;font-weight:600;">Membership is open.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function selectIdentity(type) {
+    if (type === 'skillman') {
+      // pick a random skill man
+      const sm = skillMen[Math.floor(Math.random() * skillMen.length)];
+      currentUser = {
+        type: 'skillman',
+        ...sm,
+        email: window._tempEmail || 'skill@1008.network',
+        badge: 'Skill Man',
+        code: sm.alias
+      };
+    } else {
+      const rw = realWorldUsers[Math.floor(Math.random() * realWorldUsers.length)];
+      currentUser = {
+        type: 'realworld',
+        ...rw,
+        email: window._tempEmail || 'real@1008.network',
+        badge: 'Real World',
+        code: rw.code,
+        alias: rw.alias
+      };
+    }
+    currentScreen = 'profile-setup';
+    renderScreen();
+  }
+
+  // ---------- PROFILE SETUP ----------
+  function renderProfileSetup() {
+    const isSkill = currentUser.type === 'skillman';
+    return `
+      <div style="flex:1;display:flex;flex-direction:column;padding:10px 0;">
+        <div class="logo-small mb-8">&gt;&lt;</div>
+        <h2 class="mb-16">Create your profile</h2>
+
+        <div class="flex items-center gap-12 mb-16">
+          <div class="avatar avatar-lg">${currentUser.name ? currentUser.name[0] : '?'}</div>
+          <div>
+            <p style="font-weight:600;">${currentUser.name || 'Your Name'}</p>
+            <p class="identity-code">${currentUser.alias || currentUser.code}</p>
+            <span class="badge ${isSkill ? '' : 'badge-grey'}" style="margin-top:4px;">${currentUser.badge}</span>
+          </div>
+        </div>
+
+        <label>Profile Photo</label>
+        <div class="flex items-center gap-12 mb-16">
+          <div class="avatar">${currentUser.name ? currentUser.name[0] : '?'}</div>
+          <button class="btn btn-sm btn-secondary" onclick="showToast('Photo upload demo')">Upload</button>
+        </div>
+
+        <label>Alias Name</label>
+        <input id="aliasInput" value="${currentUser.name || ''}" placeholder="Your alias">
+
+        <label>Bio</label>
+        <textarea id="bioInput" rows="2" placeholder="Tell us about yourself">${currentUser.bio || ''}</textarea>
+
+        <label>Country</label>
+        <input id="countryInput" value="${currentUser.country || ''}" placeholder="Your country">
+
+        <label>Skills (comma separated)</label>
+        <input id="skillsInput" value="${(currentUser.skills || []).join(', ')}" placeholder="Developer, Designer...">
+
+        <label>Languages</label>
+        <input id="langInput" value="${currentUser.lang || ''}" placeholder="English, Spanish...">
+
+        <label>Email</label>
+        <input id="emailProfileInput" value="${currentUser.email || ''}" placeholder="you@example.com">
+
+        <button class="btn mt-8" onclick="completeProfile()">Create My Identity</button>
+      </div>
+    `;
+  }
+
+  function completeProfile() {
+    const alias = document.getElementById('aliasInput')?.value?.trim();
+    const bio = document.getElementById('bioInput')?.value?.trim();
+    const country = document.getElementById('countryInput')?.value?.trim();
+    const skills = document.getElementById('skillsInput')?.value?.split(',').map(s => s.trim()).filter(Boolean);
+    const lang = document.getElementById('langInput')?.value?.trim();
+    const email = document.getElementById('emailProfileInput')?.value?.trim();
+
+    if (alias) currentUser.name = alias;
+    if (bio) currentUser.bio = bio;
+    if (country) currentUser.country = country;
+    if (skills && skills.length) currentUser.skills = skills;
+    if (lang) currentUser.lang = lang;
+    if (email) currentUser.email = email;
+
+    // regenerate identity code based on type
+    if (currentUser.type === 'skillman') {
+      const idx = skillMen.findIndex(s => s.alias === currentUser.alias);
+      if (idx >= 0) {
+        const num = String(idx + 1).padStart(2, '0');
+        currentUser.alias = `SKILLMAN<>${num}`;
+        currentUser.code = currentUser.alias;
+      }
+    } else {
+      // Real World 9-digit code
+      const base = 100000000;
+      const rand = Math.floor(Math.random() * 900) + 100;
+      currentUser.code = String(base + rand);
+      currentUser.alias = `REAL<>${currentUser.code.slice(-4)}`;
+    }
+
+    currentScreen = 'main';
+    activeTab = 'home';
+    renderScreen();
+    showToast('Identity created!');
+  }
+
+  // ---------- MAIN PLATFORM ----------
+  function renderMain() {
+    updateTabBar();
+    switch (activeTab) {
+      case 'home': return renderHome();
+      case 'tasks': return renderTasks();
+      case 'chats': return renderChats();
+      case 'communities': return renderCommunities();
+      case 'profile': return renderProfile();
+      default: return renderHome();
+    }
+  }
+
+  function updateTabBar() {
+    document.querySelectorAll('.tab-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.tab === activeTab);
+    });
+  }
+
+  // ---------- HOME ----------
+  function renderHome() {
+    const recentTasks = tasks.slice(0, 3);
+    const recentChats = chats.slice(0, 3);
+    const suggestedSkillMen = skillMen.slice(0, 4);
+    const communityUpdates = communities.slice(0, 3);
+
+    return `
+      <div style="padding-bottom:20px;">
+        <div class="flex justify-between items-center mb-16">
+          <div class="logo-small">&gt;&lt;</div>
+          <div class="flex items-center gap-8">
+            <span class="identity-code">${currentUser.alias}</span>
+            <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+          </div>
+        </div>
+
+        <!-- Featured Challenge -->
+        <div class="card" style="background:linear-gradient(135deg,var(--accent),#0066cc);color:#fff;border:none;">
+          <div class="flex justify-between items-center">
+            <div>
+              <p style="font-size:12px;opacity:0.8;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Featured Challenge</p>
+              <h3 style="color:#fff;margin:4px 0;">Reward: $1008</h3>
+              <p style="font-size:13px;opacity:0.9;">Reward exceptional problem solving.</p>
+            </div>
+            <div style="font-size:40px;">🏆</div>
+          </div>
+        </div>
+
+        <!-- Recent Tasks -->
+        <div class="flex justify-between items-center mt-16 mb-8">
+          <h3>Recent Tasks</h3>
+          <button class="btn btn-sm btn-outline" onclick="activeTab='tasks';renderScreen()">See all</button>
+        </div>
+        ${recentTasks.map(t => `
+          <div class="card" onclick="activeTab='tasks';renderScreen()" style="cursor:pointer;">
+            <div class="flex justify-between items-center">
+              <div>
+                <p style="font-weight:600;font-size:15px;">${t.title}</p>
+                <p class="secondary" style="font-size:13px;">${t.skill} · ${t.deadline}</p>
+              </div>
+              <span class="task-reward">$${t.reward}</span>
+            </div>
+          </div>
+        `).join('')}
+
+        <!-- Recent Chats -->
+        <div class="flex justify-between items-center mt-16 mb-8">
+          <h3>Recent Chats</h3>
+          <button class="btn btn-sm btn-outline" onclick="activeTab='chats';renderScreen()">See all</button>
+        </div>
+        ${recentChats.map(c => `
+          <div class="card" onclick="activeTab='chats';renderScreen()" style="cursor:pointer;">
+            <div class="flex items-center gap-12">
+              <div class="avatar avatar-sm">${c.name[0]}</div>
+              <div class="chat-info">
+                <div class="chat-name">
+                  <span>${c.name}</span>
+                  <span class="chat-time">${c.time}</span>
+                </div>
+                <div class="chat-msg">${c.lastMsg}</div>
+              </div>
+              ${c.unread > 0 ? `<span class="badge" style="background:var(--accent);">${c.unread}</span>` : ''}
+            </div>
+          </div>
+        `).join('')}
+
+        <!-- Suggested Skill Men -->
+        <div class="flex justify-between items-center mt-16 mb-8">
+          <h3>Suggested Skill Men</h3>
+          <button class="btn btn-sm btn-outline" onclick="showToast('Discover coming soon')">Discover</button>
+        </div>
+        <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;">
+          ${suggestedSkillMen.map(s => `
+            <div class="card" style="min-width:120px;text-align:center;cursor:pointer;" onclick="showToast('${s.alias}')">
+              <div class="avatar" style="margin:0 auto 8px;">${s.name[0]}</div>
+              <p style="font-weight:600;font-size:13px;">${s.alias}</p>
+              <p class="secondary" style="font-size:11px;">${s.skills[0]}</p>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Community Updates -->
+        <div class="flex justify-between items-center mt-16 mb-8">
+          <h3>Community Updates</h3>
+          <button class="btn btn-sm btn-outline" onclick="activeTab='communities';renderScreen()">See all</button>
+        </div>
+        ${communityUpdates.map(c => `
+          <div class="card" onclick="activeTab='communities';renderScreen()" style="cursor:pointer;">
+            <div class="flex justify-between items-center">
+              <div>
+                <p style="font-weight:600;font-size:14px;">${c.name}</p>
+                <p class="secondary" style="font-size:12px;">${c.members} members · ${c.type}</p>
+              </div>
+              <span class="badge ${c.type === 'Private' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${c.type}</span>
+            </div>
+          </div>
+        `).join('')}
+
+        <!-- Platform News -->
+        <div class="card mt-16">
+          <p style="font-weight:600;font-size:14px;">📢 Platform News</p>
+          <p class="secondary" style="font-size:13px;margin-top:6px;">1008 is now live! Connect with verified Skill Men and Real World opportunities.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- TASKS ----------
+  function renderTasks() {
+    const isSkillMan = currentUser.type === 'skillman';
+    const openTasks = tasks.filter(t => t.status === 'open' || t.status === 'locked');
+    const completedTasks = tasks.filter(t => t.status === 'completed');
+
+    return `
+      <div>
+        <div class="flex justify-between items-center mb-16">
+          <h2>Tasks</h2>
+          <span class="identity-code">${currentUser.alias}</span>
+        </div>
+
+        ${!isSkillMan ? `
+          <div class="card" style="border:1px dashed var(--accent);text-align:center;margin-bottom:16px;">
+            <p style="font-weight:600;">You are a Real World user</p>
+            <p class="secondary" style="font-size:13px;">Only Skill Men can claim tasks. Create a task to get help.</p>
+            <button class="btn btn-sm btn-outline mt-8" onclick="showToast('Task creation coming soon')">Create Task</button>
+          </div>
+        ` : ''}
+
+        <h3 class="mb-8">Open Tasks (${openTasks.length})</h3>
+        ${openTasks.map(t => `
+          <div class="card">
+            <div class="card-header">
+              <span class="badge ${t.status === 'locked' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${t.status === 'locked' ? 'Locked' : 'Open'}</span>
+              <span class="task-reward">$${t.reward}</span>
+            </div>
+            <h3 style="margin-bottom:4px;">${t.title}</h3>
+            <p class="secondary" style="font-size:13px;">${t.description}</p>
+            <div class="task-meta">
+              <span>${t.skill}</span>
+              <span>${t.deadline}</span>
+              <span>${t.difficulty}</span>
+            </div>
+            ${t.assignedTo ? `<p class="identity-code mt-8" style="font-size:11px;">Assigned to: ${t.assignedTo}</p>` : ''}
+            ${isSkillMan && t.status === 'open' ? `
+              <button class="btn btn-sm btn-outline mt-8" style="width:100%;" onclick="claimTask(${t.id})">Claim Task</button>
+            ` : ''}
+            ${isSkillMan && t.status === 'locked' && t.assignedTo === currentUser.alias ? `
+              <button class="btn btn-sm mt-8" style="width:100%;background:var(--success);color:#000;" onclick="completeTask(${t.id})">Mark Complete</button>
+              <button class="btn btn-sm btn-secondary mt-4" style="width:100%;" onclick="failTask(${t.id})">Report Failure</button>
+            ` : ''}
+          </div>
+        `).join('')}
+
+        <h3 class="mt-16 mb-8">Completed (${completedTasks.length})</h3>
+        ${completedTasks.map(t => `
+          <div class="card" style="opacity:0.7;">
+            <div class="flex justify-between items-center">
+              <div>
+                <p style="font-weight:600;">${t.title}</p>
+                <p class="secondary" style="font-size:12px;">Completed by ${t.assignedTo}</p>
+              </div>
+              <span class="badge badge-green">Completed</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function claimTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task && task.status === 'open' && currentUser.type === 'skillman') {
+      task.status = 'locked';
+      task.assignedTo = currentUser.alias;
+      renderScreen();
+      showToast('Task claimed!');
+    }
+  }
+
+  function completeTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task && task.status === 'locked' && task.assignedTo === currentUser.alias) {
+      task.status = 'completed';
+      renderScreen();
+      showToast('Task completed! Reward released.');
+    }
+  }
+
+  function failTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task && task.status === 'locked' && task.assignedTo === currentUser.alias) {
+      task.status = 'open';
+      task.assignedTo = null;
+      renderScreen();
+      showToast('Task reopened.');
+    }
+  }
+
+  // ---------- CHATS ----------
+  function renderChats() {
+    return `
+      <div>
+        <div class="flex justify-between items-center mb-16">
+          <h2>Chats</h2>
+          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+        </div>
+
+        <h3 class="mb-8">Recent</h3>
+        ${chats.map(c => `
+          <div class="chat-item" onclick="showToast('Opening chat with ${c.name}')">
+            <div class="avatar avatar-sm">${c.name[0]}</div>
+            <div class="chat-info">
+              <div class="chat-name">
+                <span>${c.name}</span>
+                <span class="chat-time">${c.time}</span>
+              </div>
+              <div class="chat-msg">${c.lastMsg}</div>
+            </div>
+            ${c.unread > 0 ? `<span class="badge" style="background:var(--accent);">${c.unread}</span>` : ''}
+          </div>
+        `).join('')}
+
+        <h3 class="mt-16 mb-8">Calls</h3>
+        ${calls.map(c => `
+          <div class="card" style="display:flex;align-items:center;gap:12px;">
+            <div class="avatar avatar-sm">${c.name[0]}</div>
+            <div style="flex:1;">
+              <p style="font-weight:600;font-size:14px;">${c.name}</p>
+              <p class="secondary" style="font-size:12px;">${c.type} call · ${c.duration}</p>
+            </div>
+            <span class="secondary" style="font-size:12px;">${c.time}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // ---------- COMMUNITIES ----------
+  function renderCommunities() {
+    return `
+      <div>
+        <div class="flex justify-between items-center mb-16">
+          <h2>Communities</h2>
+          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+        </div>
+
+        <p class="secondary mb-16" style="font-size:14px;">Join groups, voice rooms, and connect with builders.</p>
+
+        ${communities.map(c => `
+          <div class="card" onclick="showToast('Joined ${c.name}')" style="cursor:pointer;">
+            <div class="flex justify-between items-center">
+              <div>
+                <p style="font-weight:600;">${c.name}</p>
+                <p class="secondary" style="font-size:13px;">${c.members} members · ${c.desc}</p>
+              </div>
+              <span class="badge ${c.type === 'Private' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${c.type}</span>
+            </div>
+          </div>
+        `).join('')}
+
+        <div class="card mt-8" style="text-align:center;border:1px dashed var(--border);">
+          <p class="secondary" style="font-size:13px;">Voice Rooms · Video Rooms · Announcements</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- PROFILE ----------
+  function renderProfile() {
+    const isSkill = currentUser.type === 'skillman';
+    return `
+      <div>
+        <div class="flex justify-between items-center mb-16">
+          <h2>Profile</h2>
+          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+        </div>
+
+        <div class="profile-header">
+          <div class="avatar avatar-lg">${currentUser.name ? currentUser.name[0] : '?'}</div>
+          <div>
+            <h3 style="margin-bottom:2px;">${currentUser.name || 'User'}</h3>
+            <p class="identity-code">${currentUser.alias || currentUser.code}</p>
+            <span class="badge ${isSkill ? '' : 'badge-grey'}" style="margin-top:4px;">${currentUser.badge}</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="secondary" style="font-size:14px;">${currentUser.bio || 'No bio yet.'}</p>
+        </div>
+
+        <div class="card">
+          <h3 class="mb-8">Skills</h3>
+          <div>
+            ${(currentUser.skills || ['Builder']).map(s => `<span class="tag">${s}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="mb-8">Languages</h3>
+          <p>${currentUser.lang || 'English'}</p>
+        </div>
+
+        <div class="card">
+          <h3 class="mb-8">Country</h3>
+          <p>${currentUser.country || 'Global'}</p>
+        </div>
+
+        <div class="card">
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-value">${currentUser.completed || 0}</div>
+              <div class="stat-label">Tasks Done</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">${currentUser.successRate || 100}%</div>
+              <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">${isSkill ? '⭐ 4.9' : '—'}</div>
+              <div class="stat-label">Reviews</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="logout()">Log Out</button>
+      </div>
+    `;
+  }
+
+  function logout() {
+    currentUser = null;
+    currentScreen = 'welcome';
+    activeTab = 'home';
+    renderScreen();
+    showToast('Logged out');
+  }
+
+  // ---------- SUPPORT MODAL ----------
+  function toggleSupportModal() {
+    const modal = document.getElementById('supportModal');
+    modal.classList.toggle('hidden');
+  }
+
+  // ---------- TAB BAR EVENTS ----------
+  document.querySelectorAll('.tab-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!currentUser) return;
+      activeTab = btn.dataset.tab;
+      renderScreen();
+      window.scrollTo({ top: 0 });
+    });
   });
-}
 
-function chooseIdentity(e) {
-  const btn = e.currentTarget;
-  const key = btn.dataset.key;
-  const title = btn.dataset.title;
-  currentIdentity = { key, title };
-  document.getElementById('aliasCategoryLabel').textContent = title;
-  showView('view-alias');
-  updateAliasPreview();
-}
-
-let currentIdentity = null;
-
-/* ---------- ALIAS PREVIEW ---------- */
-document.addEventListener('input', e => {
-  if (e.target && e.target.id === 'aliasName') updateAliasPreview();
-});
-
-function updateAliasPreview() {
-  const name = (document.getElementById('aliasName')?.value || 'YOURALIAS').trim().toUpperCase() || 'YOURALIAS';
-  const samples = { investor: '01', creator: '001', maker: '1008', real: '100000008' };
-  const code = samples[currentIdentity?.key] || '0000';
-  const preview = document.getElementById('aliasPreview');
-  if (preview) preview.textContent = `${name}<>${code}`;
-}
-
-/* ---------- CREATE IDENTITY ---------- */
-function createIdentity() {
-  const name = (document.getElementById('aliasName').value || '').trim().toUpperCase();
-  const bio = document.getElementById('aliasBio').value.trim();
-  const country = document.getElementById('aliasCountry').value.trim();
-  const skills = document.getElementById('aliasSkills').value.trim();
-  const lang = document.getElementById('aliasLang').value;
-  if (!name) { toast('Enter an alias name'); return; }
-  const samples = { investor: '01', creator: '108', maker: '1008', real: '100000008' };
-  const code = samples[currentIdentity?.key] || '0000';
-
-  currentUser = {
-    alias: name,
-    code,
-    fullAlias: `${name}<>${code}`,
-    category: currentIdentity.title,
-    categoryKey: currentIdentity.key,
-    bio: bio || 'Member of 1008.',
-    country: country || '—',
-    skills: skills ? skills.split(',').map(s => s.trim()).filter(Boolean) : [],
-    language: lang,
-    preferred: 'English',
-    online: true
+  // ---------- EMAIL / OTP SIMULATION ----------
+  window.goToEmail = function() {
+    currentScreen = 'email';
+    renderScreen();
   };
 
-  // Show main app
-  showView('view-main');
-  document.getElementById('view-main').style.display = 'flex';
-  document.getElementById('bottomNav').style.display = 'flex';
-  document.getElementById('supportFab').style.display = 'flex';
-  renderChatList();
-  renderCallList();
-  renderGroups();
-  renderDiscover();
-  renderProfile();
-  switchTab('chats');
-}
+  window.submitEmail = submitEmail;
+  window.verifyOTP = verifyOTP;
+  window.selectIdentity = selectIdentity;
+  window.completeProfile = completeProfile;
+  window.claimTask = claimTask;
+  window.completeTask = completeTask;
+  window.failTask = failTask;
+  window.toggleTheme = toggleTheme;
+  window.toggleSupportModal = toggleSupportModal;
+  window.logout = logout;
+  window.showToast = showToast;
+  window.renderScreen = renderScreen;
 
-/* ---------- SAMPLE DATA ---------- */
-const sampleUsers = [
-  // Investors
-  {alias:'AARAV',   code:'01', cat:'Investor',  lang:'Hindi',    skills:['Fintech','Strategy'],   bio:'Early-stage investor. 12 yrs.'},
-  {alias:'MAYA',    code:'02', cat:'Investor',  lang:'English',  skills:['SaaS','Growth'],        bio:'Backing founders with calm capital.'},
-  {alias:'KABIR',   code:'05', cat:'Investor',  lang:'Punjabi',  skills:['Consumer','D2C'],       bio:'Investor & operator.'},
-  {alias:'RIYA',    code:'08', cat:'Investor',  lang:'English',  skills:['DeepTech','AI'],        bio:'Thesis-driven investor.'},
-  {alias:'ARJUN',   code:'18', cat:'Investor',  lang:'Hindi',    skills:['Climate','Energy'],     bio:'Planet-first capital.'},
-
-  // Creators
-  {alias:'LEO',     code:'001', cat:'Creator',  lang:'English',  skills:['Illustration','Design'],bio:'Visual storyteller.'},
-  {alias:'ARTIST',  code:'108', cat:'Creator',  lang:'Hindi',    skills:['Music','Production'],   bio:'Sound & silence.'},
-  {alias:'NOVA',    code:'008', cat:'Creator',  lang:'English',  skills:['Writing','Essays'],     bio:'Words that stay.'},
-  {alias:'ZARA',    code:'047', cat:'Creator',  lang:'Arabic',   skills:['Film','Direction'],     bio:'Cinema as language.'},
-  {alias:'OM',      code:'077', cat:'Creator',  lang:'Hindi',    skills:['Photography'],          bio:'Frames & light.'},
-  {alias:'SAKURA',  code:'095', cat:'Creator',  lang:'Japanese', skills:['Ceramics','Craft'],     bio:'Hands, clay, patience.'},
-  {alias:'LUNA',    code:'099', cat:'Creator',  lang:'Spanish',  skills:['Poetry','Spoken Word'], bio:'Night thoughts.'},
-  {alias:'YUSUF',   code:'100', cat:'Creator',  lang:'Arabic',   skills:['Calligraphy'],          bio:'Ink as devotion.'},
-  {alias:'VERA',    code:'104', cat:'Creator',  lang:'French',   skills:['Painting'],             bio:'Color fields.'},
-  {alias:'RAVI',    code:'106', cat:'Creator',  lang:'Tamil',    skills:['Classical Music'],      bio:'Tradition in motion.'},
-
-  // Makers
-  {alias:'MAKER',   code:'1008', cat:'Maker',   lang:'English',  skills:['Product','Engineering'],bio:'Ship, learn, repeat.'},
-  {alias:'IRA',     code:'1000', cat:'Maker',   lang:'Hindi',    skills:['iOS','Swift'],          bio:'Design-led engineering.'},
-  {alias:'NEEL',    code:'1001', cat:'Maker',   lang:'Hindi',    skills:['Backend','Rust'],       bio:'Systems that scale.'},
-  {alias:'ANAYA',   code:'1002', cat:'Maker',   lang:'English',  skills:['ML','LLMs'],            bio:'Building intelligence.'},
-  {alias:'VIKRAM',  code:'1003', cat:'Maker',   lang:'Punjabi',  skills:['DevOps','Cloud'],       bio:'Infra quietly.'},
-  {alias:'SARA',    code:'1004', cat:'Maker',   lang:'English',  skills:['Frontend','React'],     bio:'Interfaces with soul.'},
-  {alias:'DEV',     code:'1005', cat:'Maker',   lang:'Hindi',    skills:['Android','Kotlin'],     bio:'Mobile-first thinking.'},
-  {alias:'MIRA',    code:'1006', cat:'Maker',   lang:'English',  skills:['Product','Strategy'],   bio:'0→1 and 1→10.'},
-  {alias:'ROHAN',   code:'1007', cat:'Maker',   lang:'Hindi',    skills:['Data','Pipelines'],     bio:'Data as infrastructure.'},
-  {alias:'TARA',    code:'1009', cat:'Maker',   lang:'Tamil',    skills:['Security','Crypto'],    bio:'Paranoid by default.'},
-  {alias:'ARYA',    code:'1010', cat:'Maker',   lang:'Hindi',    skills:['Design','Systems'],     bio:'Design systems thinker.'},
-  {alias:'JAI',     code:'1011', cat:'Maker',   lang:'Punjabi',  skills:['Robotics','Hardware'],  bio:'Atoms & bits.'},
-  {alias:'NISHA',   code:'1012', cat:'Maker',   lang:'English',  skills:['Growth','Analytics'],   bio:'Compounding loops.'},
-  {alias:'OMKAR',   code:'1013', cat:'Maker',   lang:'Hindi',    skills:['Founder','Ops'],        bio:'Operator at heart.'},
-  {alias:'PRIYA',   code:'1014', cat:'Maker',   lang:'English',  skills:['AI','Research'],        bio:'Curious by default.'},
-  {alias:'KARAN',   code:'1015', cat:'Maker',   lang:'Hindi',    skills:['Payments','Fintech'],   bio:'Money rails.'},
-  {alias:'ISHAN',   code:'1016', cat:'Maker',   lang:'English',  skills:['Gaming','Unity'],       bio:'Worlds in code.'},
-  {alias:'MEERA',   code:'1017', cat:'Maker',   lang:'Tamil',    skills:['QA','Automation'],      bio:'Quality is a habit.'},
-  {alias:'VIR',     code:'1018', cat:'Maker',   lang:'Hindi',    skills:['Web3','Protocols'],     bio:'Trustless systems.'},
-  {alias:'AAROHI',  code:'1019', cat:'Maker',   lang:'English',  skills:['AR','VR'],              bio:'Spatial interfaces.'},
-
-  // Real World
-  {alias:'PANKAJ',  code:'100000008', cat:'Real World', lang:'Hindi',  skills:['Writing'],           bio:'Curious observer.'},
-  {alias:'SIYA',    code:'100000018', cat:'Real World', lang:'English',skills:['Reading'],           bio:'Book club regular.'},
-  {alias:'MANAV',   code:'100000028', cat:'Real World', lang:'Hindi',  skills:['Music'],             bio:'Bedroom producer.'},
-  {alias:'TANVI',   code:'100000038', cat:'Real World', lang:'Marathi',skills:['Cooking'],           bio:'Food is memory.'},
-  {alias:'AARON',   code:'100000048', cat:'Real World', lang:'English',skills:['Running'],           bio:'Marathon in progress.'},
-  {alias:'DIYA',    code:'100000058', cat:'Real World', lang:'Hindi',  skills:['Dance'],             bio:'Movement is language.'},
-  {alias:'KIAN',    code:'100000068', cat:'Real World', lang:'English',skills:['Skateboarding'],     bio:'Concrete waves.'},
-  {alias:'NAVYA',   code:'100000078', cat:'Real World', lang:'Telugu', skills:['Coding'],            bio:'Self-taught dev.'},
-  {alias:'REYAN',   code:'100000088', cat:'Real World', lang:'Hindi',  skills:['Cricket'],           bio:'Weekend cricketer.'},
-  {alias:'MYRA',    code:'100000098', cat:'Real World', lang:'English',skills:['Art'],               bio:'Doodles & dreams.'},
-  {alias:'VEER',    code:'100000108', cat:'Real World', lang:'Punjabi',skills:['Travel'],            bio:'Mountains > cities.'},
-  {alias:'ANIKA',   code:'100000118', cat:'Real World', lang:'Hindi',  skills:['Yoga'],              bio:'Breath & balance.'},
-  {alias:'RUDRA',   code:'100000128', cat:'Real World', lang:'English',skills:['Chess'],             bio:'Slow thinker.'},
-  {alias:'ISHITA',  code:'100000138', cat:'Real World', lang:'Bengali',skills:['Theatre'],           bio:'Stage is home.'},
-  {alias:'KABIR',   code:'100000148', cat:'Real World', lang:'Hindi',  skills:['Fitness'],           bio:'Stronger every day.'},
-  {alias:'AANYA',   code:'100000158', cat:'Real World', lang:'English',skills:['Photography'],       bio:'Chasing light.'},
-  {alias:'YASH',    code:'100000168', cat:'Real World', lang:'Hindi',  skills:['Guitar'],            bio:'Six strings, endless.'},
-  {alias:'RIYA',    code:'100000178', cat:'Real World', lang:'English',skills:['Volunteering'],      bio:'Community first.'},
-  {alias:'ARNAV',   code:'100000188', cat:'Real World', lang:'Hindi',  skills:['Cooking'],           bio:'Home chef.'},
-  {alias:'KIARA',   code:'100000198', cat:'Real World', lang:'English',skills:['Journaling'],        bio:'Notes to self.'}
-];
-
-let currentUser = null;
-
-/* ---------- CHATS ---------- */
-const chats = [
-  { user: sampleUsers.find(u=>u.alias==='ARTIST'), last:'The new track is almost done.', time:'09:42', unread:2, pinned:true },
-  { user: sampleUsers.find(u=>u.alias==='MAKER'),  last:'Pushed the build. Can you review?', time:'09:15', unread:1, pinned:true },
-  { user: sampleUsers.find(u=>u.alias==='LEO'),    last:'Sent you the moodboard.', time:'Yesterday', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='AARAV'),  last:'Let’s set up a call this week.', time:'Yesterday', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='NOVA'),   last:'That essay you shared — beautiful.', time:'Mon', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='IRA'),    last:'Shipped the new onboarding flow.', time:'Mon', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='PANKAJ'), last:'Hey, are you around?', time:'Sun', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='ZARA'),   last:'The short film is screening Friday.', time:'Sun', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='ANAYA'),  last:'Model evals look promising.', time:'Sat', unread:0 },
-  { user: sampleUsers.find(u=>u.alias==='VERA'),   last:'New paintings up on the studio wall.', time:'Sat', unread:0 }
-];
-
-function filterChats(q) {
-  q = q.toLowerCase().trim();
-  document.querySelectorAll('#chatList .list-item').forEach(el => {
-    const text = el.dataset.search || '';
-    el.style.display = text.includes(q) ? 'flex' : 'none';
-  });
-}
-
-function renderChatList() {
-  const wrap = document.getElementById('chatList');
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  const pinned = chats.filter(c=>c.pinned).sort((a,b)=>a.time.localeCompare(b.time));
-  const rest = chats.filter(c=>!c.pinned);
-  const ordered = [...pinned, ...rest];
-  ordered.forEach((c, idx) => {
-    if (!c.user) return;
-    const initial = c.user.alias.slice(0,2);
-    const el = document.createElement('button');
-    el.className = 'list-item';
-    el.dataset.search = (c.user.alias + ' ' + c.user.code + ' ' + c.last).toLowerCase();
-    el.onclick = () => openChat(c.user);
-    el.innerHTML = `
-      <div class="avatar mono">${initial}<span class="avatar-dot"></span></div>
-      <div class="list-body">
-        <div class="list-title-row">
-          <div class="list-title">${c.user.alias} <span class="list-sub alias" style="font-size:12px;">&lt;&gt;${c.user.code}</span></div>
-          <div class="list-time">${c.time}</div>
-        </div>
-        <div class="list-sub">${c.last}</div>
-      </div>
-      ${c.unread ? `<div class="unread">${c.unread}</div>` : ''}
-    `;
-    wrap.appendChild(el);
-  });
-}
-
-/* ---------- CHAT DETAIL ---------- */
-let activeChatUser = null;
-let chatMessages = [];
-
-function openChat(user) {
-  activeChatUser = user;
-  document.getElementById('chatDetail').style.display = 'flex';
-  const header = document.getElementById('chatHeader');
-  header.innerHTML = `
-    <button class="icon-btn" onclick="closeChat()">‹</button>
-    <div class="avatar avatar-sm mono">${user.alias.slice(0,2)}<span class="avatar-dot"></span></div>
-    <div class="list-body">
-      <div class="list-title" style="font-size:15px;">${user.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${user.code}</span></div>
-      <div class="list-sub" style="font-size:12px;">online</div>
-    </div>
-    <button class="icon-btn" onclick="toast('Voice call')">☎</button>
-    <button class="icon-btn" onclick="toast('Video call')">▣</button>
-  `;
-  loadMessages(user);
-  document.getElementById('chatDetail').classList.add('active');
-  setTimeout(() => document.getElementById('composerInput').focus(), 100);
-}
-
-function closeChat() {
-  document.getElementById('chatDetail').style.display = 'none';
-  document.getElementById('chatDetail').classList.remove('active');
-  activeChatUser = null;
-}
-
-function loadMessages(user) {
-  const seed = [
-    {me:false, text:'Hey — good to see you here.', time:'09:30'},
-    {me:true,  text:'Likewise. This platform feels calm.', time:'09:31'},
-    {me:false, text:'That was the idea. No noise, just people.', time:'09:32'},
-  ];
-  if (user.cat === 'Maker') {
-    seed.push({me:false, text:'Pushed the build. Can you review when free?', time:'09:35'});
-    seed.push({me:true,  text:'On it. Give me 20 minutes.', time:'09:36'});
-  } else if (user.cat === 'Creator') {
-    seed.push({me:false, text:'The new track is almost done. Want to listen?', time:'09:40'});
-    seed.push({me:true,  text:'Always. Send it over.', time:'09:41'});
-  } else if (user.cat === 'Investor') {
-    seed.push({me:false, text:'Let’s set up a call this week.', time:'09:38'});
-    seed.push({me:true,  text:'Thursday afternoon works.', time:'09:39'});
-  } else {
-    seed.push({me:false, text:'Hey, are you around?', time:'09:37'});
-  }
-  chatMessages = seed;
-  renderMessages();
-}
-
-function renderMessages() {
-  const wrap = document.getElementById('messages');
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  chatMessages.forEach(m => {
-    const row = document.createElement('div');
-    row.className = 'msg-row ' + (m.me ? 'me' : '');
-    row.innerHTML = `
-      <div class="msg ${m.me ? 'me' : 'them'}">
-        ${m.text}
-        <div class="msg-meta">${m.time} ${m.me ? '✓✓' : ''}</div>
-      </div>
-    `;
-    wrap.appendChild(row);
-  });
-  wrap.scrollTop = wrap.scrollHeight;
-}
-
-function sendMessage() {
-  const input = document.getElementById('composerInput');
-  const text = input.value.trim();
-  if (!text || !activeChatUser) return;
-  const now = new Date();
-  const time = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  chatMessages.push({me:true, text, time});
-  input.value = '';
-  renderMessages();
-
-  // typing indicator + auto reply
-  const wrap = document.getElementById('messages');
-  const typing = document.createElement('div');
-  typing.className = 'msg-row';
-  typing.id = 'typingRow';
-  typing.innerHTML = `<div class="msg them"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-  wrap.appendChild(typing);
-  wrap.scrollTop = wrap.scrollHeight;
-
-  setTimeout(() => {
-    document.getElementById('typingRow')?.remove();
-    const replies = [
-      'Noted — thanks for the quick reply.',
-      'Got it. I’ll take a look.',
-      'Sounds good to me.',
-      'Perfect. Let’s keep moving.',
-      'Appreciate it.'
-    ];
-    const reply = replies[Math.floor(Math.random()*replies.length)];
-    const t2 = new Date();
-    const time2 = String(t2.getHours()).padStart(2,'0') + ':' + String(t2.getMinutes()).padStart(2,'0');
-    chatMessages.push({me:false, text:reply, time:time2});
-    renderMessages();
-  }, 1400);
-}
-
-/* ---------- CALLS ---------- */
-const calls = [
-  { user: sampleUsers.find(u=>u.alias==='ARTIST'), type:'in',   kind:'Voice', time:'09:20' },
-  { user: sampleUsers.find(u=>u.alias==='MAKER'),  type:'out',  kind:'Video', time:'08:45' },
-  { user: sampleUsers.find(u=>u.alias==='LEO'),    type:'miss', kind:'Voice', time:'Yesterday' },
-  { user: sampleUsers.find(u=>u.alias==='AARAV'),  type:'in',   kind:'Video', time:'Yesterday' },
-  { user: sampleUsers.find(u=>u.alias==='IRA'),    type:'out',  kind:'Voice', time:'Mon' },
-  { user: sampleUsers.find(u=>u.alias==='NOVA'),   type:'miss', kind:'Voice', time:'Sun' },
-  { user: sampleUsers.find(u=>u.alias==='ANAYA'),  type:'in',   kind:'Video', time:'Sat' },
-  { user: sampleUsers.find(u=>u.alias==='PANKAJ'), type:'out',  kind:'Voice', time:'Fri' }
-];
-
-function renderCallList() {
-  const wrap = document.getElementById('callList');
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  calls.forEach(c => {
-    if (!c.user) return;
-    const arrow = c.type === 'in' ? '↙' : c.type === 'out' ? '↗' : '✕';
-    const cls = c.type === 'in' ? 'call-in' : c.type === 'out' ? 'call-out' : 'call-miss';
-    const el = document.createElement('button');
-    el.className = 'list-item';
-    el.onclick = () => toast(`Calling ${c.user.alias}…`);
-    el.innerHTML = `
-      <div class="avatar mono">${c.user.alias.slice(0,2)}</div>
-      <div class="list-body">
-        <div class="list-title-row">
-          <div class="list-title">${c.user.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${c.user.code}</span></div>
-          <div class="list-time">${c.time}</div>
-        </div>
-        <div class="list-sub call-type ${cls}">${arrow} ${c.kind} call</div>
-      </div>
-      <button class="icon-btn" onclick="event.stopPropagation();toast('Calling…')">☎</button>
-    `;
-    wrap.appendChild(el);
-  });
-}
-
-/* ---------- GROUPS ---------- */
-const myGroups = [
-  { name:'Creator Circle', members: 87, desc:'Work-in-progress, feedback, and quiet encouragement.' },
-  { name:'Maker Hub', members: 214, desc:'Shipping notes, build logs, and late-night fixes.' },
-  { name:'Investor Network', members: 18, desc:'Private. Long-horizon conversations.' },
-  { name:'Real World Community', members: 1208, desc:'Open access. Everyday life, everyday people.' }
-];
-
-const discoverGroups = [
-  { name:'Design Systems Guild', members: 340, desc:'Tokens, patterns, and craft.' },
-  { name:'Sound & Silence', members: 96, desc:'Music, production, listening.' },
-  { name:'Climate Builders', members: 128, desc:'Planet-first engineering.' },
-  { name:'Language Exchange', members: 402, desc:'Learn, teach, translate.' }
-];
-
-function renderGroups() {
-  const wrap = document.getElementById('groupList');
-  const dwrap = document.getElementById('discoverGroups');
-  if (!wrap || !dwrap) return;
-
-  wrap.innerHTML = '';
-  myGroups.forEach(g => {
-    const el = document.createElement('button');
-    el.className = 'list-item';
-    el.onclick = () => toast(`Opening ${g.name}`);
-    el.innerHTML = `
-      <div class="avatar mono">${g.name.slice(0,2).toUpperCase()}</div>
-      <div class="list-body">
-        <div class="list-title-row">
-          <div class="list-title">${g.name}</div>
-        </div>
-        <div class="list-sub">${g.desc}</div>
-      </div>
-      <div class="unread" style="background:var(--surface-2);color:var(--text-2);">${g.members}</div>
-    `;
-    wrap.appendChild(el);
-  });
-
-  dwrap.innerHTML = '';
-  discoverGroups.forEach(g => {
-    const el = document.createElement('button');
-    el.className = 'list-item';
-    el.onclick = () => toast(`Requested to join ${g.name}`);
-    el.innerHTML = `
-      <div class="avatar mono">${g.name.slice(0,2).toUpperCase()}</div>
-      <div class="list-body">
-        <div class="list-title-row">
-          <div class="list-title">${g.name}</div>
-        </div>
-        <div class="list-sub">${g.desc}</div>
-      </div>
-      <div class="unread" style="background:var(--surface-2);color:var(--text-2);">${g.members}</div>
-    `;
-    dwrap.appendChild(el);
-  });
-}
-
-/* ---------- DISCOVER ---------- */
-let discoverFilter = 'All';
-
-function setDiscoverFilter(el) {
-  document.querySelectorAll('#discoverFilters .chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  discoverFilter = el.dataset.cat;
-  renderDiscover();
-}
-
-function renderDiscover() {
-  const wrap = document.getElementById('discoverList');
-  if (!wrap) return;
-  const q = (document.getElementById('discoverSearch')?.value || '').toLowerCase().trim();
-  wrap.innerHTML = '';
-  const filtered = sampleUsers.filter(u => {
-    if (discoverFilter !== 'All' && u.cat !== discoverFilter) return false;
-    if (!q) return true;
-    return (
-      u.alias.toLowerCase().includes(q) ||
-      u.code.toLowerCase().includes(q) ||
-      u.skills.join(' ').toLowerCase().includes(q) ||
-      u.lang.toLowerCase().includes(q)
-    );
-  });
-
-  if (filtered.length === 0) {
-    wrap.innerHTML = `<div class="text-center muted" style="padding:40px 20px;font-size:13px;">No identities found.</div>`;
-    return;
-  }
-
-  filtered.forEach(u => {
-    const el = document.createElement('button');
-    el.className = 'list-item';
-    el.onclick = () => openProfile(u);
-    el.innerHTML = `
-      <div class="avatar mono">${u.alias.slice(0,2)}</div>
-      <div class="list-body">
-        <div class="list-title-row">
-          <div class="list-title">${u.alias} <span class="mono" style="font-size:12px;color:var(--text-3);font-weight:400;">&lt;&gt;${u.code}</span></div>
-          <div class="list-time">${u.cat}</div>
-        </div>
-        <div class="list-sub">${u.skills.slice(0,2).join(' · ')} · ${u.lang}</div>
-      </div>
-    `;
-    wrap.appendChild(el);
-  });
-}
-
-/* ---------- PROFILE ---------- */
-function renderProfile() {
-  const wrap = document.getElementById('profileContent');
-  if (!wrap || !currentUser) return;
-  const u = currentUser;
-  wrap.innerHTML = `
-    <div class="profile-hero">
-      <div class="profile-avatar mono">${u.alias.slice(0,2)}</div>
-      <div class="profile-name">${u.alias}</div>
-      <div class="profile-alias">&lt;&gt;${u.code}</div>
-      <div class="profile-badge">${u.category}</div>
-    </div>
-
-    <div class="profile-actions">
-      <button class="btn btn-ghost" onclick="toast('Message')"><span class="act-emoji">✎</span>Message</button>
-      <button class="btn btn-ghost" onclick="toast('Voice call')"><span class="act-emoji">☎</span>Voice</button>
-      <button class="btn btn-ghost" onclick="toast('Video call')"><span class="act-emoji">▣</span>Video</button>
-      <button class="btn btn-ghost" onclick="toast('Invite to group')"><span class="act-emoji">＋</span>Invite</button>
-    </div>
-
-    <div class="kv-row"><span class="k">Bio</span><span class="v">${u.bio}</span></div>
-    <div class="kv-row"><span class="k">Country</span><span class="v">${u.country}</span></div>
-    <div class="kv-row"><span class="k">Native Language</span><span class="v">${u.language}</span></div>
-    <div class="kv-row"><span class="k">Preferred Language</span><span class="v">${u.preferred}</span></div>
-    <div class="kv-row" style="align-items:flex-start;">
-      <span class="k">Skills</span>
-      <span class="v">
-        <div class="tag-row">
-          ${(u.skills.length ? u.skills : ['—']).map(s => `<span class="tag">${s}</span>`).join('')}
-        </div>
-      </span>
-    </div>
-    <div class="kv-row"><span class="k">Status</span><span class="v" style="color:#22c55e;">● Online</span></div>
-
-    <div class="section" style="padding-top:24px;">
-      <div class="section-title">Language Settings</div>
-    </div>
-    <div class="kv-row">
-      <span class="k">Native Language</span>
-      <span class="v">${u.language}</span>
-    </div>
-    <div class="kv-row">
-      <span class="k">Preferred Language</span>
-      <span class="v">${u.preferred}</span>
-    </div>
-    <div class="help-text" style="text-align:left;padding:14px 16px;margin:0;">Real-time voice translation and speech-to-text are coming soon.</div>
-
-    <div style="padding:20px 16px 8px;">
-      <button class="btn btn-ghost" onclick="logout()">Log out</button>
-    </div>
-    <div style="height:20px;"></div>
-  `;
-}
-
-function openProfile(user) {
-  const wrap = document.getElementById('profileContent');
-  wrap.innerHTML = `
-    <div style="padding:16px;">
-      <button class="icon-btn" onclick="renderProfile()">‹</button>
-    </div>
-    <div class="profile-hero" style="padding-top:8px;">
-      <div class="profile-avatar mono">${user.alias.slice(0,2)}</div>
-      <div class="profile-name">${user.alias}</div>
-      <div class="profile-alias">&lt;&gt;${user.code}</div>
-      <div class="profile-badge">${user.cat}</div>
-    </div>
-    <div class="profile-actions">
-      <button class="btn btn-ghost" onclick="closeChat();openChat(sampleUsers.find(u=>u.alias==='${user.alias}'));switchTab('chats');"><span class="act-emoji">✎</span>Message</button>
-      <button class="btn btn-ghost" onclick="toast('Voice call')"><span class="act-emoji">☎</span>Voice</button>
-      <button class="btn btn-ghost" onclick="toast('Video call')"><span class="act-emoji">▣</span>Video</button>
-      <button class="btn btn-ghost" onclick="toast('Invite to group')"><span class="act-emoji">＋</span>Invite</button>
-    </div>
-    <div class="kv-row"><span class="k">Bio</span><span class="v">${user.bio}</span></div>
-    <div class="kv-row"><span class="k">Native Language</span><span class="v">${user.lang}</span></div>
-    <div class="kv-row" style="align-items:flex-start;">
-      <span class="k">Skills</span>
-      <span class="v">
-        <div class="tag-row">
-          ${user.skills.map(s => `<span class="tag">${s}</span>`).join('')}
-        </div>
-      </span>
-    </div>
-    <div class="kv-row"><span class="k">Category</span><span class="v">${user.cat}</span></div>
-  `;
-  switchTab('profile');
-}
-
-function logout() {
-  currentUser = null;
-  document.getElementById('view-main').style.display = 'none';
-  document.getElementById('supportFab').style.display = 'none';
-  document.getElementById('aliasName').value = '';
-  document.getElementById('aliasBio').value = '';
-  document.getElementById('aliasCountry').value = '';
-  document.getElementById('aliasSkills').value = '';
-  showView('view-auth');
-}
-
-/* ---------- TABS ---------- */
-function switchTab(tab) {
-  document.querySelectorAll('#view-main > .view').forEach(v => v.classList.remove('active'));
-  const target = document.getElementById('tab-' + tab);
-  if (target) target.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.toggle('active', n.dataset.tab === tab);
-  });
-  // hide chat detail if switching
-  if (tab !== 'chats') {
-    document.getElementById('chatDetail').style.display = 'none';
-  }
-}
-
-/* ---------- SUPPORT ---------- */
-function openSupport() {
-  document.getElementById('sheetBackdrop').classList.add('show');
-  document.getElementById('supportSheet').classList.add('show');
-}
-function closeSupport() {
-  document.getElementById('sheetBackdrop').classList.remove('show');
-  document.getElementById('supportSheet').classList.remove('show');
-}
-
-/* ---------- TOAST ---------- */
-let toastTimer;
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
-}
-
-/* ---------- INIT ---------- */
-document.addEventListener('DOMContentLoaded', () => {
-  // OTP autofocus setup on view
-  setupOtp();
-  // Enter key on email field
-  document.getElementById('authEmail')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') sendOtp();
-  });
-  // alias input live preview
-  document.getElementById('aliasName')?.addEventListener('input', updateAliasPreview);
-});
-
-/* ---------- EXPOSE TO GLOBAL for inline handlers ---------- */
-window.sendOtp = sendOtp;
-window.verifyOtp = verifyOtp;
-window.chooseIdentity = chooseIdentity;
-window.createIdentity = createIdentity;
-window.toggleTheme = toggleTheme;
-window.switchTab = switchTab;
-window.openChat = openChat;
-window.closeChat = closeChat;
-window.sendMessage = sendMessage;
-window.filterChats = filterChats;
-window.setDiscoverFilter = setDiscoverFilter;
-window.renderDiscover = renderDiscover;
-window.openProfile = openProfile;
-window.renderProfile = renderProfile;
-window.openSupport = openSupport;
-window.closeSupport = closeSupport;
-window.toast = toast;
-window.logout = logout;
-window.updateAliasPreview = updateAliasPreview;
-window.showView = showView;
+  // ---------- INIT ----------
+  applyTheme();
+  renderScreen();
 </script>
 </body>
 </html>
