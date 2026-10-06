@@ -1,1515 +1,2532 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
-  <title>Vakeel Connect — Legal Marketplace</title>
-  <style>
-    /* ---------- CSS variables ---------- */
-    :root {
-      --navy: #1f3a5f;
-      --gold: #b8860b;
-      --bg: #fdfbf7;
-      --surface: #ffffff;
-      --text: #1e1e1e;
-      --text-muted: #5e5e5e;
-      --border: #d9d0c0;
-      --card-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      --focus-ring: 0 0 0 3px rgba(184,134,11,0.4);
-      --danger: #b33a3a;
-      --success: #2e6b4a;
-      --radius: 14px;
-      --radius-sm: 8px;
-      --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>LawConnect — Talk to Expert Lawyers in Minutes</title>
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ----- CSS RESET & VARIABLES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --navy: #9bb7d4;
-        --gold: #d4a017;
-        --bg: #121212;
-        --surface: #1e1e1e;
-        --text: #ececec;
-        --text-muted: #b0b0b0;
-        --border: #333333;
-        --card-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        --focus-ring: 0 0 0 3px rgba(212,160,23,0.5);
-        --danger: #cf6679;
-        --success: #7bc9a2;
-      }
-    }
+        :root {
+            --primary: #0B1F3A;
+            --secondary: #C9A227;
+            --white: #FFFFFF;
+            --bg: #F5F7FA;
+            --text-dark: #0B1F3A;
+            --text-light: #4A5A6E;
+            --border-light: #E2E8F0;
+            --card-bg: #FFFFFF;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.2s ease;
+        }
 
-    /* ---------- Reset & base ---------- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        [data-theme="dark"] {
+            --primary: #1E2F4A;
+            --secondary: #D4AF37;
+            --white: #121212;
+            --bg: #0A0C10;
+            --text-dark: #F0F2F5;
+            --text-light: #A0B0C0;
+            --border-light: #2A3A4A;
+            --card-bg: #1A1F26;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
 
-    body {
-      font-family: var(--font);
-      font-size: 15px;
-      line-height: 1.5;
-      background: var(--bg);
-      color: var(--text);
-      padding: 0 16px 40px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
 
-    /* sticky header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      margin: 0 -16px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
+        a { text-decoration: none; color: inherit; }
+        button, input, select, textarea { font-family: inherit; }
+        img { max-width: 100%; display: block; }
+        ul { list-style: none; }
 
-    .logo {
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: var(--navy);
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .logo span {
-      color: var(--gold);
-      font-size: 1.5rem;
-      line-height: 1;
-    }
+        /* ----- UTILITY ----- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .mode-toggle {
-      display: flex;
-      background: var(--bg);
-      border-radius: 40px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .mode-toggle button {
-      background: transparent;
-      border: none;
-      padding: 8px 16px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      min-height: 40px;
-      transition: background 0.15s, color 0.15s;
-    }
-    .mode-toggle button.active {
-      background: var(--navy);
-      color: #fff;
-    }
-    .mode-toggle button:focus-visible {
-      outline: var(--focus-ring);
-      outline-offset: 2px;
-    }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 8px; }
+        .gap-4 { gap: 16px; }
+        .gap-6 { gap: 24px; }
+        .text-center { text-align: center; }
+        .relative { position: relative; }
 
-    /* Demo login dropdown */
-    .demo-login {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      background: var(--bg);
-      padding: 4px 10px 4px 14px;
-      border-radius: 40px;
-      border: 1px solid var(--border);
-    }
-    .demo-login select {
-      background: transparent;
-      border: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text);
-      padding: 6px 0;
-      cursor: pointer;
-      min-height: 36px;
-    }
-    .demo-login select:focus-visible {
-      outline: var(--focus-ring);
-      border-radius: 4px;
-    }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
 
-    /* ---------- layout ---------- */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1;
-    }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #1E3A5F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(11, 31, 58, 0.2);
+        }
 
-    h1, h2, h3 {
-      font-weight: 600;
-      line-height: 1.25;
-    }
-    h1 { font-size: 1.8rem; margin-bottom: 8px; }
-    h2 { font-size: 1.4rem; margin-bottom: 12px; }
-    h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .btn-secondary {
+            background: var(--secondary);
+            color: #0B1F3A;
+        }
+        .btn-secondary:hover {
+            background: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 162, 39, 0.3);
+        }
 
-    /* ---------- cards ---------- */
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      padding: 18px;
-      box-shadow: var(--card-shadow);
-      transition: box-shadow 0.2s;
-    }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-light);
+            color: var(--text-dark);
+        }
+        .btn-outline:hover {
+            border-color: var(--secondary);
+            background: rgba(201, 162, 39, 0.05);
+        }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
 
-    @media (min-width: 640px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 900px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
 
-    /* lawyer card */
-    .lawyer-card {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-    .badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 20px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .badge.verified {
-      background: #e6f0e9;
-      border-color: #b3d1bc;
-      color: var(--success);
-    }
-    .badge.pending {
-      background: #fff3e0;
-      border-color: #e6c9a8;
-      color: #9e6b1f;
-    }
-    @media (prefers-color-scheme: dark) {
-      .badge.verified { background: #1e3a2b; border-color: #2d6b4a; color: #b3e6c9; }
-      .badge.pending { background: #3a2e1a; border-color: #7a5c2e; color: #e6c88a; }
-    }
+        .section-sub {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
 
-    .tag {
-      display: inline-block;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2px 10px;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-right: 4px;
-      margin-bottom: 4px;
-    }
+        /* ----- HEADER ----- */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.3s;
+        }
 
-    .stars {
-      color: var(--gold);
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
+        [data-theme="dark"] .header {
+            background: rgba(26, 31, 38, 0.85);
+        }
 
-    .fee {
-      font-weight: 700;
-      color: var(--navy);
-      font-size: 1.1rem;
-    }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+        }
 
-    button, .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      min-height: 40px;
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
-      text-decoration: none;
-      color: inherit;
-      background: transparent;
-    }
-    button:active { transform: scale(0.98); }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    .btn-primary {
-      background: var(--navy);
-      color: #fff;
-      border-color: var(--navy);
-    }
-    .btn-primary:hover { background: #152c4a; }
-    @media (prefers-color-scheme: dark) {
-      .btn-primary { background: #2c4a6e; border-color: #2c4a6e; color: #f0f0f0; }
-      .btn-primary:hover { background: #3a5e87; }
-    }
+        .logo i {
+            color: var(--secondary);
+            font-size: 1.6rem;
+        }
 
-    .btn-gold {
-      background: var(--gold);
-      color: #fff;
-      border-color: var(--gold);
-    }
-    .btn-gold:hover { background: #9e7209; }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
 
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-outline:hover { background: var(--bg); }
+        .nav-links a {
+            color: var(--text-dark);
+            transition: color 0.2s;
+            position: relative;
+        }
 
-    .btn-danger {
-      background: transparent;
-      border: 1px solid var(--danger);
-      color: var(--danger);
-      padding: 4px 12px;
-      font-size: 0.75rem;
-      min-height: 32px;
-    }
-    .btn-danger:hover { background: var(--danger); color: #fff; }
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
 
-    button:focus-visible, .btn:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
-      outline: var(--focus-ring);
-      outline-offset: 2px;
-    }
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
 
-    input, textarea, select {
-      font-family: inherit;
-      font-size: 0.95rem;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      color: var(--text);
-      width: 100%;
-      min-height: 44px;
-    }
-    textarea { min-height: 80px; resize: vertical; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
 
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-muted); }
+        .theme-toggle, .lang-selector {
+            background: none;
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
 
-    /* ---------- profile layout ---------- */
-    .profile-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    @media (min-width: 800px) {
-      .profile-layout {
-        flex-direction: row;
-        align-items: flex-start;
-      }
-      .profile-main { flex: 2; }
-      .profile-booking { flex: 1; min-width: 280px; }
-    }
+        .lang-selector {
+            appearance: none;
+            padding-right: 24px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230B1F3A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center;
+            background-size: 12px;
+        }
 
-    .tabs {
-      display: flex;
-      gap: 4px;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-    .tabs button {
-      background: transparent;
-      border: none;
-      padding: 10px 14px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      border-radius: 0;
-      min-height: 40px;
-    }
-    .tabs button.active {
-      color: var(--navy);
-      border-bottom-color: var(--gold);
-    }
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-actions .btn span { display: none; }
+            .nav-actions .btn i { margin: 0; }
+        }
 
-    /* empty state */
-    .empty {
-      color: var(--text-muted);
-      font-style: italic;
-      padding: 16px 0;
-      text-align: center;
-      background: var(--bg);
-      border-radius: var(--radius-sm);
-      font-size: 0.9rem;
-    }
+        /* ----- HERO ----- */
+        .hero {
+            padding: 60px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* booking slots */
-    .day-picker, .slot-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .day-btn, .slot-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 8px 14px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      min-height: 40px;
-      cursor: pointer;
-      color: var(--text);
-    }
-    .day-btn.selected, .slot-btn.selected {
-      background: var(--navy);
-      color: #fff;
-      border-color: var(--navy);
-    }
-    .slot-btn:disabled {
-      opacity: 0.5;
-      text-decoration: line-through;
-      cursor: not-allowed;
-      background: var(--bg);
-      color: var(--text-muted);
-      border-color: var(--border);
-    }
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
 
-    /* ---------- dashboard ---------- */
-    .dashboard-tabs {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-    }
-    .dashboard-tabs button {
-      background: transparent;
-      border: none;
-      padding: 10px 12px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      color: var(--text-muted);
-      border-bottom: 3px solid transparent;
-      border-radius: 0;
-      min-height: 40px;
-    }
-    .dashboard-tabs button.active {
-      color: var(--navy);
-      border-bottom-color: var(--gold);
-    }
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+        }
 
-    .list-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .list-item:last-child { border-bottom: none; }
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin: 20px 0 28px;
+            max-width: 540px;
+        }
 
-    .warning-note {
-      background: #fff9e6;
-      border-left: 4px solid var(--gold);
-      padding: 10px 14px;
-      font-size: 0.8rem;
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      margin-bottom: 16px;
-      color: #6b4e1a;
-    }
-    @media (prefers-color-scheme: dark) {
-      .warning-note { background: #2e2a1a; color: #e6d5a8; border-left-color: var(--gold); }
-    }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
 
-    .disclaimer {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-      margin-top: 12px;
-      line-height: 1.4;
-    }
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
 
-    /* confirmation */
-    .confirmation-box {
-      text-align: center;
-      padding: 30px 16px;
-    }
-    .zoom-link {
-      word-break: break-all;
-      font-size: 0.9rem;
-      background: var(--bg);
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      display: inline-block;
-      margin: 8px 0;
-    }
+        .stat-item .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
 
-    /* utility */
-    .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .gap-8 { gap: 8px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mb-8 { margin-bottom: 8px; }
-    .text-muted { color: var(--text-muted); font-size: 0.85rem; }
-    .hidden { display: none !important; }
-    .cursor-pointer { cursor: pointer; }
+        .stat-item .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
 
-    /* focus visible for interactive elements */
-    .day-btn:focus-visible, .slot-btn:focus-visible, .tabs button:focus-visible, .dashboard-tabs button:focus-visible {
-      outline: var(--focus-ring);
-      outline-offset: 2px;
-    }
+        .hero-illustration {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(11, 31, 58, 0.04) 100%);
+            border-radius: 32px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 360px;
+            position: relative;
+            border: 1px solid var(--border-light);
+        }
 
-    /* responsive fixes */
-    @media (max-width: 480px) {
-      h1 { font-size: 1.5rem; }
-      header { padding: 10px 16px; }
-      .logo { font-size: 1.1rem; }
-      .mode-toggle button { padding: 6px 12px; font-size: 0.75rem; }
-      .demo-login { font-size: 0.75rem; padding: 2px 8px 2px 10px; }
-      .demo-login select { font-size: 0.75rem; }
-    }
-  </style>
+        .hero-illustration .lawyer-avatar-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        .hero-illustration .avatar-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-light);
+            transition: transform 0.3s;
+        }
+
+        .hero-illustration .avatar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .avatar-card .avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #2A4A6A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .avatar-card .avatar-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .avatar-card .avatar-info p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .hero-illustration .badge-verified {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--secondary);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-text h1 { font-size: 2.4rem; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+            .hero-buttons { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .hero-illustration { min-height: 260px; }
+        }
+
+        /* ----- SMART SEARCH ----- */
+        .smart-search {
+            padding: 20px 0 40px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-light);
+            border-radius: 60px;
+            padding: 4px 4px 4px 24px;
+            box-shadow: var(--shadow-md);
+            transition: border-color 0.2s;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.15);
+        }
+
+        .search-bar i {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 16px 16px;
+            font-size: 1rem;
+            background: transparent;
+            outline: none;
+            color: var(--text-dark);
+        }
+
+        .search-bar button {
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .search-bar button:hover {
+            background: #D4AF37;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            margin-top: 8px;
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+        }
+
+        .search-suggestions.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(201, 162, 39, 0.08);
+        }
+
+        .suggestion-item i {
+            color: var(--secondary);
+            width: 18px;
+        }
+
+        /* ----- CATEGORY GRID ----- */
+        .categories {
+            padding: 60px 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary), #E8C84A);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(201, 162, 39, 0.3);
+        }
+
+        .category-card .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(201, 162, 39, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .category-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .category-card .meta {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: auto;
+        }
+
+        /* ----- LAWYER MARKETPLACE ----- */
+        .lawyers {
+            padding: 60px 0;
+        }
+
+        .lawyer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .lawyer-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+        }
+
+        .lawyer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lawyer-card .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 30px;
+            background: rgba(34, 197, 94, 0.12);
+            color: #16A34A;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lawyer-card .status-badge.offline {
+            background: rgba(148, 163, 184, 0.15);
+            color: #64748B;
+        }
+
+        .lawyer-card .profile-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .lawyer-card .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #2A4A6A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            border: 3px solid var(--secondary);
+        }
+
+        .lawyer-card .profile-info h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lawyer-card .profile-info .specialization {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .lawyer-card .profile-info .details {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lawyer-card .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+
+        .lawyer-card .rating-row .stars {
+            color: #F59E0B;
+        }
+
+        .lawyer-card .fee {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .lawyer-card .fee span {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .lawyer-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .lawyer-actions .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .lawyer-actions .action-btn i {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .lawyer-actions .action-btn:hover {
+            background: rgba(201, 162, 39, 0.08);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .lawyer-actions .action-btn:hover i {
+            color: var(--secondary);
+        }
+
+        /* ----- CHAT INTERFACE (MODAL) ----- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .chat-modal {
+            background: var(--card-bg);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .chat-header .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .chat-header .chat-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .chat-header .chat-info p {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .chat-header .close-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--bg);
+            min-height: 300px;
+            max-height: 400px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: var(--primary);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: var(--card-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message .timestamp {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            display: block;
+            text-align: right;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            display: flex;
+            gap: 4px;
+            padding: 12px 18px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            border: 1px solid var(--border-light);
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-light);
+            animation: bounce 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        .chat-footer {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-light);
+            background: var(--card-bg);
+        }
+
+        .chat-footer input {
+            flex: 1;
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .chat-footer input:focus {
+            border-color: var(--secondary);
+        }
+
+        .chat-footer button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .chat-footer button:hover {
+            background: #D4AF37;
+        }
+
+        /* ----- APPOINTMENT MODAL ----- */
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        .modal-content .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            background: var(--bg);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ----- TOAST ----- */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px 20px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            animation: slideInRight 0.3s ease;
+            pointer-events: auto;
+            max-width: 360px;
+        }
+
+        .toast i {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ----- CALL INTERFACE MODAL ----- */
+        .call-modal {
+            background: var(--primary);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 24px;
+            text-align: center;
+            color: #fff;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+        }
+
+        .call-modal .call-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0 auto 16px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .call-modal h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .call-modal .call-status {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin: 8px 0 24px;
+        }
+
+        .call-timer {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 32px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .call-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .call-action-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-action-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .call-action-btn.end-call {
+            background: #DC2626;
+        }
+
+        .call-action-btn.end-call:hover {
+            background: #EF4444;
+        }
+
+        .call-action-btn.active {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* ----- VIDEO CALL MODAL ----- */
+        .video-modal {
+            background: #0A0C10;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+            color: #fff;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .video-placeholder {
+            background: #1A1F26;
+            border-radius: 16px;
+            min-height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #2A3A4A;
+        }
+
+        .video-placeholder .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .video-placeholder .self-view {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 100px;
+            height: 70px;
+            border-radius: 10px;
+            background: #2A3A4A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #A0B0C0;
+            border: 2px solid #3A4A5A;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .video-controls .call-action-btn {
+            width: 48px;
+            height: 48px;
+            font-size: 1rem;
+        }
+
+        /* ----- TESTIMONIALS ----- */
+        .testimonials {
+            padding: 60px 0;
+            overflow: hidden;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 20px 4px 40px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .testimonial-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonial-card {
+            flex: 0 0 320px;
+            scroll-snap-align: start;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .testimonial-card .client-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-card .client-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), #E8C84A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .testimonial-card .client-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .testimonial-card .client-info p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .testimonial-card .stars {
+            color: #F59E0B;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* ----- SUCCESS STATS ----- */
+        .success-stats {
+            padding: 60px 0;
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .success-stats .section-title {
+            color: #fff;
+        }
+
+        .success-stats .section-sub {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .stats-grid .stat-box .stat-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--secondary);
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stats-grid .stat-box .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+            .stats-grid .stat-box .stat-value { font-size: 2rem; }
+        }
+
+        /* ----- FAQ ----- */
+        .faq {
+            padding: 60px 0;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 40px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            gap: 16px;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s;
+            padding: 0 24px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+
+        /* ----- FOOTER ----- */
+        .footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer ul li {
+            margin-bottom: 10px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer ul li:hover {
+            color: var(--secondary);
+        }
+
+        .footer .logo {
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .footer .footer-desc {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            max-width: 320px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ----- SKELETON LOADER ----- */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border-light) 25%, #E8EDF2 50%, var(--border-light) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ----- DARK MODE SPECIFIC ----- */
+        [data-theme="dark"] .search-bar input::placeholder,
+        [data-theme="dark"] .chat-footer input::placeholder {
+            color: #6A7A8A;
+        }
+
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 600px) {
+            .section-title { font-size: 1.6rem; }
+            .hero-text h1 { font-size: 1.9rem; }
+            .hero-stats { gap: 20px; }
+            .stat-item .stat-number { font-size: 1.4rem; }
+            .search-bar { flex-wrap: wrap; border-radius: 20px; padding: 12px; }
+            .search-bar input { width: 100%; padding: 10px 8px; }
+            .search-bar button { width: 100%; border-radius: 12px; }
+            .category-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .lawyer-grid { grid-template-columns: 1fr; }
+            .lawyer-actions { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .video-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 24px 20px; }
+        }
+
+        /* smooth scroll */
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo"><span>⚖️</span> Vakeel Connect</div>
-    <div class="mode-toggle" role="tablist" aria-label="Mode">
-      <button id="modeClient" class="active" role="tab" aria-selected="true">I need a lawyer</button>
-      <button id="modeLawyer" role="tab" aria-selected="false">I'm a lawyer</button>
-    </div>
-    <div id="lawyerLoginWrap" class="demo-login hidden">
-      <label for="lawyerSelect" class="text-muted">Demo login:</label>
-      <select id="lawyerSelect"></select>
-    </div>
-  </header>
-
-  <main class="container" id="app"></main>
-
-  <script>
-    (function() {
-      'use strict';
-
-      // ---------- ESCAPE HELPER ----------
-      function esc(str) {
-        if (str === null || str === undefined) return '';
-        return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      // ---------- STORAGE ----------
-      const STORAGE_KEY = 'vakeelConnect_v1';
-
-      function safeRead() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return null;
-          return JSON.parse(raw);
-        } catch (e) {
-          console.warn('Failed to read storage', e);
-          return null;
-        }
-      }
-
-      function safeWrite(data) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        } catch (e) {
-          console.warn('Failed to write storage', e);
-        }
-      }
-
-      // ---------- SEED DATA ----------
-      function getSeedData() {
-        const today = new Date();
-        function futureDate(daysAhead) {
-          const d = new Date(today);
-          d.setDate(d.getDate() + daysAhead);
-          return d.toISOString().slice(0, 10);
-        }
-
-        return {
-          lawyers: [
-            {
-              id: 'law1',
-              name: 'Rajesh Khanna',
-              city: 'Delhi',
-              practiceAreas: ['Criminal', 'Bail', 'White Collar'],
-              years: 18,
-              barNumber: 'D/1234/2007',
-              bio: 'Senior criminal defence counsel with extensive trial experience in Delhi High Court and district courts. Specialises in bail matters and white-collar crime.',
-              fee: 1500,
-              verified: true,
-              rating: 4.7,
-              reviewCount: 23,
-              availability: {
-                weekdays: [1,2,3,4,5],
-                slots: ['10:00', '11:00', '14:00', '15:00', '16:00']
-              },
-              cases: [
-                { id: 'c1', title: 'State v. Mehta', year: 2022, description: 'Represented accused in a high-profile economic offence; secured bail after 3 months.', source: 'https://example.com/case1' },
-                { id: 'c2', title: 'Delhi HC bail application', year: 2021, description: 'Successfully argued for anticipatory bail in a cyber fraud case.', source: '' },
-              ],
-              testimonials: [
-                { id: 't1', client: 'A. Sharma', rating: 5, text: 'Very responsive and got me bail quickly.' },
-                { id: 't2', client: 'P. Verma', rating: 4, text: 'Clear advice, though fees are on the higher side.' },
-              ],
-              news: [
-                { id: 'n1', headline: 'Appointed as amicus curiae in Delhi HC', date: '2024-03-10' },
-                { id: 'n2', headline: 'Published article on bail reform in legal journal', date: '2023-11-05' },
-              ],
-              bookings: [],
-            },
-            {
-              id: 'law2',
-              name: 'Meera Deshpande',
-              city: 'Mumbai',
-              practiceAreas: ['Corporate', 'IP', 'Contracts'],
-              years: 12,
-              barNumber: 'M/5678/2013',
-              bio: 'Corporate lawyer with a focus on technology and intellectual property. Advises startups on compliance, licensing and funding.',
-              fee: 2000,
-              verified: true,
-              rating: 4.9,
-              reviewCount: 31,
-              availability: {
-                weekdays: [1,3,5],
-                slots: ['09:00', '10:30', '13:00', '16:30']
-              },
-              cases: [
-                { id: 'c3', title: 'TechNova IP dispute', year: 2023, description: 'Represented a SaaS company in a trademark opposition; favourable settlement.', source: 'https://example.com/case2' },
-              ],
-              testimonials: [
-                { id: 't3', client: 'R. Iyer', rating: 5, text: 'Meera simplified a complex shareholder agreement.' },
-              ],
-              news: [
-                { id: 'n3', headline: 'Speaker at IP India Conference 2024', date: '2024-01-20' },
-              ],
-              bookings: [],
-            },
-            {
-              id: 'law3',
-              name: 'Ananya Rao',
-              city: 'Bengaluru',
-              practiceAreas: ['Family', 'Property', 'Mediation'],
-              years: 8,
-              barNumber: 'B/9012/2017',
-              bio: 'Family and property law specialist. Focuses on amicable settlements and mediation.',
-              fee: 1000,
-              verified: false,
-              rating: 4.2,
-              reviewCount: 9,
-              availability: {
-                weekdays: [2,4,6],
-                slots: ['10:00', '11:30', '15:00', '17:00']
-              },
-              cases: [],
-              testimonials: [],
-              news: [
-                { id: 'n4', headline: 'Panelist at Bengaluru mediation workshop', date: '2024-02-15' },
-              ],
-              bookings: [],
-            },
-          ],
-          version: 1
-        };
-      }
-
-      // ---------- STATE ----------
-      let state = {
-        mode: 'client',
-        currentLawyerId: null,
-        selectedLawyerId: 'law1',
-        profileTab: 'experience',
-        dashboardTab: 'profile',
-        bookingForm: {
-          lawyerId: null,
-          selectedDate: null,
-          selectedTime: null,
-          name: '',
-          email: '',
-          issue: '',
-          error: '',
-          success: false,
-          zoomLink: '',
-          bookingDetails: null,
-        },
-        searchQuery: '',
-        filterArea: '',
-      };
-
-      // Load or seed data
-      let db = safeRead();
-      if (!db || !db.lawyers || !Array.isArray(db.lawyers)) {
-        db = getSeedData();
-        safeWrite(db);
-      }
-
-      // ---------- RENDER HELPERS ----------
-      const app = document.getElementById('app');
-      const modeClientBtn = document.getElementById('modeClient');
-      const modeLawyerBtn = document.getElementById('modeLawyer');
-      const lawyerLoginWrap = document.getElementById('lawyerLoginWrap');
-      const lawyerSelect = document.getElementById('lawyerSelect');
-
-      function populateLawyerSelect() {
-        lawyerSelect.innerHTML = '';
-        db.lawyers.forEach(l => {
-          const opt = document.createElement('option');
-          opt.value = l.id;
-          opt.textContent = l.name + (l.verified ? ' ✓' : ' (pending)');
-          if (l.id === state.selectedLawyerId) opt.selected = true;
-          lawyerSelect.appendChild(opt);
-        });
-      }
-
-      function formatDate(dateStr) {
-        try {
-          const d = new Date(dateStr + 'T00:00:00');
-          return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-        } catch (e) {
-          return dateStr;
-        }
-      }
-
-      function formatTime12(time24) {
-        if (!time24) return '';
-        const [h, m] = time24.split(':').map(Number);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        return `${h12}:${String(m).padStart(2,'0')} ${ampm} IST`;
-      }
-
-      function getInitials(name) {
-        return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-      }
-
-      // ---------- RENDER: CLIENT HOME ----------
-      function renderClientHome() {
-        const query = state.searchQuery.toLowerCase().trim();
-        const filter = state.filterArea;
-
-        let filtered = db.lawyers.slice();
-        if (query) {
-          filtered = filtered.filter(l =>
-            l.name.toLowerCase().includes(query) ||
-            l.city.toLowerCase().includes(query) ||
-            l.practiceAreas.some(a => a.toLowerCase().includes(query))
-          );
-        }
-        if (filter) {
-          filtered = filtered.filter(l => l.practiceAreas.includes(filter));
-        }
-
-        const allAreas = [...new Set(db.lawyers.flatMap(l => l.practiceAreas))].sort();
-
-        let html = `
-          <div style="text-align:center; margin-bottom:28px;">
-            <h1>Find a trusted legal advisor</h1>
-            <p class="text-muted" style="max-width:600px; margin:0 auto 20px;">Read their experience, cases, and testimonials. Book a paid one-to-one Zoom consultation. First session always paid.</p>
-          </div>
-
-          <div class="card" style="margin-bottom:24px;">
-            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
-              <div style="flex:2; min-width:200px;">
-                <label for="searchInput" class="text-muted" style="font-size:0.8rem;">Search</label>
-                <input id="searchInput" type="text" placeholder="Name, city, or issue..." value="${esc(state.searchQuery)}" autocomplete="off">
-              </div>
-              <div style="flex:1; min-width:160px;">
-                <label for="filterArea" class="text-muted" style="font-size:0.8rem;">Practice area</label>
-                <select id="filterArea">
-                  <option value="">All areas</option>
-                  ${allAreas.map(a => `<option value="${esc(a)}" ${state.filterArea===a?'selected':''}>${esc(a)}</option>`).join('')}
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <div class="container nav">
+            <a href="#" class="logo" onclick="scrollToSection('hero')">
+                <i class="fas fa-scale-balanced"></i> LawConnect
+            </a>
+            <nav class="nav-links">
+                <a href="#hero" onclick="scrollToSection('hero')" data-i18n="home">Home</a>
+                <a href="#lawyers" onclick="scrollToSection('lawyers')" data-i18n="findLawyer">Find Lawyer</a>
+                <a href="#services" onclick="scrollToSection('services')" data-i18n="legalServices">Legal Services</a>
+                <a href="#pricing" onclick="scrollToSection('pricing')" data-i18n="pricing">Pricing</a>
+                <a href="#testimonials" onclick="scrollToSection('testimonials')" data-i18n="reviews">Reviews</a>
+                <a href="#faq" onclick="scrollToSection('faq')" data-i18n="faq">FAQ</a>
+                <a href="#lawyers" onclick="scrollToSection('lawyers')" data-i18n="lawyers">Lawyers</a>
+                <a href="#contact" onclick="scrollToSection('contact')" data-i18n="contact">Contact</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <select class="lang-selector" id="langSelector" aria-label="Select language">
+                    <option value="en">EN</option>
+                    <option value="hi">HI</option>
                 </select>
-              </div>
+                <button class="btn btn-secondary btn-sm" onclick="openConsultationModal()">
+                    <i class="fas fa-comment-dots"></i> <span data-i18n="consultNow">Consult Now</span>
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="openLawyerRegistration()">
+                    <i class="fas fa-user-tie"></i> <span data-i18n="becomeLawyer">Become A Lawyer</span>
+                </button>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-          </div>
-        `;
+        </div>
+    </header>
 
-        if (filtered.length === 0) {
-          html += `<div class="empty">No lawyers match your search. Try a different term or filter.</div>`;
-        } else {
-          html += `<div class="grid">`;
-          filtered.forEach(l => {
-            const avgRating = l.rating ? l.rating.toFixed(1) : '—';
-            const badgeClass = l.verified ? 'verified' : 'pending';
-            const badgeText = l.verified ? 'Bar Council verified' : 'Verification pending';
-            html += `
-              <div class="card lawyer-card">
-                <div style="display:flex; gap:12px; align-items:center;">
-                  <div class="avatar">${esc(getInitials(l.name))}</div>
-                  <div>
-                    <div style="font-weight:700; font-size:1.05rem;">${esc(l.name)}</div>
-                    <div class="text-muted">${esc(l.city)} · ${esc(l.years)} yrs exp</div>
-                  </div>
+    <main>
+        <!-- ===== HERO ===== -->
+        <section class="hero" id="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1 data-i18n="heroHeadline">Talk to Expert Lawyers in Minutes</h1>
+                    <p data-i18n="heroSub">Get instant legal advice for Family Matters, Divorce, Civil Cases, Criminal Cases, Property Disputes, Business Contracts, Consumer Complaints, Tax Notices and more.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="openConsultationModal()" data-i18n="startConsultation">
+                            <i class="fas fa-comment-medical"></i> Start Consultation
+                        </button>
+                        <button class="btn btn-outline" onclick="scrollToSection('lawyers')" data-i18n="findLawyerBtn">
+                            <i class="fas fa-search"></i> Find Lawyer
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item"><div class="stat-number" data-count="10000">10,000+</div><div class="stat-label" data-i18n="consultations">Consultations</div></div>
+                        <div class="stat-item"><div class="stat-number" data-count="500">500+</div><div class="stat-label" data-i18n="verifiedLawyers">Verified Lawyers</div></div>
+                        <div class="stat-item"><div class="stat-number" data-count="50">50+</div><div class="stat-label" data-i18n="cities">Cities</div></div>
+                        <div class="stat-item"><div class="stat-number">4.9</div><div class="stat-label" data-i18n="avgRating">Average Rating</div></div>
+                    </div>
                 </div>
-                <div><span class="badge ${badgeClass}">${badgeText}</span></div>
-                <div>${l.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}</div>
-                <div class="flex-between">
-                  <span class="stars">★ ${avgRating} <span class="text-muted">(${l.reviewCount})</span></span>
-                  <span class="text-muted">${l.cases.length} notable case${l.cases.length!==1?'s':''}</span>
+                <div class="hero-illustration">
+                    <div class="badge-verified"><i class="fas fa-check-circle"></i> Verified</div>
+                    <div class="lawyer-avatar-group">
+                        <div class="avatar-card">
+                            <div class="avatar-circle">AK</div>
+                            <div class="avatar-info"><h4>Adv. Amit Kumar</h4><p>Family Law • 12 yrs</p></div>
+                        </div>
+                        <div class="avatar-card">
+                            <div class="avatar-circle">PS</div>
+                            <div class="avatar-info"><h4>Adv. Priya Sharma</h4><p>Corporate Law • 8 yrs</p></div>
+                        </div>
+                        <div class="avatar-card">
+                            <div class="avatar-circle">RV</div>
+                            <div class="avatar-info"><h4>Adv. Rajesh Verma</h4><p>Criminal Law • 15 yrs</p></div>
+                        </div>
+                        <div class="avatar-card">
+                            <div class="avatar-circle">SM</div>
+                            <div class="avatar-info"><h4>Adv. Sunita Mehta</h4><p>Property Law • 10 yrs</p></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-between">
-                  <span class="fee">₹${l.fee}</span>
-                  <span class="text-muted" style="font-size:0.8rem;">first consult · 30 min</span>
-                </div>
-                <button class="btn-primary" style="width:100%; margin-top:4px;" data-lawyer-id="${esc(l.id)}" data-action="view-profile">View profile & book</button>
-              </div>
-            `;
-          });
-          html += `</div>`;
-        }
-
-        html += `
-          <div class="disclaimer" style="margin-top:30px;">
-            <strong>Important:</strong> A consultation is not a lawyer–client engagement until both parties agree.
-            Demo: payment and Zoom are simulated.
-          </div>
-        `;
-
-        app.innerHTML = html;
-
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-          searchInput.addEventListener('input', (e) => {
-            state.searchQuery = e.target.value;
-            const pos = e.target.selectionStart;
-            renderClientHome();
-            const newInput = document.getElementById('searchInput');
-            if (newInput) {
-              newInput.focus();
-              newInput.setSelectionRange(pos, pos);
-            }
-          });
-        }
-
-        const filterSelect = document.getElementById('filterArea');
-        if (filterSelect) {
-          filterSelect.addEventListener('change', (e) => {
-            state.filterArea = e.target.value;
-            renderClientHome();
-          });
-        }
-
-        document.querySelectorAll('[data-action="view-profile"]').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const id = e.currentTarget.getAttribute('data-lawyer-id');
-            state.currentLawyerId = id;
-            state.profileTab = 'experience';
-            resetBookingForm(id);
-            renderClientProfile();
-          });
-        });
-      }
-
-      // ---------- BOOKING FORM RESET ----------
-      function resetBookingForm(lawyerId) {
-        state.bookingForm = {
-          lawyerId: lawyerId,
-          selectedDate: null,
-          selectedTime: null,
-          name: '',
-          email: '',
-          issue: '',
-          error: '',
-          success: false,
-          zoomLink: '',
-          bookingDetails: null,
-        };
-      }
-
-      // ---------- RENDER: CLIENT PROFILE ----------
-      function renderClientProfile() {
-        const lawyer = db.lawyers.find(l => l.id === state.currentLawyerId);
-        if (!lawyer) {
-          state.currentLawyerId = null;
-          renderClientHome();
-          return;
-        }
-
-        const bf = state.bookingForm;
-        const isSuccess = bf.success;
-
-        let html = `<button class="btn-outline" style="margin-bottom:16px;" id="backToHome">← Back to all lawyers</button>`;
-
-        if (isSuccess && bf.bookingDetails) {
-          const bd = bf.bookingDetails;
-          html += `
-            <div class="card confirmation-box">
-              <h2 style="color:var(--success);">✅ Booking confirmed</h2>
-              <p style="margin:12px 0;">Your consultation with <strong>${esc(lawyer.name)}</strong> is booked.</p>
-              <div style="background:var(--bg); border-radius:var(--radius-sm); padding:16px; max-width:400px; margin:0 auto; text-align:left;">
-                <div><strong>Date:</strong> ${esc(formatDate(bd.date))}</div>
-                <div><strong>Time:</strong> ${esc(formatTime12(bd.time))}</div>
-                <div><strong>Amount paid:</strong> ₹${esc(bd.amount)}</div>
-                <div style="margin-top:8px;"><strong>Zoom link:</strong><br><span class="zoom-link">${esc(bd.zoomLink)}</span></div>
-              </div>
-              <p class="text-muted" style="margin-top:12px;">The Zoom link has been emailed to ${esc(bd.email)}.</p>
-              <div class="disclaimer" style="margin-top:20px;">
-                This is a demo. Payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
-              </div>
-              <button class="btn-primary" style="margin-top:16px;" id="backToHomeFromConfirm">Back to home</button>
             </div>
-          `;
-          app.innerHTML = html;
-          document.getElementById('backToHomeFromConfirm')?.addEventListener('click', () => {
-            state.currentLawyerId = null;
-            resetBookingForm(null);
-            renderClientHome();
-          });
-          return;
-        }
+        </section>
 
-        const tabs = ['experience', 'cases', 'testimonials', 'news'];
-        const tabLabels = { experience: 'Experience', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News & achievements' };
+        <!-- ===== SMART SEARCH ===== -->
+        <section class="smart-search">
+            <div class="container">
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="smartSearchInput" placeholder="Describe your legal issue..." data-i18n="searchPlaceholder">
+                        <button onclick="handleSearch()" data-i18n="searchBtn">Search</button>
+                    </div>
+                    <div class="search-suggestions" id="searchSuggestions">
+                        <div class="suggestion-item" onclick="selectSuggestion('My husband filed for divorce')"><i class="fas fa-heart-broken"></i> My husband filed for divorce</div>
+                        <div class="suggestion-item" onclick="selectSuggestion('Property dispute with brother')"><i class="fas fa-home"></i> Property dispute with brother</div>
+                        <div class="suggestion-item" onclick="selectSuggestion('Cheque bounce case')"><i class="fas fa-file-invoice"></i> Cheque bounce case</div>
+                        <div class="suggestion-item" onclick="selectSuggestion('Consumer complaint')"><i class="fas fa-shopping-cart"></i> Consumer complaint</div>
+                        <div class="suggestion-item" onclick="selectSuggestion('Business contract issue')"><i class="fas fa-handshake"></i> Business contract issue</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        html += `
-          <div class="profile-layout">
-            <div class="profile-main card">
-              <div style="display:flex; gap:14px; align-items:center; margin-bottom:16px;">
-                <div class="avatar" style="width:64px; height:64px; font-size:1.5rem;">${esc(getInitials(lawyer.name))}</div>
+        <!-- ===== CATEGORY GRID ===== -->
+        <section class="categories" id="services">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="categoryTitle">Legal Categories</h2>
+                <p class="section-sub text-center" data-i18n="categorySub">Find specialized lawyers across all major legal domains</p>
+                <div class="category-grid" id="categoryGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== LAWYER MARKETPLACE ===== -->
+        <section class="lawyers" id="lawyers">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="lawyerTitle">Verified Lawyers</h2>
+                <p class="section-sub text-center" data-i18n="lawyerSub">Connect with experienced legal professionals instantly</p>
+                <div class="lawyer-grid" id="lawyerGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== LEGAL SERVICES (Pricing cards) ===== -->
+        <section class="categories" id="pricing">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="serviceTitle">Legal Services Marketplace</h2>
+                <p class="section-sub text-center" data-i18n="serviceSub">Professional legal services at transparent prices</p>
+                <div class="category-grid" id="serviceGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== TESTIMONIALS ===== -->
+        <section class="testimonials" id="testimonials">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="testimonialTitle">Client Testimonials</h2>
+                <p class="section-sub text-center" data-i18n="testimonialSub">Real stories from real clients</p>
+                <div class="testimonial-slider" id="testimonialSlider"></div>
+            </div>
+        </section>
+
+        <!-- ===== SUCCESS STATS ===== -->
+        <section class="success-stats">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="successTitle">Success Stories</h2>
+                <p class="section-sub text-center" data-i18n="successSub">Our track record speaks for itself</p>
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+        </section>
+
+        <!-- ===== FAQ ===== -->
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2 class="section-title text-center" data-i18n="faqTitle">Frequently Asked Questions</h2>
+                <p class="section-sub text-center" data-i18n="faqSub">Answers to common questions about LawConnect</p>
+                <div class="faq-list" id="faqList"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
                 <div>
-                  <h2 style="margin:0;">${esc(lawyer.name)}</h2>
-                  <div class="text-muted">${esc(lawyer.city)} · ${esc(lawyer.years)} years experience</div>
-                  <div><span class="badge ${lawyer.verified?'verified':'pending'}">${lawyer.verified?'Bar Council verified':'Verification pending'}</span></div>
+                    <div class="logo"><i class="fas fa-scale-balanced"></i> LawConnect</div>
+                    <p class="footer-desc" data-i18n="footerDesc">India's legal consultation marketplace. Connect with verified lawyers for instant advice and legal services.</p>
                 </div>
-              </div>
-              <div class="tabs" role="tablist">
-                ${tabs.map(t => `<button class="${state.profileTab===t?'active':''}" data-tab="${t}" role="tab">${tabLabels[t]}</button>`).join('')}
-              </div>
-              <div id="profileTabContent">
-                ${renderProfileTabContent(lawyer, state.profileTab)}
-              </div>
+                <div>
+                    <h4 data-i18n="company">Company</h4>
+                    <ul>
+                        <li>About Us</li>
+                        <li>Careers</li>
+                        <li>Legal Resources</li>
+                        <li>Blog</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="legal">Legal</h4>
+                    <ul>
+                        <li>Privacy Policy</li>
+                        <li>Terms of Service</li>
+                        <li>Become a Lawyer</li>
+                        <li>Contact</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="support">Support</h4>
+                    <ul>
+                        <li>Help Center</li>
+                        <li>Community Forum</li>
+                        <li>Court Directory</li>
+                        <li>Knowledge Base</li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="profile-booking card">
-              <h3>Book a consultation</h3>
-              <div class="flex-between" style="margin-bottom:12px;">
-                <span class="fee">₹${esc(lawyer.fee)}</span>
-                <span class="text-muted">30 min · First session fee</span>
-              </div>
-
-              ${bf.error ? `<div style="color:var(--danger); font-size:0.85rem; margin-bottom:10px;">${esc(bf.error)}</div>` : ''}
-
-              <label class="text-muted" style="font-size:0.8rem;">Select a day</label>
-              <div class="day-picker" id="dayPicker"></div>
-
-              <label class="text-muted" style="font-size:0.8rem;">Select a time</label>
-              <div class="slot-picker" id="slotPicker"></div>
-
-              <div class="form-group">
-                <label for="bookName">Your name</label>
-                <input id="bookName" type="text" value="${esc(bf.name)}" placeholder="Full name">
-              </div>
-              <div class="form-group">
-                <label for="bookEmail">Email</label>
-                <input id="bookEmail" type="email" value="${esc(bf.email)}" placeholder="you@example.com">
-              </div>
-              <div class="form-group">
-                <label for="bookIssue">Short description of issue</label>
-                <textarea id="bookIssue" placeholder="Briefly describe your legal issue...">${esc(bf.issue)}</textarea>
-              </div>
-
-              <button class="btn-gold" style="width:100%;" id="payAndConfirm" ${(!bf.selectedDate || !bf.selectedTime) ? 'disabled style="opacity:0.6;"' : ''}>
-                Pay ₹${esc(lawyer.fee)} & confirm
-              </button>
-
-              <div class="disclaimer" style="margin-top:14px;">
-                Demo: payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
-                Lawyers should follow Bar Council advertising rules.
-              </div>
+            <div class="footer-bottom">
+                <span>© 2025 LawConnect. All rights reserved.</span>
+                <span>Made in India 🇮🇳</span>
             </div>
-          </div>
-        `;
+        </div>
+    </footer>
 
-        app.innerHTML = html;
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
 
-        document.querySelectorAll('.tabs button').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            state.profileTab = e.currentTarget.getAttribute('data-tab');
-            renderClientProfile();
-          });
+    <!-- ===== MODAL OVERLAY ===== -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <!-- Chat Modal -->
+        <div class="chat-modal" id="chatModal" style="display:none;" onclick="event.stopPropagation()">
+            <div class="chat-header">
+                <div class="chat-avatar" id="chatAvatar">AK</div>
+                <div class="chat-info">
+                    <h4 id="chatLawyerName">Adv. Amit Kumar</h4>
+                    <p>Online • Typically replies in 2 min</p>
+                </div>
+                <button class="close-btn" onclick="closeChat()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-body" id="chatBody"></div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <!-- Appointment Modal -->
+        <div class="modal-content" id="appointmentModal" style="display:none;" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 data-i18n="bookAppointment">Book Appointment</h2>
+            <form id="appointmentForm" onsubmit="submitAppointment(event)">
+                <div class="form-group"><label data-i18n="fullName">Full Name</label><input type="text" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="phone">Phone</label><input type="tel" required></div>
+                    <div class="form-group"><label data-i18n="email">Email</label><input type="email" required></div>
+                </div>
+                <div class="form-group"><label data-i18n="caseCategory">Case Category</label>
+                    <select required>
+                        <option value="">Select</option>
+                        <option>Family Law</option>
+                        <option>Divorce</option>
+                        <option>Criminal Law</option>
+                        <option>Civil Law</option>
+                        <option>Property Law</option>
+                        <option>Corporate Law</option>
+                        <option>Consumer Law</option>
+                        <option>Tax Law</option>
+                    </select>
+                </div>
+                <div class="form-group"><label data-i18n="caseDescription">Case Description</label><textarea rows="3" required></textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="preferredDate">Preferred Date</label><input type="date" required></div>
+                    <div class="form-group"><label data-i18n="preferredTime">Preferred Time</label><input type="time" required></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;" data-i18n="confirmBooking">Confirm Booking</button>
+            </form>
+        </div>
+
+        <!-- Audio Call Modal -->
+        <div class="call-modal" id="audioCallModal" style="display:none;" onclick="event.stopPropagation()">
+            <div class="call-avatar" id="callAvatar">AK</div>
+            <h3 id="callLawyerName">Adv. Amit Kumar</h3>
+            <p class="call-status" id="callStatus">Calling...</p>
+            <div class="call-timer" id="callTimer">00:00</div>
+            <div class="call-actions">
+                <button class="call-action-btn" id="muteBtn" onclick="toggleMute(this)"><i class="fas fa-microphone"></i></button>
+                <button class="call-action-btn" id="speakerBtn" onclick="toggleSpeaker(this)"><i class="fas fa-volume-up"></i></button>
+                <button class="call-action-btn" id="holdBtn" onclick="toggleHold(this)"><i class="fas fa-pause"></i></button>
+                <button class="call-action-btn" id="recordBtn" onclick="toggleRecord(this)"><i class="fas fa-circle"></i></button>
+                <button class="call-action-btn end-call" onclick="endCall()"><i class="fas fa-phone-slash"></i></button>
+            </div>
+        </div>
+
+        <!-- Video Call Modal -->
+        <div class="video-modal" id="videoCallModal" style="display:none;" onclick="event.stopPropagation()">
+            <div class="video-grid">
+                <div class="video-placeholder">
+                    <div class="avatar-large" id="videoAvatar">AK</div>
+                    <div class="self-view">You</div>
+                </div>
+                <div style="background:#1A1F26;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;">
+                    <h4 style="font-size:0.85rem;color:#A0B0C0;">Chat</h4>
+                    <div style="flex:1;background:#0A0C10;border-radius:8px;padding:8px;font-size:0.75rem;color:#A0B0C0;overflow-y:auto;">
+                        <p style="margin-bottom:6px;">Lawyer: Hello, how can I help?</p>
+                        <p style="color:#C9A227;">You: I need advice on property dispute.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="video-controls">
+                <button class="call-action-btn" id="micBtn" onclick="toggleMic(this)"><i class="fas fa-microphone"></i></button>
+                <button class="call-action-btn" id="camBtn" onclick="toggleCam(this)"><i class="fas fa-video"></i></button>
+                <button class="call-action-btn" id="shareBtn" onclick="toggleShare(this)"><i class="fas fa-screen-share"></i></button>
+                <button class="call-action-btn end-call" onclick="endVideoCall()"><i class="fas fa-phone-slash"></i></button>
+            </div>
+        </div>
+
+        <!-- Lawyer Registration Modal -->
+        <div class="modal-content" id="lawyerRegModal" style="display:none;" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 data-i18n="becomeLawyerTitle">Become A Lawyer</h2>
+            <form id="lawyerRegForm" onsubmit="submitLawyerRegistration(event)">
+                <div class="form-group"><label data-i18n="fullName">Full Name</label><input type="text" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="email">Email</label><input type="email" required></div>
+                    <div class="form-group"><label data-i18n="phone">Phone</label><input type="tel" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="barNumber">Bar Council Number</label><input type="text" required></div>
+                    <div class="form-group"><label data-i18n="experience">Experience (yrs)</label><input type="number" required></div>
+                </div>
+                <div class="form-group"><label data-i18n="specialization">Specialization</label><input type="text" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label data-i18n="city">City</label><input type="text" required></div>
+                    <div class="form-group"><label data-i18n="languages">Languages</label><input type="text" required></div>
+                </div>
+                <button type="submit" class="btn btn-secondary" style="width:100%;margin-top:8px;" data-i18n="submitApplication">Submit Application</button>
+            </form>
+        </div>
+
+        <!-- Document Review Modal -->
+        <div class="modal-content" id="docReviewModal" style="display:none;" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 data-i18n="docReviewTitle">Document Review</h2>
+            <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:20px;" data-i18n="docReviewSub">Upload your legal documents for expert review</p>
+            <div id="dropZone" style="border:2px dashed var(--border-light);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:16px;"
+                 ondragover="event.preventDefault(); this.style.borderColor='var(--secondary)'"
+                 ondragleave="this.style.borderColor='var(--border-light)'"
+                 ondrop="handleDrop(event)">
+                <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem;color:var(--secondary);margin-bottom:12px;display:block;"></i>
+                <p style="font-weight:600;" data-i18n="dragDrop">Drag & drop files here or click to browse</p>
+                <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">PDF, JPG, PNG, DOCX up to 10MB</p>
+                <input type="file" id="fileInput" multiple style="display:none;" onchange="handleFileSelect(event)">
+            </div>
+            <div id="fileList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+            <button class="btn btn-primary" style="width:100%;" onclick="submitDocReview()" data-i18n="requestReview">Request Review</button>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ============================================
+        // DATA
+        // ============================================
+        const lawyersData = [
+            { id:1, name:'Adv. Amit Kumar', initials:'AK', spec:'Family Law', exp:12, langs:'Hindi, English', city:'Delhi', rating:4.9, reviews:234, fee:500, online:true },
+            { id:2, name:'Adv. Priya Sharma', initials:'PS', spec:'Corporate Law', exp:8, langs:'English, Hindi', city:'Mumbai', rating:4.8, reviews:189, fee:800, online:true },
+            { id:3, name:'Adv. Rajesh Verma', initials:'RV', spec:'Criminal Law', exp:15, langs:'Hindi, English, Punjabi', city:'Delhi', rating:4.9, reviews:312, fee:1000, online:false },
+            { id:4, name:'Adv. Sunita Mehta', initials:'SM', spec:'Property Law', exp:10, langs:'Hindi, English, Marathi', city:'Pune', rating:4.7, reviews:156, fee:600, online:true },
+            { id:5, name:'Adv. Vikram Singh', initials:'VS', spec:'Civil Law', exp:20, langs:'Hindi, English', city:'Lucknow', rating:4.9, reviews:420, fee:1200, online:true },
+            { id:6, name:'Adv. Neha Gupta', initials:'NG', spec:'Consumer Law', exp:6, langs:'Hindi, English', city:'Jaipur', rating:4.6, reviews:98, fee:400, online:true },
+            { id:7, name:'Adv. Suresh Iyer', initials:'SI', spec:'Tax Law', exp:18, langs:'English, Tamil, Hindi', city:'Chennai', rating:4.8, reviews:267, fee:1500, online:false },
+            { id:8, name:'Adv. Anjali Desai', initials:'AD', spec:'Cyber Crime Law', exp:7, langs:'English, Hindi, Gujarati', city:'Ahmedabad', rating:4.7, reviews:112, fee:700, online:true },
+            { id:9, name:'Adv. Manoj Tiwari', initials:'MT', spec:'Labour Law', exp:14, langs:'Hindi, English', city:'Kolkata', rating:4.8, reviews:203, fee:800, online:true },
+            { id:10, name:'Adv. Kavita Rao', initials:'KR', spec:'Startup Law', exp:9, langs:'English, Hindi, Telugu', city:'Hyderabad', rating:4.9, reviews:145, fee:900, online:true },
+            { id:11, name:'Adv. Ravi Shankar', initials:'RS', spec:'Trademark Law', exp:11, langs:'English, Hindi', city:'Bangalore', rating:4.7, reviews:178, fee:1100, online:false },
+            { id:12, name:'Adv. Pooja Nair', initials:'PN', spec:'Divorce Law', exp:13, langs:'English, Hindi, Malayalam', city:'Kochi', rating:4.9, reviews:289, fee:700, online:true },
+            { id:13, name:'Adv. Arjun Kapoor', initials:'AK', spec:'Criminal Law', exp:9, langs:'Hindi, English', city:'Delhi', rating:4.6, reviews:134, fee:900, online:true },
+            { id:14, name:'Adv. Meera Joshi', initials:'MJ', spec:'Family Law', exp:16, langs:'Hindi, English, Marathi', city:'Mumbai', rating:4.8, reviews:345, fee:1000, online:true },
+            { id:15, name:'Adv. Sanjay Dutt', initials:'SD', spec:'Property Law', exp:22, langs:'Hindi, English', city:'Gurgaon', rating:4.9, reviews:512, fee:1500, online:false },
+            { id:16, name:'Adv. Ritu Ahuja', initials:'RA', spec:'Corporate Law', exp:7, langs:'English, Hindi, Punjabi', city:'Chandigarh', rating:4.7, reviews:89, fee:800, online:true },
+            { id:17, name:'Adv. Deepak Chawla', initials:'DC', spec:'Civil Law', exp:19, langs:'Hindi, English', city:'Noida', rating:4.8, reviews:376, fee:1100, online:true },
+            { id:18, name:'Adv. Shalini Pandey', initials:'SP', spec:'Consumer Law', exp:5, langs:'Hindi, English', city:'Bhopal', rating:4.5, reviews:67, fee:400, online:true },
+            { id:19, name:'Adv. Harish Bhatt', initials:'HB', spec:'Tax Law', exp:17, langs:'English, Hindi, Gujarati', city:'Surat', rating:4.9, reviews:298, fee:1300, online:true },
+            { id:20, name:'Adv. Nisha Kulkarni', initials:'NK', spec:'Labour Law', exp:10, langs:'English, Hindi, Marathi', city:'Nagpur', rating:4.6, reviews:123, fee:600, online:false }
+        ];
+
+        const categoriesData = [
+            { icon:'fa-users', name:'Family Lawyer', desc:'Divorce, child custody, maintenance', count:'2,400+ consultations' },
+            { icon:'fa-heart-broken', name:'Divorce Lawyer', desc:'Mutual consent, contested divorce', count:'1,800+ consultations' },
+            { icon:'fa-gavel', name:'Criminal Lawyer', desc:'Bail, FIR, criminal defense', count:'3,200+ consultations' },
+            { icon:'fa-scale-balanced', name:'Civil Lawyer', desc:'Civil disputes, injunctions', count:'1,500+ consultations' },
+            { icon:'fa-home', name:'Property Lawyer', desc:'Title verification, partition', count:'2,100+ consultations' },
+            { icon:'fa-building', name:'Corporate Lawyer', desc:'Contracts, compliance, M&A', count:'1,200+ consultations' },
+            { icon:'fa-shopping-cart', name:'Consumer Lawyer', desc:'Consumer complaints, refunds', count:'900+ consultations' },
+            { icon:'fa-file-invoice', name:'Tax Lawyer', desc:'Tax notices, GST, income tax', count:'1,100+ consultations' },
+            { icon:'fa-shield-halved', name:'Cyber Crime Lawyer', desc:'Online fraud, identity theft', count:'700+ consultations' },
+            { icon:'fa-briefcase', name:'Labour Lawyer', desc:'Wrongful termination, wages', count:'800+ consultations' },
+            { icon:'fa-rocket', name:'Startup Lawyer', desc:'Incorporation, funding, IP', count:'600+ consultations' },
+            { icon:'fa-trademark', name:'Trademark Lawyer', desc:'Registration, infringement', count:'500+ consultations' }
+        ];
+
+        const servicesData = [
+            { icon:'fa-comments', name:'Legal Consultation', price:'₹499', desc:'30 min expert advice' },
+            { icon:'fa-file-alt', name:'Document Review', price:'₹999', desc:'Detailed review & report' },
+            { icon:'fa-envelope', name:'Legal Notice Drafting', price:'₹1,499', desc:'Professionally drafted notice' },
+            { icon:'fa-file-signature', name:'Agreement Drafting', price:'₹1,999', desc:'Custom agreement drafting' },
+            { icon:'fa-trademark', name:'Trademark Registration', price:'₹5,999', desc:'Complete filing support' },
+            { icon:'fa-receipt', name:'GST Registration', price:'₹1,999', desc:'End-to-end GST setup' },
+            { icon:'fa-building', name:'Company Registration', price:'₹6,999', desc:'Pvt Ltd, LLP, OPC' },
+            { icon:'fa-home', name:'Property Verification', price:'₹2,499', desc:'Title & legal verification' },
+            { icon:'fa-rocket', name:'Startup Legal Package', price:'₹9,999', desc:'Incorporation + compliance' },
+            { icon:'fa-briefcase', name:'Employment Contracts', price:'₹1,499', desc:'Offer letter, employment agreement' },
+            { icon:'fa-shield', name:'Privacy Policy Drafting', price:'₹1,999', desc:'GDPR & IT Act compliant' },
+            { icon:'fa-file-contract', name:'Terms & Conditions', price:'₹1,999', desc:'Website/app T&C drafting' }
+        ];
+
+        const testimonialsData = [
+            { name:'Rahul Sharma', case:'Property Dispute', rating:5, text:'LawConnect helped me resolve a 3-year property dispute in just 4 months. The lawyer was extremely knowledgeable and responsive.' },
+            { name:'Priya Singh', case:'Divorce', rating:5, text:'Very sensitive and professional handling of my divorce case. The consultation was quick and gave me clarity on the entire process.' },
+            { name:'Amit Patel', case:'Cheque Bounce', rating:4, text:'Got excellent legal advice for my cheque bounce case. The lawyer explained everything in simple language and helped me file the case.' },
+            { name:'Sneha Reddy', case:'Consumer Complaint', rating:5, text:'I was struggling with a consumer complaint against a major e-commerce company. LawConnect connected me with the right lawyer within minutes.' },
+            { name:'Vikram Joshi', case:'Business Contract', rating:5, text:'The agreement drafting service was top-notch. The lawyer understood my business needs perfectly and delivered a comprehensive contract.' },
+            { name:'Ananya Gupta', case:'Family Law', rating:4, text:'Professional and empathetic lawyers. They helped me understand my rights regarding child custody and maintenance.' },
+            { name:'Karan Mehta', case:'Cyber Crime', rating:5, text:'My identity was stolen online. The cyber crime lawyer on LawConnect was extremely helpful and acted quickly to resolve the issue.' },
+            { name:'Deepika Nair', case:'Tax Notice', rating:5, text:'Received a tax notice and was panicking. The tax lawyer guided me through the entire process and got the notice resolved.' },
+            { name:'Suresh Kumar', case:'Labour Law', rating:4, text:'Wrongful termination from my company. LawConnect's labour lawyer helped me get my rightful compensation within 2 months.' },
+            { name:'Ritu Agarwal', case:'Trademark', rating:5, text:'Registered my brand trademark through LawConnect. The process was smooth and the lawyer kept me updated at every step.' }
+        ];
+
+        const faqData = [
+            { q:'How quickly can I connect with a lawyer?', a:'You can connect with a lawyer in under 2 minutes through our instant chat, audio, or video call feature. Simply select a lawyer and start your consultation.' },
+            { q:'Are the lawyers verified?', a:'Yes, all lawyers on LawConnect undergo a strict verification process including Bar Council registration check, experience validation, and client feedback review.' },
+            { q:'What is the consultation fee?', a:'Consultation fees vary by lawyer and specialization, starting from ₹400. The fee is displayed on each lawyer\'s profile before you connect.' },
+            { q:'Can I get legal advice in Hindi?', a:'Yes, many of our lawyers are fluent in Hindi and other regional languages. You can filter lawyers by language preference.' },
+            { q:'Is my consultation confidential?', a:'Absolutely. All consultations are 100% confidential and protected by attorney-client privilege. Your information is never shared.' },
+            { q:'How do I pay for services?', a:'We accept all major payment methods including UPI, credit/debit cards, and net banking. Payment is processed securely.' },
+            { q:'Can I reschedule my appointment?', a:'Yes, you can reschedule your appointment up to 2 hours before the scheduled time through your dashboard or by contacting support.' },
+            { q:'Do you provide document review services?', a:'Yes, we offer comprehensive document review services for legal notices, agreements, contracts, and court documents starting at ₹999.' },
+            { q:'What if I\'m not satisfied with the consultation?', a:'We have a satisfaction guarantee. If you\'re not satisfied, please contact our support team within 24 hours for a resolution or refund.' },
+            { q:'Can I choose a specific lawyer?', a:'Yes, you can browse our lawyer directory, view profiles, read reviews, and choose the lawyer that best fits your needs.' },
+            { q:'How long does a typical consultation last?', a:'Standard consultations last 30 minutes. Extended consultations are available based on the lawyer\'s availability.' },
+            { q:'Do you offer emergency legal help?', a:'Yes, we have lawyers available 24/7 for emergency matters like bail applications, urgent notices, and injunctions.' },
+            { q:'Is LawConnect available in my city?', a:'We operate in 50+ cities across India. Even if a lawyer isn\'t in your city, you can consult via video/audio call.' },
+            { q:'Can I get a legal notice drafted?', a:'Yes, our legal notice drafting service starts at ₹1,499. You provide the details and a lawyer will draft and send the notice on your behalf.' },
+            { q:'What documents do I need for consultation?', a:'For most consultations, no documents are needed initially. Based on your issue, the lawyer may request relevant documents for review.' }
+        ];
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderLawyers();
+            renderServices();
+            renderTestimonials();
+            renderStats();
+            renderFAQs();
+            initTheme();
+            initLanguage();
+            initSearch();
+            loadAppointments();
+            loadChatHistory();
         });
 
-        document.getElementById('backToHome')?.addEventListener('click', () => {
-          state.currentLawyerId = null;
-          renderClientHome();
-        });
-
-        renderDayPicker(lawyer);
-        renderSlotPicker(lawyer);
-
-        document.getElementById('bookName')?.addEventListener('input', (e) => { state.bookingForm.name = e.target.value; });
-        document.getElementById('bookEmail')?.addEventListener('input', (e) => { state.bookingForm.email = e.target.value; });
-        document.getElementById('bookIssue')?.addEventListener('input', (e) => { state.bookingForm.issue = e.target.value; });
-
-        document.getElementById('payAndConfirm')?.addEventListener('click', () => {
-          handleBookingPayment(lawyer);
-        });
-      }
-
-      function renderProfileTabContent(lawyer, tab) {
-        if (tab === 'experience') {
-          return `
-            <div>
-              <p style="margin-bottom:12px;">${esc(lawyer.bio || 'No bio provided.')}</p>
-              <div class="flex-between" style="font-size:0.9rem;">
-                <span><strong>Years of experience:</strong> ${esc(lawyer.years)}</span>
-                <span><strong>Bar enrolment:</strong> ${esc(lawyer.barNumber)}</span>
-              </div>
-              <div style="margin-top:10px;">
-                <strong>Practice areas:</strong> ${lawyer.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}
-              </div>
-            </div>
-          `;
-        }
-        if (tab === 'cases') {
-          if (!lawyer.cases || lawyer.cases.length === 0) {
-            return `<div class="empty">None added yet</div>`;
-          }
-          return lawyer.cases.map(c => `
-            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
-              <div style="font-weight:600;">${esc(c.title)} <span class="text-muted">(${esc(c.year)})</span></div>
-              <div style="font-size:0.9rem; margin:4px 0;">${esc(c.description)}</div>
-              ${c.source && (c.source.startsWith('http://') || c.source.startsWith('https://')) ? 
-                `<a href="${esc(c.source)}" target="_blank" rel="noopener" class="text-muted" style="font-size:0.8rem;">Public source ↗</a>` : ''}
-            </div>
-          `).join('');
-        }
-        if (tab === 'testimonials') {
-          if (!lawyer.testimonials || lawyer.testimonials.length === 0) {
-            return `<div class="empty">None added yet</div>`;
-          }
-          return lawyer.testimonials.map(t => `
-            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
-              <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)} <span class="text-muted" style="font-size:0.8rem;">— ${esc(t.client)}</span></div>
-              <div style="font-size:0.9rem; margin-top:4px;">"${esc(t.text)}"</div>
-            </div>
-          `).join('');
-        }
-        if (tab === 'news') {
-          if (!lawyer.news || lawyer.news.length === 0) {
-            return `<div class="empty">None added yet</div>`;
-          }
-          const sorted = [...lawyer.news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
-          return sorted.map(n => `
-            <div class="list-item">
-              <div>${esc(n.headline)}</div>
-              <div class="text-muted" style="font-size:0.8rem;">${esc(n.date)}</div>
-            </div>
-          `).join('');
-        }
-        return '';
-      }
-
-      // ---------- DAY PICKER ----------
-      function renderDayPicker(lawyer) {
-        const container = document.getElementById('dayPicker');
-        if (!container) return;
-        const weekdays = lawyer.availability?.weekdays || [];
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        let daysHtml = '';
-        let count = 0;
-        for (let i = 0; i < 30 && count < 10; i++) {
-          const d = new Date(today);
-          d.setDate(d.getDate() + i);
-          const dayOfWeek = d.getDay();
-          if (weekdays.includes(dayOfWeek)) {
-            const dateStr = d.toISOString().slice(0,10);
-            const selected = state.bookingForm.selectedDate === dateStr;
-            daysHtml += `<button class="day-btn ${selected?'selected':''}" data-date="${esc(dateStr)}">${esc(d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }))}</button>`;
-            count++;
-          }
-        }
-        container.innerHTML = daysHtml || `<div class="text-muted" style="font-size:0.85rem;">No available days</div>`;
-
-        container.querySelectorAll('.day-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            state.bookingForm.selectedDate = e.currentTarget.getAttribute('data-date');
-            state.bookingForm.selectedTime = null;
-            renderClientProfile();
-          });
-        });
-      }
-
-      // ---------- SLOT PICKER ----------
-      function renderSlotPicker(lawyer) {
-        const container = document.getElementById('slotPicker');
-        if (!container) return;
-        const selectedDate = state.bookingForm.selectedDate;
-        if (!selectedDate) {
-          container.innerHTML = `<div class="text-muted" style="font-size:0.85rem;">Pick a day first</div>`;
-          return;
-        }
-        const slots = lawyer.availability?.slots || [];
-        const bookedSlots = (lawyer.bookings || []).filter(b => b.date === selectedDate).map(b => b.time);
-
-        let html = '';
-        slots.forEach(time => {
-          const isBooked = bookedSlots.includes(time);
-          const isSelected = state.bookingForm.selectedTime === time;
-          html += `<button class="slot-btn ${isSelected?'selected':''}" data-time="${esc(time)}" ${isBooked?'disabled':''}>${esc(formatTime12(time))}${isBooked?' (booked)':''}</button>`;
-        });
-        container.innerHTML = html || `<div class="text-muted" style="font-size:0.85rem;">No slots available</div>`;
-
-        container.querySelectorAll('.slot-btn:not(:disabled)').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            state.bookingForm.selectedTime = e.currentTarget.getAttribute('data-time');
-            renderClientProfile();
-          });
-        });
-      }
-
-      // ---------- BOOKING PAYMENT ----------
-      function handleBookingPayment(lawyer) {
-        const bf = state.bookingForm;
-        bf.error = '';
-
-        if (!bf.selectedDate || !bf.selectedTime) {
-          bf.error = 'Please select a day and time slot.';
-          renderClientProfile();
-          return;
-        }
-        if (!bf.name.trim()) {
-          bf.error = 'Please enter your name.';
-          renderClientProfile();
-          return;
-        }
-        if (!bf.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bf.email.trim())) {
-          bf.error = 'Please enter a valid email address.';
-          renderClientProfile();
-          return;
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        function renderCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = categoriesData.map(c => `
+                <div class="category-card" onclick="openConsultationModal()">
+                    <div class="icon"><i class="fas ${c.icon}"></i></div>
+                    <h3>${c.name}</h3>
+                    <p>${c.desc}</p>
+                    <div class="meta"><i class="fas fa-users"></i> ${c.count}</div>
+                </div>
+            `).join('');
         }
 
-        const freshLawyer = db.lawyers.find(l => l.id === lawyer.id);
-        const alreadyBooked = (freshLawyer.bookings || []).some(b => b.date === bf.selectedDate && b.time === bf.selectedTime);
-        if (alreadyBooked) {
-          bf.error = 'That slot was just booked. Please choose another.';
-          renderClientProfile();
-          return;
+        function renderLawyers() {
+            const grid = document.getElementById('lawyerGrid');
+            grid.innerHTML = lawyersData.map(l => `
+                <div class="lawyer-card">
+                    <div class="status-badge ${l.online ? '' : 'offline'}">
+                        <i class="fas fa-circle" style="font-size:0.5rem;"></i> ${l.online ? 'Online' : 'Offline'}
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-avatar">${l.initials}</div>
+                        <div class="profile-info">
+                            <h3>${l.name} <i class="fas fa-check-circle" style="color:var(--secondary);font-size:0.8rem;"></i></h3>
+                            <div class="specialization">${l.spec}</div>
+                            <div class="details">
+                                <span><i class="fas fa-briefcase"></i> ${l.exp} yrs</span>
+                                <span><i class="fas fa-language"></i> ${l.langs}</span>
+                                <span><i class="fas fa-map-pin"></i> ${l.city}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span class="stars">${'★'.repeat(Math.round(l.rating))}${'☆'.repeat(5-Math.round(l.rating))}</span>
+                        <span>${l.rating}</span>
+                        <span style="color:var(--text-light);font-size:0.8rem;">(${l.reviews} reviews)</span>
+                    </div>
+                    <div class="fee">₹${l.fee} <span>/ consultation</span></div>
+                    <div class="lawyer-actions">
+                        <button class="action-btn" onclick="openChat(${l.id})"><i class="fas fa-comment"></i>Chat</button>
+                        <button class="action-btn" onclick="openAudioCall(${l.id})"><i class="fas fa-phone"></i>Audio</button>
+                        <button class="action-btn" onclick="openVideoCall(${l.id})"><i class="fas fa-video"></i>Video</button>
+                        <button class="action-btn" onclick="openAppointment(${l.id})"><i class="fas fa-calendar"></i>Book</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        const zoomLink = `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`;
-        const booking = {
-          id: 'bk' + Date.now(),
-          lawyerId: lawyer.id,
-          date: bf.selectedDate,
-          time: bf.selectedTime,
-          clientName: bf.name.trim(),
-          clientEmail: bf.email.trim(),
-          issue: bf.issue.trim(),
-          amount: lawyer.fee,
-          zoomLink: zoomLink,
-          paid: true,
+        function renderServices() {
+            const grid = document.getElementById('serviceGrid');
+            grid.innerHTML = servicesData.map(s => `
+                <div class="category-card" onclick="openConsultationModal()">
+                    <div class="icon"><i class="fas ${s.icon}"></i></div>
+                    <h3>${s.name}</h3>
+                    <p>${s.desc}</p>
+                    <div class="meta" style="font-size:1rem;color:var(--primary);font-weight:800;">${s.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderTestimonials() {
+            const slider = document.getElementById('testimonialSlider');
+            slider.innerHTML = testimonialsData.map(t => `
+                <div class="testimonial-card">
+                    <div class="client-row">
+                        <div class="client-avatar">${t.name.split(' ').map(n=>n[0]).join('')}</div>
+                        <div class="client-info">
+                            <h4>${t.name}</h4>
+                            <p>${t.case}</p>
+                        </div>
+                    </div>
+                    <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</div>
+                    <p>"${t.text}"</p>
+                </div>
+            `).join('');
+        }
+
+        function renderStats() {
+            const grid = document.getElementById('statsGrid');
+            const stats = [
+                { value:'₹50Cr+', label:'Recovered Settlements' },
+                { value:'8,500+', label:'Resolved Cases' },
+                { value:'12,000+', label:'Satisfied Clients' },
+                { value:'500+', label:'Lawyers Onboarded' }
+            ];
+            grid.innerHTML = stats.map(s => `
+                <div class="stat-box">
+                    <div class="stat-value">${s.value}</div>
+                    <div class="stat-label">${s.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderFAQs() {
+            const list = document.getElementById('faqList');
+            list.innerHTML = faqData.map((f, i) => `
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>${f.q}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">${f.a}</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // INTERACTIONS
+        // ============================================
+        function toggleFaq(el) {
+            const isOpen = el.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+            if (!isOpen) el.classList.add('open');
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior:'smooth' });
+        }
+
+        // Search
+        function initSearch() {
+            const input = document.getElementById('smartSearchInput');
+            const suggestions = document.getElementById('searchSuggestions');
+
+            input.addEventListener('focus', () => suggestions.classList.add('active'));
+            input.addEventListener('input', () => {
+                if (input.value.length > 0) suggestions.classList.add('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-wrapper')) suggestions.classList.remove('active');
+            });
+        }
+
+        function selectSuggestion(text) {
+            document.getElementById('smartSearchInput').value = text;
+            document.getElementById('searchSuggestions').classList.remove('active');
+            handleSearch();
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('smartSearchInput').value.trim();
+            if (!query) {
+                showToast('Please describe your legal issue', 'info');
+                return;
+            }
+            showToast(`Searching for lawyers for: "${query}"`, 'success');
+            scrollToSection('lawyers');
+        }
+
+        // ============================================
+        // MODAL MANAGEMENT
+        // ============================================
+        function openModal(id) {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.querySelectorAll('#modalOverlay > div').forEach(el => el.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.querySelectorAll('#modalOverlay > div').forEach(el => el.style.display = 'none');
+            clearCallTimer();
+        }
+
+        // ============================================
+        // CHAT
+        // ============================================
+        let currentChatLawyer = null;
+        let typingTimeout = null;
+
+        function openChat(lawyerId) {
+            const lawyer = lawyersData.find(l => l.id === lawyerId);
+            if (!lawyer) return;
+            currentChatLawyer = lawyer;
+            document.getElementById('chatAvatar').textContent = lawyer.initials;
+            document.getElementById('chatLawyerName').textContent = lawyer.name;
+            openModal('chatModal');
+
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML = '';
+
+            const history = JSON.parse(localStorage.getItem('chatHistory_' + lawyerId) || '[]');
+            if (history.length > 0) {
+                history.forEach(msg => addChatMessage(msg.text, msg.sent, msg.time));
+            } else {
+                addChatMessage(`Hello! I am ${lawyer.name}. How can I help you with your ${lawyer.spec} matter?`, false, getTime());
+            }
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function closeChat() {
+            closeModal();
+            currentChatLawyer = null;
+        }
+
+        function getTime() {
+            return new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+        }
+
+        function addChatMessage(text, isSent, time) {
+            const chatBody = document.getElementById('chatBody');
+            const div = document.createElement('div');
+            div.className = `message ${isSent ? 'sent' : 'received'}`;
+            div.innerHTML = `${text}<span class="timestamp">${time}</span>`;
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text || !currentChatLawyer) return;
+
+            addChatMessage(text, true, getTime());
+            input.value = '';
+
+            // Save to localStorage
+            const key = 'chatHistory_' + currentChatLawyer.id;
+            const history = JSON.parse(localStorage.getItem(key) || '[]');
+            history.push({ text, sent:true, time:getTime() });
+            localStorage.setItem(key, JSON.stringify(history));
+
+            // Auto response
+            const responses = [
+                "Thank you for sharing. Let me analyze this and get back to you.",
+                "I understand your concern. Could you provide more details?",
+                "Based on what you've described, here's my initial assessment...",
+                "That's a valid point. Let me explain the legal position.",
+                "I'll need to review some documents. Can you upload them?",
+                "This is a common issue. Here's what we can do...",
+                "Let me check the relevant provisions and advise you accordingly.",
+                "I recommend we schedule a detailed consultation for this matter."
+            ];
+            showTypingIndicator();
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                removeTypingIndicator();
+                const reply = responses[Math.floor(Math.random() * responses.length)];
+                addChatMessage(reply, false, getTime());
+                history.push({ text:reply, sent:false, time:getTime() });
+                localStorage.setItem(key, JSON.stringify(history));
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function showTypingIndicator() {
+            const chatBody = document.getElementById('chatBody');
+            const div = document.createElement('div');
+            div.className = 'typing-indicator';
+            div.id = 'typingIndicator';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        function loadChatHistory() {
+            // Placeholder for any chat history loading
+        }
+
+        // ============================================
+        // AUDIO CALL
+        // ============================================
+        let callTimerInterval = null;
+        let callSeconds = 0;
+        let currentCallLawyer = null;
+
+        function openAudioCall(lawyerId) {
+            const lawyer = lawyersData.find(l => l.id === lawyerId);
+            if (!lawyer) return;
+            currentCallLawyer = lawyer;
+            document.getElementById('callAvatar').textContent = lawyer.initials;
+            document.getElementById('callLawyerName').textContent = lawyer.name;
+            document.getElementById('callStatus').textContent = 'Connecting...';
+            document.getElementById('callTimer').textContent = '00:00';
+            openModal('audioCallModal');
+
+            callSeconds = 0;
+            clearInterval(callTimerInterval);
+
+            setTimeout(() => {
+                document.getElementById('callStatus').textContent = 'Connected';
+                callTimerInterval = setInterval(() => {
+                    callSeconds++;
+                    const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+                    const secs = String(callSeconds % 60).padStart(2, '0');
+                    document.getElementById('callTimer').textContent = `${mins}:${secs}`;
+                }, 1000);
+            }, 2000);
+        }
+
+        function clearCallTimer() {
+            clearInterval(callTimerInterval);
+            callTimerInterval = null;
+            callSeconds = 0;
+        }
+
+        function endCall() {
+            clearCallTimer();
+            closeModal();
+            showToast('Call ended', 'info');
+        }
+
+        function toggleMute(btn) {
+            btn.classList.toggle('active');
+            showToast(btn.classList.contains('active') ? 'Muted' : 'Unmuted', 'info');
+        }
+
+        function toggleSpeaker(btn) {
+            btn.classList.toggle('active');
+            showToast(btn.classList.contains('active') ? 'Speaker On' : 'Speaker Off', 'info');
+        }
+
+        function toggleHold(btn) {
+            btn.classList.toggle('active');
+            showToast(btn.classList.contains('active') ? 'Call on Hold' : 'Call Resumed', 'info');
+        }
+
+        function toggleRecord(btn) {
+            btn.classList.toggle('active');
+            showToast(btn.classList.contains('active') ? 'Recording Started' : 'Recording Stopped', 'info');
+        }
+
+        // ============================================
+        // VIDEO CALL
+        // ============================================
+        function openVideoCall(lawyerId) {
+            const lawyer = lawyersData.find(l => l.id === lawyerId);
+            if (!lawyer) return;
+            document.getElementById('videoAvatar').textContent = lawyer.initials;
+            openModal('videoCallModal');
+            showToast('Video consultation started', 'success');
+        }
+
+        function endVideoCall() {
+            closeModal();
+            showToast('Video call ended', 'info');
+        }
+
+        function toggleMic(btn) { btn.classList.toggle('active'); showToast(btn.classList.contains('active') ? 'Mic Off' : 'Mic On', 'info'); }
+        function toggleCam(btn) { btn.classList.toggle('active'); showToast(btn.classList.contains('active') ? 'Camera Off' : 'Camera On', 'info'); }
+        function toggleShare(btn) { btn.classList.toggle('active'); showToast(btn.classList.contains('active') ? 'Screen Sharing' : 'Screen Share Stopped', 'info'); }
+
+        // ============================================
+        // APPOINTMENT
+        // ============================================
+        function openAppointment(lawyerId) {
+            if (lawyerId) {
+                const lawyer = lawyersData.find(l => l.id === lawyerId);
+                if (lawyer) {
+                    // Pre-fill if needed
+                }
+            }
+            openModal('appointmentModal');
+        }
+
+        function openConsultationModal() {
+            openModal('appointmentModal');
+        }
+
+        function submitAppointment(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                name: form.querySelector('input[type="text"]').value,
+                phone: form.querySelector('input[type="tel"]').value,
+                email: form.querySelector('input[type="email"]').value,
+                category: form.querySelector('select').value,
+                description: form.querySelector('textarea').value,
+                date: form.querySelector('input[type="date"]').value,
+                time: form.querySelector('input[type="time"]').value,
+                timestamp: new Date().toISOString()
+            };
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            appointments.push(data);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            closeModal();
+            showToast('Appointment Booked Successfully!', 'success');
+            form.reset();
+        }
+
+        function loadAppointments() {
+            // Appointments loaded from localStorage
+        }
+
+        // ============================================
+        // DOCUMENT REVIEW
+        // ============================================
+        function openDocReview() {
+            openModal('docReviewModal');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('dropZone').style.borderColor = 'var(--border-light)';
+            const files = e.dataTransfer.files;
+            addFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            addFiles(e.target.files);
+        }
+
+        function addFiles(files) {
+            const list = document.getElementById('fileList');
+            Array.from(files).forEach(file => {
+                const item = document.createElement('div');
+                item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border-light);font-size:0.85rem;';
+                item.innerHTML = `
+                    <i class="fas fa-file-pdf" style="color:var(--secondary);"></i>
+                    <span style="flex:1;">${file.name}</span>
+                    <span style="color:var(--text-light);font-size:0.75rem;">${(file.size/1024).toFixed(1)} KB</span>
+                    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#DC2626;cursor:pointer;"><i class="fas fa-times"></i></button>
+                `;
+                list.appendChild(item);
+            });
+            showToast(`${files.length} file(s) added`, 'success');
+        }
+
+        function submitDocReview() {
+            const files = document.querySelectorAll('#fileList > div');
+            if (files.length === 0) {
+                showToast('Please upload at least one document', 'info');
+                return;
+            }
+            closeModal();
+            showToast('Document Review Request Submitted!', 'success');
+            document.getElementById('fileList').innerHTML = '';
+        }
+
+        // ============================================
+        // LAWYER REGISTRATION
+        // ============================================
+        function openLawyerRegistration() {
+            openModal('lawyerRegModal');
+        }
+
+        function submitLawyerRegistration(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                name: form.querySelector('input[type="text"]').value,
+                email: form.querySelector('input[type="email"]').value,
+                phone: form.querySelector('input[type="tel"]').value,
+                bar: form.querySelectorAll('input[type="text"]')[1]?.value || '',
+                exp: form.querySelector('input[type="number"]').value,
+                spec: form.querySelectorAll('input[type="text"]')[2]?.value || '',
+                city: form.querySelectorAll('input[type="text"]')[3]?.value || '',
+                langs: form.querySelectorAll('input[type="text"]')[4]?.value || ''
+            };
+            const registrations = JSON.parse(localStorage.getItem('lawyerRegistrations') || '[]');
+            registrations.push(data);
+            localStorage.setItem('lawyerRegistrations', JSON.stringify(registrations));
+            closeModal();
+            showToast('Application Submitted! We will contact you soon.', 'success');
+            form.reset();
+        }
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const icons = { success:'fa-check-circle', info:'fa-info-circle', warning:'fa-exclamation-triangle', error:'fa-times-circle' };
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // ============================================
+        // THEME (DARK MODE)
+        // ============================================
+        function initTheme() {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            updateThemeIcon(saved);
+
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                updateThemeIcon(next);
+            });
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // ============================================
+        // LANGUAGE
+        // ============================================
+        const translations = {
+            en: {
+                home:'Home', findLawyer:'Find Lawyer', legalServices:'Legal Services', pricing:'Pricing',
+                reviews:'Reviews', faq:'FAQ', lawyers:'Lawyers', contact:'Contact',
+                consultNow:'Consult Now', becomeLawyer:'Become A Lawyer',
+                heroHeadline:'Talk to Expert Lawyers in Minutes',
+                heroSub:'Get instant legal advice for Family Matters, Divorce, Civil Cases, Criminal Cases, Property Disputes, Business Contracts, Consumer Complaints, Tax Notices and more.',
+                startConsultation:'Start Consultation', findLawyerBtn:'Find Lawyer',
+                consultations:'Consultations', verifiedLawyers:'Verified Lawyers', cities:'Cities', avgRating:'Average Rating',
+                searchPlaceholder:'Describe your legal issue...', searchBtn:'Search',
+                categoryTitle:'Legal Categories', categorySub:'Find specialized lawyers across all major legal domains',
+                lawyerTitle:'Verified Lawyers', lawyerSub:'Connect with experienced legal professionals instantly',
+                serviceTitle:'Legal Services Marketplace', serviceSub:'Professional legal services at transparent prices',
+                testimonialTitle:'Client Testimonials', testimonialSub:'Real stories from real clients',
+                successTitle:'Success Stories', successSub:'Our track record speaks for itself',
+                faqTitle:'Frequently Asked Questions', faqSub:'Answers to common questions about LawConnect',
+                footerDesc:'India\'s legal consultation marketplace. Connect with verified lawyers for instant advice and legal services.',
+                company:'Company', legal:'Legal', support:'Support',
+                bookAppointment:'Book Appointment', fullName:'Full Name', phone:'Phone', email:'Email',
+                caseCategory:'Case Category', caseDescription:'Case Description',
+                preferredDate:'Preferred Date', preferredTime:'Preferred Time', confirmBooking:'Confirm Booking',
+                becomeLawyerTitle:'Become A Lawyer', barNumber:'Bar Council Number', experience:'Experience (yrs)',
+                specialization:'Specialization', city:'City', languages:'Languages', submitApplication:'Submit Application',
+                docReviewTitle:'Document Review', docReviewSub:'Upload your legal documents for expert review',
+                dragDrop:'Drag & drop files here or click to browse', requestReview:'Request Review'
+            },
+            hi: {
+                home:'होम', findLawyer:'वकील खोजें', legalServices:'कानूनी सेवाएं', pricing:'मूल्य निर्धारण',
+                reviews:'समीक्षाएं', faq:'सामान्य प्रश्न', lawyers:'वकील', contact:'संपर्क करें',
+                consultNow:'अभी परामर्श लें', becomeLawyer:'वकील बनें',
+                heroHeadline:'मिनटों में विशेषज्ञ वकीलों से बात करें',
+                heroSub:'पारिवारिक मामलों, तलाक, दीवानी मामलों, आपराधिक मामलों, संपत्ति विवादों, व्यापार अनुबंधों, उपभोक्ता शिकायतों, कर नोटिस और अधिक के लिए तत्काल कानूनी सलाह प्राप्त करें।',
+                startConsultation:'परामर्श शुरू करें', findLawyerBtn:'वकील खोजें',
+                consultations:'परामर्श', verifiedLawyers:'सत्यापित वकील', cities:'शहर', avgRating:'औसत रेटिंग',
+                searchPlaceholder:'अपनी कानूनी समस्या बताएं...', searchBtn:'खोजें',
+                categoryTitle:'कानूनी श्रेणियाँ', categorySub:'सभी प्रमुख कानूनी क्षेत्रों में विशेषज्ञ वकील खोजें',
+                lawyerTitle:'सत्यापित वकील', lawyerSub:'अनुभवी कानूनी पेशेवरों से तुरंत जुड़ें',
+                serviceTitle:'कानूनी सेवा बाज़ार', serviceSub:'पारदर्शी कीमतों पर पेशेवर कानूनी सेवाएं',
+                testimonialTitle:'ग्राहक प्रशंसापत्र', testimonialSub:'वास्तविक ग्राहकों की वास्तविक कहानियाँ',
+                successTitle:'सफलता की कहानियाँ', successSub:'हमारा ट्रैक रिकॉर्ड खुद बोलता है',
+                faqTitle:'अक्सर पूछे जाने वाले प्रश्न', faqSub:'LawConnect के बारे में सामान्य प्रश्नों के उत्तर',
+                footerDesc:'भारत का कानूनी परामर्श बाज़ार। तत्काल सलाह और कानूनी सेवाओं के लिए सत्यापित वकीलों से जुड़ें।',
+                company:'कंपनी', legal:'कानूनी', support:'सहायता',
+                bookAppointment:'अपॉइंटमेंट बुक करें', fullName:'पूरा नाम', phone:'फ़ोन', email:'ईमेल',
+                caseCategory:'मामले की श्रेणी', caseDescription:'मामले का विवरण',
+                preferredDate:'पसंदीदा तारीख', preferredTime:'पसंदीदा समय', confirmBooking:'बुकिंग की पुष्टि करें',
+                becomeLawyerTitle:'वकील बनें', barNumber:'बार काउंसिल नंबर', experience:'अनुभव (वर्ष)',
+                specialization:'विशेषज्ञता', city:'शहर', languages:'भाषाएं', submitApplication:'आवेदन जमा करें',
+                docReviewTitle:'दस्तावेज़ समीक्षा', docReviewSub:'विशेषज्ञ समीक्षा के लिए अपने कानूनी दस्तावेज़ अपलोड करें',
+                dragDrop:'फ़ाइलें यहाँ खींचें और छोड़ें या ब्राउज़ करने के लिए क्लिक करें', requestReview:'समीक्षा का अनुरोध करें'
+            }
         };
 
-        if (!freshLawyer.bookings) freshLawyer.bookings = [];
-        freshLawyer.bookings.push(booking);
-        safeWrite(db);
+        function initLanguage() {
+            const saved = localStorage.getItem('lang') || 'en';
+            document.getElementById('langSelector').value = saved;
+            applyLanguage(saved);
+            document.getElementById('langSelector').addEventListener('change', (e) => {
+                const lang = e.target.value;
+                localStorage.setItem('lang', lang);
+                applyLanguage(lang);
+                showToast(`Language switched to ${lang === 'en' ? 'English' : 'हिंदी'}`, 'success');
+            });
+        }
 
-        bf.success = true;
-        bf.bookingDetails = {
-          date: bf.selectedDate,
-          time: bf.selectedTime,
-          amount: lawyer.fee,
-          zoomLink: zoomLink,
-          email: bf.email.trim(),
-        };
-        renderClientProfile();
-      }
+        function applyLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.textContent = translations[lang][key];
+                    }
+                }
+            });
+        }
 
-      // ---------- RENDER: LAWYER DASHBOARD ----------
-      function renderLawyerDashboard() {
-        const lawyer = db.lawyers.find(l => l.id === state.selectedLawyerId);
-        if (!lawyer) return;
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function toggleMobileMenu() {
+            const links = document.querySelector('.nav-links');
+            if (links.style.display === 'flex') {
+                links.style.display = 'none';
+            } else {
+                links.style.display = 'flex';
+                links.style.flexDirection = 'column';
+                links.style.position = 'absolute';
+                links.style.top = '70px';
+                links.style.left = '0';
+                links.style.right = '0';
+                links.style.background = 'var(--card-bg)';
+                links.style.padding = '20px';
+                links.style.borderRadius = '0 0 16px 16px';
+                links.style.boxShadow = 'var(--shadow-lg)';
+                links.style.zIndex = '999';
+                links.style.gap = '16px';
+            }
+        }
 
-        const tabs = ['profile', 'cases', 'testimonials', 'news', 'availability', 'bookings'];
-        const tabLabels = { profile: 'Profile & fee', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News', availability: 'Availability', bookings: 'Bookings' };
-
-        let html = `
-          <div class="flex-between" style="margin-bottom:16px;">
-            <h2>Lawyer Dashboard — ${esc(lawyer.name)}</h2>
-            ${lawyer.verified ? '<span class="badge verified">Verified</span>' : '<span class="badge pending">Verification pending</span>'}
-          </div>
-          <div class="dashboard-tabs">
-            ${tabs.map(t => `<button class="${state.dashboardTab===t?'active':''}" data-dtab="${t}">${tabLabels[t]}</button>`).join('')}
-          </div>
-          <div id="dashboardContent">
-            ${renderDashboardTab(lawyer, state.dashboardTab)}
-          </div>
-        `;
-
-        app.innerHTML = html;
-
-        document.querySelectorAll('.dashboard-tabs button').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            state.dashboardTab = e.currentTarget.getAttribute('data-dtab');
-            renderLawyerDashboard();
-          });
+        // Close mobile menu on link click
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.nav-links a')) {
+                const links = document.querySelector('.nav-links');
+                if (links && window.innerWidth <= 1024) {
+                    links.style.display = 'none';
+                }
+            }
         });
 
-        attachDashboardHandlers(lawyer);
-      }
-
-      function renderDashboardTab(lawyer, tab) {
-        if (tab === 'profile') {
-          return `
-            <div class="card">
-              <div class="form-group">
-                <label>Name</label>
-                <input id="dashName" value="${esc(lawyer.name)}">
-              </div>
-              <div class="form-group">
-                <label>City</label>
-                <input id="dashCity" value="${esc(lawyer.city)}">
-              </div>
-              <div class="form-group">
-                <label>Practice areas (comma-separated)</label>
-                <input id="dashAreas" value="${esc(lawyer.practiceAreas.join(', '))}">
-              </div>
-              <div class="form-group">
-                <label>Years of experience</label>
-                <input id="dashYears" type="number" value="${esc(lawyer.years)}">
-              </div>
-              <div class="form-group">
-                <label>First-consultation fee (₹)</label>
-                <input id="dashFee" type="number" value="${esc(lawyer.fee)}">
-              </div>
-              <div class="form-group">
-                <label>Bar Council number</label>
-                <input id="dashBar" value="${esc(lawyer.barNumber)}">
-              </div>
-              <div class="form-group">
-                <label>Bio</label>
-                <textarea id="dashBio">${esc(lawyer.bio)}</textarea>
-              </div>
-              <button class="btn-primary" id="saveProfile">Save profile</button>
-              <div class="disclaimer">Lawyers should follow Bar Council advertising rules.</div>
-            </div>
-          `;
-        }
-        if (tab === 'cases') {
-          const cases = lawyer.cases || [];
-          return `
-            <div class="warning-note">⚠️ Only public-record matters. Never share confidential client information.</div>
-            <div class="card" style="margin-bottom:16px;">
-              <h3>Add case</h3>
-              <div class="form-group"><label>Title</label><input id="caseTitle"></div>
-              <div class="form-group"><label>Year</label><input id="caseYear" type="number"></div>
-              <div class="form-group"><label>Description (public facts only)</label><textarea id="caseDesc"></textarea></div>
-              <div class="form-group"><label>Public source link (optional)</label><input id="caseSource" placeholder="https://..."></div>
-              <button class="btn-primary" id="addCase">Add case</button>
-            </div>
-            <div class="card">
-              <h3>Existing cases</h3>
-              ${cases.length === 0 ? '<div class="empty">None added yet</div>' :
-                cases.map(c => `
-                  <div class="list-item">
-                    <div>
-                      <strong>${esc(c.title)}</strong> (${esc(c.year)})<br>
-                      <span class="text-muted" style="font-size:0.85rem;">${esc(c.description)}</span>
-                      ${c.source ? `<br><a href="${esc(c.source)}" target="_blank" rel="noopener" style="font-size:0.8rem;">Source</a>` : ''}
-                    </div>
-                    <button class="btn-danger" data-remove-case="${esc(c.id)}">Remove</button>
-                  </div>
-                `).join('')
-              }
-            </div>
-          `;
-        }
-        if (tab === 'testimonials') {
-          const tests = lawyer.testimonials || [];
-          return `
-            <div class="warning-note">ℹ️ Production will accept testimonials only from clients who completed a booking.</div>
-            <div class="card" style="margin-bottom:16px;">
-              <h3>Add testimonial</h3>
-              <div class="form-group"><label>Client name / initials</label><input id="testClient"></div>
-              <div class="form-group"><label>Rating (1-5)</label><input id="testRating" type="number" min="1" max="5"></div>
-              <div class="form-group"><label>Text</label><textarea id="testText"></textarea></div>
-              <button class="btn-primary" id="addTestimonial">Add testimonial</button>
-            </div>
-            <div class="card">
-              <h3>Existing testimonials</h3>
-              ${tests.length === 0 ? '<div class="empty">None added yet</div>' :
-                tests.map(t => `
-                  <div class="list-item">
-                    <div>
-                      <span class="stars">${'★'.repeat(t.rating)}</span> — ${esc(t.client)}<br>
-                      <span class="text-muted" style="font-size:0.9rem;">"${esc(t.text)}"</span>
-                    </div>
-                    <button class="btn-danger" data-remove-testimonial="${esc(t.id)}">Remove</button>
-                  </div>
-                `).join('')
-              }
-            </div>
-          `;
-        }
-        if (tab === 'news') {
-          const news = lawyer.news || [];
-          const sorted = [...news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
-          return `
-            <div class="card" style="margin-bottom:16px;">
-              <h3>Add news / achievement</h3>
-              <div class="form-group"><label>Headline</label><input id="newsHeadline"></div>
-              <div class="form-group"><label>Date</label><input id="newsDate" type="date"></div>
-              <button class="btn-primary" id="addNews">Add news</button>
-            </div>
-            <div class="card">
-              <h3>Existing news (newest first)</h3>
-              ${sorted.length === 0 ? '<div class="empty">None added yet</div>' :
-                sorted.map(n => `
-                  <div class="list-item">
-                    <div><strong>${esc(n.headline)}</strong><br><span class="text-muted">${esc(n.date)}</span></div>
-                    <button class="btn-danger" data-remove-news="${esc(n.id)}">Remove</button>
-                  </div>
-                `).join('')
-              }
-            </div>
-          `;
-        }
-        if (tab === 'availability') {
-          const avail = lawyer.availability || { weekdays: [], slots: [] };
-          const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-          return `
-            <div class="card">
-              <h3>Available weekdays</h3>
-              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
-                ${weekdays.map((day, idx) => `
-                  <button class="day-btn ${avail.weekdays.includes(idx)?'selected':''}" data-toggle-weekday="${idx}">${day}</button>
-                `).join('')}
-              </div>
-              <div class="form-group">
-                <label>Time slots (comma-separated 24h HH:MM, IST)</label>
-                <input id="dashSlots" value="${esc(avail.slots.join(', '))}">
-              </div>
-              <button class="btn-primary" id="saveAvailability">Save availability</button>
-            </div>
-          `;
-        }
-        if (tab === 'bookings') {
-          const bookings = (lawyer.bookings || []).filter(b => b.paid);
-          const today = new Date().toISOString().slice(0,10);
-          const upcoming = bookings.filter(b => b.date >= today).sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
-          return `
-            <div class="card">
-              <h3>Upcoming bookings</h3>
-              ${upcoming.length === 0 ? '<div class="empty">No upcoming bookings</div>' :
-                upcoming.map(b => `
-                  <div class="list-item" style="flex-direction:column; align-items:flex-start;">
-                    <div><strong>${esc(formatDate(b.date))} · ${esc(formatTime12(b.time))}</strong></div>
-                    <div>Client: ${esc(b.clientName)} (${esc(b.clientEmail)})</div>
-                    <div class="text-muted" style="font-size:0.85rem;">Issue: ${esc(b.issue || '—')}</div>
-                    <div class="flex-between" style="width:100%; margin-top:6px;">
-                      <a href="${esc(b.zoomLink)}" target="_blank" rel="noopener" class="btn-outline" style="font-size:0.8rem; min-height:32px; padding:4px 12px;">Start Zoom</a>
-                      <span class="badge verified">Paid</span>
-                    </div>
-                  </div>
-                `).join('')
-              }
-            </div>
-          `;
-        }
-        return '';
-      }
-
-      // ---------- DASHBOARD EVENT HANDLERS ----------
-      function attachDashboardHandlers(lawyer) {
-        const tab = state.dashboardTab;
-
-        if (tab === 'profile') {
-          document.getElementById('saveProfile')?.addEventListener('click', () => {
-            const name = document.getElementById('dashName').value.trim();
-            const city = document.getElementById('dashCity').value.trim();
-            const areasRaw = document.getElementById('dashAreas').value.trim();
-            const years = parseInt(document.getElementById('dashYears').value, 10);
-            const fee = parseInt(document.getElementById('dashFee').value, 10);
-            const bar = document.getElementById('dashBar').value.trim();
-            const bio = document.getElementById('dashBio').value.trim();
-
-            if (!name || !city) { alert('Name and city are required.'); return; }
-            if (isNaN(years) || years < 0) { alert('Enter valid years.'); return; }
-            if (isNaN(fee) || fee < 0) { alert('Enter valid fee.'); return; }
-
-            lawyer.name = name;
-            lawyer.city = city;
-            lawyer.practiceAreas = areasRaw.split(',').map(s => s.trim()).filter(Boolean);
-            lawyer.years = years;
-            lawyer.fee = fee;
-            lawyer.barNumber = bar;
-            lawyer.bio = bio;
-            safeWrite(db);
-            renderLawyerDashboard();
-            populateLawyerSelect();
-            alert('Profile saved.');
-          });
-        }
-
-        if (tab === 'cases') {
-          document.getElementById('addCase')?.addEventListener('click', () => {
-            const title = document.getElementById('caseTitle').value.trim();
-            const year = parseInt(document.getElementById('caseYear').value, 10);
-            const desc = document.getElementById('caseDesc').value.trim();
-            const source = document.getElementById('caseSource').value.trim();
-            if (!title || isNaN(year)) { alert('Title and year required.'); return; }
-            if (source && !/^https?:\/\//.test(source)) { alert('Source must start with http:// or https://'); return; }
-            if (!lawyer.cases) lawyer.cases = [];
-            lawyer.cases.push({ id: 'c' + Date.now(), title, year, description: desc, source });
-            safeWrite(db);
-            renderLawyerDashboard();
-          });
-          document.querySelectorAll('[data-remove-case]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-              const id = e.currentTarget.getAttribute('data-remove-case');
-              lawyer.cases = lawyer.cases.filter(c => c.id !== id);
-              safeWrite(db);
-              renderLawyerDashboard();
-            });
-          });
-        }
-
-        if (tab === 'testimonials') {
-          document.getElementById('addTestimonial')?.addEventListener('click', () => {
-            const client = document.getElementById('testClient').value.trim();
-            const rating = parseInt(document.getElementById('testRating').value, 10);
-            const text = document.getElementById('testText').value.trim();
-            if (!client || !text) { alert('Client and text required.'); return; }
-            if (isNaN(rating) || rating < 1 || rating > 5) { alert('Rating must be 1-5.'); return; }
-            if (!lawyer.testimonials) lawyer.testimonials = [];
-            lawyer.testimonials.push({ id: 't' + Date.now(), client, rating, text });
-            safeWrite(db);
-            renderLawyerDashboard();
-          });
-          document.querySelectorAll('[data-remove-testimonial]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-              const id = e.currentTarget.getAttribute('data-remove-testimonial');
-              lawyer.testimonials = lawyer.testimonials.filter(t => t.id !== id);
-              safeWrite(db);
-              renderLawyerDashboard();
-            });
-          });
-        }
-
-        if (tab === 'news') {
-          document.getElementById('addNews')?.addEventListener('click', () => {
-            const headline = document.getElementById('newsHeadline').value.trim();
-            const date = document.getElementById('newsDate').value;
-            if (!headline || !date) { alert('Headline and date required.'); return; }
-            if (!lawyer.news) lawyer.news = [];
-            lawyer.news.push({ id: 'n' + Date.now(), headline, date });
-            safeWrite(db);
-            renderLawyerDashboard();
-          });
-          document.querySelectorAll('[data-remove-news]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-              const id = e.currentTarget.getAttribute('data-remove-news');
-              lawyer.news = lawyer.news.filter(n => n.id !== id);
-              safeWrite(db);
-              renderLawyerDashboard();
-            });
-          });
-        }
-
-        if (tab === 'availability') {
-          document.querySelectorAll('[data-toggle-weekday]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-              const idx = parseInt(e.currentTarget.getAttribute('data-toggle-weekday'), 10);
-              if (!lawyer.availability) lawyer.availability = { weekdays: [], slots: [] };
-              const wd = lawyer.availability.weekdays;
-              const pos = wd.indexOf(idx);
-              if (pos === -1) wd.push(idx); else wd.splice(pos, 1);
-              safeWrite(db);
-              renderLawyerDashboard();
-            });
-          });
-          document.getElementById('saveAvailability')?.addEventListener('click', () => {
-            const slotsRaw = document.getElementById('dashSlots').value;
-            const slots = slotsRaw.split(',').map(s => s.trim()).filter(s => /^([01]?\d|2[0-3]):[0-5]\d$/.test(s));
-            lawyer.availability.slots = slots;
-            safeWrite(db);
-            renderLawyerDashboard();
-            alert('Availability saved.');
-          });
-        }
-      }
-
-      // ---------- MODE SWITCHING ----------
-      function setMode(mode) {
-        state.mode = mode;
-        if (mode === 'client') {
-          modeClientBtn.classList.add('active');
-          modeLawyerBtn.classList.remove('active');
-          lawyerLoginWrap.classList.add('hidden');
-          state.currentLawyerId = null;
-          renderClientHome();
-        } else {
-          modeClientBtn.classList.remove('active');
-          modeLawyerBtn.classList.add('active');
-          lawyerLoginWrap.classList.remove('hidden');
-          populateLawyerSelect();
-          state.selectedLawyerId = lawyerSelect.value || db.lawyers[0].id;
-          renderLawyerDashboard();
-        }
-      }
-
-      // ---------- INIT ----------
-      function init() {
-        populateLawyerSelect();
-        lawyerSelect.addEventListener('change', (e) => {
-          state.selectedLawyerId = e.target.value;
-          renderLawyerDashboard();
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
-
-        modeClientBtn.addEventListener('click', () => setMode('client'));
-        modeLawyerBtn.addEventListener('click', () => setMode('lawyer'));
-
-        setMode('client');
-      }
-
-      init();
-    })();
-  </script>
+    </script>
 </body>
 </html>
