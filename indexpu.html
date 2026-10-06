@@ -1,1975 +1,1515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<title>CODE1008 — Private Network</title>
-<style>
-/* ============================================================
-   BASE
-============================================================ */
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;}
-:root{
-  --bg:#000000;
-  --surface:#0b0b0d;
-  --surface-2:#131316;
-  --elevated:#1c1c20;
-  --elevated-2:#26262b;
-  --line:rgba(255,255,255,.075);
-  --line-strong:rgba(255,255,255,.13);
-  --text:#f4f4f6;
-  --muted:#8a8a93;
-  --muted-2:#5d5d66;
-  --gold:#d9b36c;
-  --gold-2:#b98f45;
-  --gold-soft:rgba(217,179,108,.14);
-  --green:#30d158;
-  --red:#ff453a;
-  --blue:#0a84ff;
-  --radius:18px;
-  --sat:env(safe-area-inset-top,0px);
-  --sab:env(safe-area-inset-bottom,0px);
-}
-[hidden]{display:none !important;}
-html,body{margin:0;}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",system-ui,sans-serif;
-  background:#050506;
-  color:var(--text);
-  display:grid;
-  place-items:center;
-  min-height:100dvh;
-  overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  letter-spacing:-0.01em;
-}
-button{font-family:inherit;}
-input,textarea{font-family:inherit;}
-::-webkit-scrollbar{width:0;height:0;display:none;}
-.scroll{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+  <title>Vakeel Connect — Legal Marketplace</title>
+  <style>
+    /* ---------- CSS variables ---------- */
+    :root {
+      --navy: #1f3a5f;
+      --gold: #b8860b;
+      --bg: #fdfbf7;
+      --surface: #ffffff;
+      --text: #1e1e1e;
+      --text-muted: #5e5e5e;
+      --border: #d9d0c0;
+      --card-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      --focus-ring: 0 0 0 3px rgba(184,134,11,0.4);
+      --danger: #b33a3a;
+      --success: #2e6b4a;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
 
-/* ============================================================
-   PHONE FRAME
-============================================================ */
-.phone{
-  position:relative;
-  width:100%;
-  max-width:440px;
-  height:100dvh;
-  background:var(--bg);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  isolation:isolate;
-}
-@media (min-width:560px){
-  body{padding:28px 0;}
-  .phone{
-    height:min(890px,calc(100dvh - 56px));
-    border-radius:34px;
-    border:1px solid rgba(255,255,255,.09);
-    box-shadow:0 50px 140px -30px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.02) inset;
-  }
-}
-.screen{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  background:var(--bg);
-}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --navy: #9bb7d4;
+        --gold: #d4a017;
+        --bg: #121212;
+        --surface: #1e1e1e;
+        --text: #ececec;
+        --text-muted: #b0b0b0;
+        --border: #333333;
+        --card-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        --focus-ring: 0 0 0 3px rgba(212,160,23,0.5);
+        --danger: #cf6679;
+        --success: #7bc9a2;
+      }
+    }
 
-/* ============================================================
-   AVATARS
-============================================================ */
-.avatar{
-  border-radius:50%;
-  display:grid;place-items:center;
-  flex:none;
-  background:
-    radial-gradient(circle at 30% 25%, hsl(var(--h) 55% 42%), transparent 70%),
-    linear-gradient(150deg, hsl(var(--h) 50% 26%), hsl(calc(var(--h) + 45) 45% 12%));
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 2px 10px rgba(0,0,0,.4);
-  user-select:none;
-  line-height:1;
-}
-.avatar.sm{width:38px;height:38px;font-size:16px;}
-.avatar.md{width:48px;height:48px;font-size:20px;}
-.avatar.lg{width:74px;height:74px;font-size:32px;}
-.avatar.xl{width:104px;height:104px;font-size:46px;}
+    /* ---------- Reset & base ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ============================================================
-   TYPOGRAPHY HELPERS
-============================================================ */
-.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;letter-spacing:0;}
-.sep{color:var(--muted-2);margin:0 1px;font-weight:400;}
-.code-txt{color:var(--gold);font-weight:600;}
+    body {
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      padding: 0 16px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-/* ============================================================
-   ONBOARDING
-============================================================ */
-#onboard{
-  background:
-    radial-gradient(120% 70% at 50% -10%, rgba(217,179,108,.16), transparent 60%),
-    radial-gradient(90% 50% at 50% 110%, rgba(120,90,255,.10), transparent 60%),
-    #000;
-}
-.ob{flex:1;display:flex;flex-direction:column;padding:calc(var(--sat) + 26px) 22px calc(var(--sab) + 22px);overflow-y:auto;}
-.ob-hero{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px;min-height:0;}
-.mark{
-  width:88px;height:88px;border-radius:26px;
-  display:grid;place-items:center;
-  font-size:26px;font-weight:800;letter-spacing:-0.04em;
-  color:#1a1408;
-  background:linear-gradient(140deg,#f0d79b,#c39a4e 55%,#8f6a2a);
-  box-shadow:0 20px 50px -12px rgba(217,179,108,.5), inset 0 1px 0 rgba(255,255,255,.5);
-}
-.ob-title{font-size:34px;font-weight:800;letter-spacing:-0.035em;margin:0;}
-.ob-title span{background:linear-gradient(120deg,#f2dda9,#c39a4e);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.ob-sub{color:var(--muted);font-size:14.5px;line-height:1.55;max-width:290px;margin:0;}
-.ob-feats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
-.pill{
-  font-size:11.5px;padding:6px 11px;border-radius:999px;
-  background:rgba(255,255,255,.05);border:1px solid var(--line);
-  color:var(--muted);
-}
-.ob-step{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin-bottom:12px;}
-.ob-h{font-size:24px;font-weight:750;letter-spacing:-0.03em;margin:0 0 6px;}
-.ob-p{color:var(--muted);font-size:13.5px;line-height:1.5;margin:0 0 20px;}
+    /* sticky header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      margin: 0 -16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
 
-.tier-card{
-  display:flex;align-items:center;gap:13px;
-  padding:14px;border-radius:16px;
-  background:var(--surface-2);
-  border:1px solid var(--line);
-  margin-bottom:10px;cursor:pointer;
-  transition:transform .15s ease, border-color .2s, background .2s;
-}
-.tier-card:active{transform:scale(.985);}
-.tier-card.sel{border-color:rgba(217,179,108,.55);background:linear-gradient(180deg,rgba(217,179,108,.10),rgba(217,179,108,.03));}
-.tier-dot{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:18px;flex:none;border:1px solid rgba(255,255,255,.08);}
-.tier-meta{flex:1;min-width:0;}
-.tier-name{font-size:14.5px;font-weight:650;display:flex;align-items:center;gap:7px;}
-.tier-desc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35;}
-.tier-price{font-size:11.5px;font-weight:700;color:var(--gold);white-space:nowrap;}
+    .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .logo span {
+      color: var(--gold);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
 
-.field{
-  width:100%;padding:14px 15px;border-radius:14px;
-  background:var(--surface-2);border:1px solid var(--line);
-  color:var(--text);font-size:15px;outline:none;
-  transition:border-color .2s;
-}
-.field:focus{border-color:rgba(217,179,108,.5);}
-.field::placeholder{color:var(--muted-2);}
-.label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);font-weight:700;margin:0 0 7px 2px;}
+    .mode-toggle {
+      display: flex;
+      background: var(--bg);
+      border-radius: 40px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .mode-toggle button {
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      min-height: 40px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mode-toggle button.active {
+      background: var(--navy);
+      color: #fff;
+    }
+    .mode-toggle button:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
 
-.gen-code{
-  margin-top:12px;padding:14px 15px;border-radius:14px;
-  background:linear-gradient(135deg,rgba(217,179,108,.13),rgba(217,179,108,.04));
-  border:1px dashed rgba(217,179,108,.4);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.gen-code .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;}
-.gen-code .v{font-size:19px;font-weight:700;color:var(--gold);letter-spacing:.02em;}
+    /* Demo login dropdown */
+    .demo-login {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      background: var(--bg);
+      padding: 4px 10px 4px 14px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+    }
+    .demo-login select {
+      background: transparent;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      padding: 6px 0;
+      cursor: pointer;
+      min-height: 36px;
+    }
+    .demo-login select:focus-visible {
+      outline: var(--focus-ring);
+      border-radius: 4px;
+    }
 
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  border:none;border-radius:14px;padding:13px 18px;
-  font-size:14px;font-weight:650;cursor:pointer;
-  background:var(--elevated);color:var(--text);
-  transition:transform .12s ease,opacity .2s,background .2s;
-}
-.btn:active{transform:scale(.965);}
-.btn.gold{background:linear-gradient(135deg,#efd8a4,#c39a4e 60%,#a97f37);color:#1a1408;box-shadow:0 12px 30px -12px rgba(217,179,108,.6);}
-.btn.block{width:100%;}
-.btn.ghost{background:transparent;border:1px solid var(--line-strong);color:var(--muted);}
-.btn.sm{padding:9px 13px;font-size:12.5px;border-radius:11px;}
+    /* ---------- layout ---------- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
 
-/* ============================================================
-   APP SHELL
-============================================================ */
-.topbar{
-  flex:none;
-  padding:calc(var(--sat) + 10px) 16px 10px;
-  display:flex;align-items:center;gap:12px;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(22px) saturate(180%);
-  -webkit-backdrop-filter:blur(22px) saturate(180%);
-  border-bottom:1px solid var(--line);
-  z-index:10;
-}
-.topbar h1{font-size:19px;font-weight:750;letter-spacing:-0.03em;margin:0;flex:1;min-width:0;}
-.topbar .sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:1px;letter-spacing:0;}
-.tb-brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
-.tb-mark{
-  width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
-  font-size:11px;font-weight:800;color:#1a1408;
-  background:linear-gradient(140deg,#f0d79b,#c39a4e);
-  flex:none;
-}
-.icon-btn{
-  width:38px;height:38px;border-radius:12px;
-  display:grid;place-items:center;flex:none;
-  background:transparent;border:none;color:var(--text);
-  cursor:pointer;transition:background .18s,transform .12s;
-  position:relative;
-}
-.icon-btn:active{transform:scale(.9);background:rgba(255,255,255,.06);}
-.icon-btn svg{width:21px;height:21px;}
-.badge-dot{
-  position:absolute;top:6px;right:6px;
-  min-width:16px;height:16px;padding:0 4px;border-radius:8px;
-  background:var(--red);color:#fff;font-size:10px;font-weight:700;
-  display:grid;place-items:center;border:2px solid #000;
-}
+    h1, h2, h3 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    h2 { font-size: 1.4rem; margin-bottom: 12px; }
+    h3 { font-size: 1.1rem; margin-bottom: 8px; }
 
-.views{flex:1;position:relative;overflow:hidden;}
-.view{
-  position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;
-  padding-bottom:24px;display:none;
-  -webkit-overflow-scrolling:touch;
-}
-.view.active{display:block;animation:vfade .22s ease;}
-@keyframes vfade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+    /* ---------- cards ---------- */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+      transition: box-shadow 0.2s;
+    }
 
-/* ============================================================
-   TABBAR
-============================================================ */
-.tabbar{
-  flex:none;display:flex;
-  padding:8px 6px calc(var(--sab) + 8px);
-  background:rgba(8,8,10,.86);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-top:1px solid var(--line);
-  z-index:10;
-}
-.tab{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;border:none;color:var(--muted-2);
-  font-size:9.5px;font-weight:600;letter-spacing:.01em;
-  padding:5px 2px;cursor:pointer;border-radius:12px;
-  transition:color .18s,transform .12s;position:relative;
-}
-.tab:active{transform:scale(.93);}
-.tab svg{width:22px;height:22px;}
-.tab.on{color:var(--gold);}
-.tab .tbadge{
-  position:absolute;top:0;right:calc(50% - 20px);
-  min-width:15px;height:15px;padding:0 4px;border-radius:8px;
-  background:var(--red);color:#fff;font-size:9.5px;font-weight:700;
-  display:grid;place-items:center;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
 
-/* ============================================================
-   LISTS
-============================================================ */
-.section-head{
-  padding:18px 16px 8px;
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted-2);font-weight:700;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.section-head button{
-  background:none;border:none;color:var(--gold);font-size:11px;
-  font-weight:700;letter-spacing:.06em;cursor:pointer;text-transform:uppercase;
-}
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
 
-.row{
-  display:flex;align-items:center;gap:13px;
-  padding:11px 16px;cursor:pointer;
-  transition:background .15s;position:relative;
-}
-.row:active{background:rgba(255,255,255,.045);}
-.row-body{flex:1;min-width:0;}
-.row-top{display:flex;align-items:baseline;gap:8px;}
-.row-name{
-  font-size:14.5px;font-weight:640;letter-spacing:-0.015em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.row-code{font-size:11px;color:var(--gold);font-weight:600;opacity:.85;}
-.row-time{font-size:11px;color:var(--muted-2);margin-left:auto;flex:none;padding-left:8px;}
-.row-prev{
-  font-size:12.5px;color:var(--muted);margin-top:3px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.row-prev .who{color:var(--muted-2);}
-.unread{
-  min-width:19px;height:19px;padding:0 5px;border-radius:10px;
-  background:linear-gradient(135deg,#efd8a4,#c39a4e);color:#1a1408;
-  font-size:10.5px;font-weight:800;display:grid;place-items:center;
-  flex:none;margin-left:8px;
-}
-.verified{
-  display:inline-grid;place-items:center;
-  width:13px;height:13px;border-radius:50%;
-  background:var(--gold);color:#1a1408;font-size:8px;font-weight:900;
-  margin-left:5px;flex:none;
-}
+    /* lawyer card */
+    .lawyer-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .badge.verified {
+      background: #e6f0e9;
+      border-color: #b3d1bc;
+      color: var(--success);
+    }
+    .badge.pending {
+      background: #fff3e0;
+      border-color: #e6c9a8;
+      color: #9e6b1f;
+    }
+    @media (prefers-color-scheme: dark) {
+      .badge.verified { background: #1e3a2b; border-color: #2d6b4a; color: #b3e6c9; }
+      .badge.pending { background: #3a2e1a; border-color: #7a5c2e; color: #e6c88a; }
+    }
 
-/* ============================================================
-   DISCOVER
-============================================================ */
-.disc-search{
-  padding:12px 16px 6px;
-  position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,#000 72%,rgba(0,0,0,0));
-}
-.search-wrap{position:relative;display:flex;align-items:center;}
-.search-wrap svg{
-  position:absolute;left:13px;width:17px;height:17px;color:var(--muted-2);pointer-events:none;
-}
-.search-input{
-  width:100%;padding:12px 14px 12px 38px;border-radius:13px;
-  background:var(--surface-2);border:1px solid var(--line);
-  color:var(--text);font-size:14px;outline:none;
-}
-.search-input:focus{border-color:rgba(217,179,108,.45);}
-.search-input::placeholder{color:var(--muted-2);}
+    .tag {
+      display: inline-block;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
 
-.chips{display:flex;gap:7px;padding:10px 16px 4px;overflow-x:auto;}
-.chip{
-  padding:7px 13px;border-radius:999px;font-size:12px;font-weight:600;
-  background:var(--surface-2);border:1px solid var(--line);
-  color:var(--muted);cursor:pointer;white-space:nowrap;
-  transition:all .18s;
-}
-.chip.on{background:var(--gold-soft);border-color:rgba(217,179,108,.5);color:var(--gold);}
+    .stars {
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
 
-.ucard{
-  margin:10px 16px;padding:14px;border-radius:18px;
-  background:var(--surface-2);border:1px solid var(--line);
-  animation:vfade .25s ease;
-}
-.ucard-top{display:flex;align-items:center;gap:12px;cursor:pointer;}
-.ucard-id{flex:1;min-width:0;}
-.ucard-alias{font-size:15px;font-weight:680;letter-spacing:-0.015em;}
-.ucard-tier{font-size:11px;color:var(--muted);margin-top:2px;}
-.tier-tag{
-  display:inline-block;padding:2px 7px;border-radius:6px;font-size:9.5px;
-  font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-}
-.skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
-.skill{
-  font-size:11px;padding:4px 9px;border-radius:8px;
-  background:rgba(255,255,255,.05);border:1px solid var(--line);
-  color:var(--muted);
-}
-.ucard-actions{display:flex;gap:7px;margin-top:12px;}
-.ucard-actions .btn{flex:1;padding:10px 6px;font-size:12px;}
-.ucard-actions .btn.iconic{flex:none;width:42px;padding:10px 0;}
-.ucard-actions .btn svg{width:16px;height:16px;}
+    .fee {
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 1.1rem;
+    }
 
-.empty{
-  text-align:center;padding:52px 30px;color:var(--muted-2);
-}
-.empty .ico{font-size:34px;opacity:.5;margin-bottom:12px;}
-.empty p{font-size:13px;margin:0;line-height:1.5;}
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      text-decoration: none;
+      color: inherit;
+      background: transparent;
+    }
+    button:active { transform: scale(0.98); }
 
-/* ============================================================
-   PROFILE VIEW
-============================================================ */
-.prof-head{
-  padding:26px 20px 22px;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-  background:
-    radial-gradient(90% 100% at 50% 0%, rgba(217,179,108,.13), transparent 70%);
-  border-bottom:1px solid var(--line);
-}
-.prof-alias{font-size:22px;font-weight:760;letter-spacing:-0.03em;margin-top:14px;}
-.prof-code{font-size:14px;color:var(--gold);font-weight:650;margin-top:5px;letter-spacing:.02em;}
-.prof-bio{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:12px;max-width:280px;}
-.stats{display:flex;gap:10px;margin-top:18px;width:100%;}
-.stat{
-  flex:1;padding:12px 6px;border-radius:14px;
-  background:rgba(255,255,255,.045);border:1px solid var(--line);
-}
-.stat .n{font-size:18px;font-weight:750;letter-spacing:-0.02em;}
-.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;font-weight:700;}
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .btn-primary:hover { background: #152c4a; }
+    @media (prefers-color-scheme: dark) {
+      .btn-primary { background: #2c4a6e; border-color: #2c4a6e; color: #f0f0f0; }
+      .btn-primary:hover { background: #3a5e87; }
+    }
 
-.list-group{margin:14px 16px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2);}
-.list-item{
-  display:flex;align-items:center;gap:12px;padding:14px 15px;
-  border-bottom:1px solid var(--line);cursor:pointer;font-size:14px;
-  transition:background .15s;
-}
-.list-item:last-child{border-bottom:none;}
-.list-item:active{background:rgba(255,255,255,.05);}
-.list-item .li-ico{width:22px;text-align:center;font-size:15px;opacity:.9;}
-.list-item .li-val{margin-left:auto;color:var(--muted-2);font-size:12.5px;}
+    .btn-gold {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .btn-gold:hover { background: #9e7209; }
 
-/* ============================================================
-   OVERLAYS
-============================================================ */
-#stack{position:absolute;inset:0;pointer-events:none;z-index:60;}
-#stack .overlay{
-  position:absolute;inset:0;background:var(--bg);
-  pointer-events:auto;display:flex;flex-direction:column;
-  transform:translateX(100%);
-  transition:transform .34s cubic-bezier(.32,.72,0,1);
-  will-change:transform;
-}
-#stack .overlay.in{transform:none;}
-#stack .overlay.sheet{
-  transform:translateY(100%);
-  border-radius:26px 26px 0 0;
-  background:var(--surface);
-  border-top:1px solid var(--line-strong);
-  max-height:88%;
-  box-shadow:0 -30px 80px rgba(0,0,0,.7);
-}
-#stack .overlay.sheet.in{transform:none;}
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { background: var(--bg); }
 
-.sheet-handle{
-  width:38px;height:4px;border-radius:2px;background:var(--elevated-2);
-  margin:10px auto 4px;flex:none;
-}
-.sheet-title{
-  font-size:16px;font-weight:720;letter-spacing:-0.02em;
-  padding:8px 20px 14px;text-align:center;
-}
+    .btn-danger {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      min-height: 32px;
+    }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
 
-/* CHAT HEADER */
-.chat-head{
-  flex:none;display:flex;align-items:center;gap:11px;
-  padding:calc(var(--sat) + 9px) 12px 9px;
-  background:rgba(0,0,0,.8);
-  backdrop-filter:blur(22px) saturate(180%);
-  -webkit-backdrop-filter:blur(22px) saturate(180%);
-  border-bottom:1px solid var(--line);
-  z-index:5;
-}
-.chat-head-id{flex:1;min-width:0;cursor:pointer;}
-.chat-head-id .n{font-size:14.5px;font-weight:660;letter-spacing:-0.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.chat-head-id .c{font-size:11px;color:var(--gold);font-weight:600;margin-top:1px;}
-.chat-head-id .c.grey{color:var(--muted);}
+    button:focus-visible, .btn:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
 
-/* MESSAGES */
-.msgs{
-  flex:1;overflow-y:auto;padding:18px 14px 10px;
-  display:flex;flex-direction:column;gap:3px;
-  background:
-    radial-gradient(120% 60% at 50% 0%, rgba(217,179,108,.045), transparent 60%),
-    var(--bg);
-}
-.day-sep{
-  align-self:center;font-size:10.5px;color:var(--muted-2);
-  background:rgba(255,255,255,.05);padding:4px 11px;border-radius:999px;
-  margin:10px 0 8px;font-weight:600;letter-spacing:.03em;
-}
-.msg-wrap{display:flex;flex-direction:column;max-width:80%;}
-.msg-wrap.me{align-self:flex-end;align-items:flex-end;}
-.msg-wrap.them{align-self:flex-start;align-items:flex-start;}
-.msg-sender{font-size:10.5px;color:var(--gold);font-weight:700;margin:8px 0 3px 12px;letter-spacing:.02em;}
-.msg{
-  padding:9px 13px;border-radius:19px;
-  font-size:14.5px;line-height:1.42;
-  word-break:break-word;
-  animation:pop .22s cubic-bezier(.2,.9,.3,1.2);
-  position:relative;
-}
-@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.97);}to{opacity:1;transform:none;}}
-.msg.me{
-  background:linear-gradient(135deg,#eed9a6,#c69d51);
-  color:#1c1509;border-bottom-right-radius:6px;
-  box-shadow:0 3px 14px -6px rgba(217,179,108,.5);
-}
-.msg.them{
-  background:var(--elevated);color:var(--text);
-  border-bottom-left-radius:6px;border:1px solid rgba(255,255,255,.05);
-}
-.msg .t{font-size:9.5px;opacity:.55;margin-left:7px;float:right;margin-top:4px;font-weight:600;}
-.msg.me .t{color:#4a3a18;}
+    input, textarea, select {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      width: 100%;
+      min-height: 44px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
 
-.typing{display:flex;gap:4px;padding:12px 15px;}
-.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tp 1.2s infinite;}
-.typing i:nth-child(2){animation-delay:.18s;}
-.typing i:nth-child(3){animation-delay:.36s;}
-@keyframes tp{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-muted); }
 
-/* COMPOSER */
-.composer{
-  flex:none;display:flex;align-items:center;gap:9px;
-  padding:9px 12px calc(var(--sab) + 9px);
-  background:rgba(8,8,10,.9);
-  backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);
-  border-top:1px solid var(--line);
-}
-.composer input{
-  flex:1;padding:11px 16px;border-radius:22px;
-  background:var(--elevated);border:1px solid var(--line);
-  color:var(--text);font-size:14.5px;outline:none;
-}
-.composer input::placeholder{color:var(--muted-2);}
-.send-btn{
-  width:40px;height:40px;border-radius:50%;flex:none;
-  display:grid;place-items:center;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#efd8a4,#c39a4e);
-  color:#1a1408;transition:transform .14s,opacity .2s;
-}
-.send-btn:active{transform:scale(.88);}
-.send-btn svg{width:18px;height:18px;}
-.channel-note{
-  flex:none;text-align:center;font-size:11.5px;color:var(--muted-2);
-  padding:14px 16px calc(var(--sab) + 16px);
-  border-top:1px solid var(--line);
-  background:rgba(8,8,10,.9);
-}
+    /* ---------- profile layout ---------- */
+    .profile-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    @media (min-width: 800px) {
+      .profile-layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      .profile-main { flex: 2; }
+      .profile-booking { flex: 1; min-width: 280px; }
+    }
 
-/* ============================================================
-   PROFILE OVERLAY (from discover)
-============================================================ */
-.ov-hero{
-  padding:calc(var(--sat) + 14px) 20px 26px;
-  text-align:center;
-  background:
-    radial-gradient(100% 90% at 50% -10%, rgba(217,179,108,.18), transparent 65%),
-    var(--surface);
-  border-bottom:1px solid var(--line);
-  position:relative;
-}
-.ov-hero .alias{font-size:23px;font-weight:770;letter-spacing:-0.03em;margin-top:15px;}
-.ov-hero .code{font-size:15px;color:var(--gold);font-weight:680;margin-top:5px;}
-.ov-hero .bio{font-size:13px;color:var(--muted);line-height:1.6;margin:14px auto 0;max-width:290px;}
-.ov-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:18px 16px 4px;}
-.ov-act{
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  background:none;border:none;color:var(--gold);cursor:pointer;
-  font-size:10.5px;font-weight:650;letter-spacing:.01em;
-  transition:transform .14s;
-}
-.ov-act:active{transform:scale(.92);}
-.ov-act .circ{
-  width:50px;height:50px;border-radius:17px;
-  display:grid;place-items:center;
-  background:var(--gold-soft);border:1px solid rgba(217,179,108,.28);
-}
-.ov-act .circ svg{width:21px;height:21px;}
-.ov-act.alt{color:var(--muted);}
-.ov-act.alt .circ{background:rgba(255,255,255,.05);border-color:var(--line);}
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tabs button {
+      background: transparent;
+      border: none;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      border-radius: 0;
+      min-height: 40px;
+    }
+    .tabs button.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
 
-/* ============================================================
-   CALL SCREEN
-============================================================ */
-#callScreen{
-  position:absolute;inset:0;z-index:80;pointer-events:auto;
-  display:flex;flex-direction:column;align-items:center;
-  background:
-    radial-gradient(80% 60% at 50% 22%, rgba(217,179,108,.16), transparent 62%),
-    linear-gradient(180deg,#0a0a0c,#000);
-  padding:calc(var(--sat) + 40px) 24px calc(var(--sab) + 30px);
-  animation:callin .35s ease;
-}
-@keyframes callin{from{opacity:0;transform:scale(1.03);}to{opacity:1;transform:none;}}
-.call-avatar{
-  width:118px;height:118px;border-radius:50%;
-  display:grid;place-items:center;font-size:52px;
-  background:
-    radial-gradient(circle at 30% 25%, hsl(var(--h) 55% 45%), transparent 70%),
-    linear-gradient(150deg, hsl(var(--h) 50% 26%), hsl(calc(var(--h) + 45) 45% 12%));
-  border:1px solid rgba(255,255,255,.13);
-  box-shadow:0 0 0 10px rgba(217,179,108,.05), 0 30px 70px -20px rgba(0,0,0,.9);
-  animation:pulse 2.6s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 8px rgba(217,179,108,.05),0 30px 70px -20px rgba(0,0,0,.9);}50%{box-shadow:0 0 0 20px rgba(217,179,108,.03),0 30px 70px -20px rgba(0,0,0,.9);}}
-.call-name{font-size:26px;font-weight:760;letter-spacing:-0.03em;margin-top:26px;}
-.call-code{font-size:14px;color:var(--gold);font-weight:650;margin-top:6px;}
-.call-status{font-size:13.5px;color:var(--muted);margin-top:16px;letter-spacing:.04em;}
-.call-ctrl{
-  margin-top:auto;display:flex;align-items:center;justify-content:center;gap:20px;width:100%;
-}
-.cbtn{
-  width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,.09);color:#fff;
-  backdrop-filter:blur(10px);
-  transition:transform .14s,background .2s;
-}
-.cbtn:active{transform:scale(.9);}
-.cbtn svg{width:24px;height:24px;}
-.cbtn.on{background:#fff;color:#000;}
-.cbtn.end{background:linear-gradient(135deg,#ff5f52,#d92b1f);width:70px;height:70px;}
-.cbtn.end svg{width:28px;height:28px;transform:rotate(135deg);}
+    /* empty state */
+    .empty {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 16px 0;
+      text-align: center;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
 
-/* ============================================================
-   TOASTS
-============================================================ */
-#toasts{
-  position:absolute;top:calc(var(--sat) + 10px);left:12px;right:12px;
-  z-index:120;display:flex;flex-direction:column;gap:8px;pointer-events:none;
-}
-.toast{
-  padding:12px 15px;border-radius:15px;
-  background:rgba(28,28,32,.94);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border:1px solid var(--line-strong);
-  box-shadow:0 16px 40px -12px rgba(0,0,0,.9);
-  display:flex;align-items:center;gap:11px;
-  animation:tIn .34s cubic-bezier(.2,.9,.3,1.15);
-  pointer-events:auto;
-}
-@keyframes tIn{from{opacity:0;transform:translateY(-14px) scale(.96);}to{opacity:1;transform:none;}}
-.toast.out{animation:tOut .28s ease forwards;}
-@keyframes tOut{to{opacity:0;transform:translateY(-12px) scale(.96);}}
-.toast .tx{flex:1;min-width:0;}
-.toast .tt{font-size:13px;font-weight:660;letter-spacing:-0.01em;}
-.toast .ts{font-size:11.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    /* booking slots */
+    .day-picker, .slot-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .day-btn, .slot-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      min-height: 40px;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .day-btn.selected, .slot-btn.selected {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .slot-btn:disabled {
+      opacity: 0.5;
+      text-decoration: line-through;
+      cursor: not-allowed;
+      background: var(--bg);
+      color: var(--text-muted);
+      border-color: var(--border);
+    }
 
-/* ============================================================
-   MISC
-============================================================ */
-.hr{height:1px;background:var(--line);margin:0 16px;}
-.fade-in{animation:vfade .28s ease;}
-</style>
+    /* ---------- dashboard ---------- */
+    .dashboard-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dashboard-tabs button {
+      background: transparent;
+      border: none;
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      border-radius: 0;
+      min-height: 40px;
+    }
+    .dashboard-tabs button.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .list-item:last-child { border-bottom: none; }
+
+    .warning-note {
+      background: #fff9e6;
+      border-left: 4px solid var(--gold);
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 16px;
+      color: #6b4e1a;
+    }
+    @media (prefers-color-scheme: dark) {
+      .warning-note { background: #2e2a1a; color: #e6d5a8; border-left-color: var(--gold); }
+    }
+
+    .disclaimer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* confirmation */
+    .confirmation-box {
+      text-align: center;
+      padding: 30px 16px;
+    }
+    .zoom-link {
+      word-break: break-all;
+      font-size: 0.9rem;
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin: 8px 0;
+    }
+
+    /* utility */
+    .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .gap-8 { gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-8 { margin-bottom: 8px; }
+    .text-muted { color: var(--text-muted); font-size: 0.85rem; }
+    .hidden { display: none !important; }
+    .cursor-pointer { cursor: pointer; }
+
+    /* focus visible for interactive elements */
+    .day-btn:focus-visible, .slot-btn:focus-visible, .tabs button:focus-visible, .dashboard-tabs button:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* responsive fixes */
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      header { padding: 10px 16px; }
+      .logo { font-size: 1.1rem; }
+      .mode-toggle button { padding: 6px 12px; font-size: 0.75rem; }
+      .demo-login { font-size: 0.75rem; padding: 2px 8px 2px 10px; }
+      .demo-login select { font-size: 0.75rem; }
+    }
+  </style>
 </head>
 <body>
-<div class="phone" id="phone">
-
-  <!-- ================= ONBOARDING ================= -->
-  <div class="screen" id="onboard">
-    <div class="ob" id="obContent"></div>
-  </div>
-
-  <!-- ================= MAIN APP ================= -->
-  <div class="screen" id="app" hidden>
-    <header class="topbar" id="topbar"></header>
-    <div class="views" id="views">
-      <section class="view" id="view-chats"></section>
-      <section class="view" id="view-calls"></section>
-      <section class="view" id="view-groups"></section>
-      <section class="view" id="view-discover"></section>
-      <section class="view" id="view-profile"></section>
+  <header>
+    <div class="logo"><span>⚖️</span> Vakeel Connect</div>
+    <div class="mode-toggle" role="tablist" aria-label="Mode">
+      <button id="modeClient" class="active" role="tab" aria-selected="true">I need a lawyer</button>
+      <button id="modeLawyer" role="tab" aria-selected="false">I'm a lawyer</button>
     </div>
-    <nav class="tabbar" id="tabbar"></nav>
-  </div>
-
-  <div id="stack"></div>
-  <div id="toasts"></div>
-</div>
-
-<script>
-/* ============================================================
-   ICONS
-============================================================ */
-const I = {
-  bell:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
-  phone:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-  video:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2.5"/></svg>`,
-  back:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`,
-  send:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>`,
-  search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></svg>`,
-  chat:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
-  users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  compass:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16.2 7.8-2.9 6.4-6.4 2.9 2.9-6.4 6.4-2.9z"/></svg>`,
-  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
-  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  groupAdd:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>`,
-  mic:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>`,
-  micOff:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l22 22"/><path d="M9 9v3a3 3 0 0 0 5.1 2.1M15 9.3V5a3 3 0 0 0-5.9-.7"/><path d="M19 10v2a7 7 0 0 1-.6 2.8M12 19v3M5 10v2a7 7 0 0 0 11 5.7"/></svg>`,
-  vol:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`,
-  camOff:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l22 22"/><path d="M16 16v2a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2m5 0h4a2 2 0 0 1 2 2v3l5-3v11"/></svg>`,
-  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`,
-  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
-  hash:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg>`,
-  arrowIn:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7 17 17M17 17H9M17 17V9"/></svg>`,
-  arrowOut:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17M7 17h8M7 17V9"/></svg>`
-};
-
-/* ============================================================
-   TIERS
-============================================================ */
-const TIERS = {
-  real:     {key:'real',     name:'Real World', digits:9, price:'Free',              color:'#5ac8fa', icon:'🌍', desc:'Open identity for everyday people.'},
-  source:   {key:'source',   name:'Source',     digits:3, price:'$108 once',         color:'#d9b36c', icon:'🜂', desc:'Origin nodes. Curate and route value.'},
-  maker:    {key:'maker',    name:'Makers',     digits:4, price:'$1008 once',        color:'#bf5af2', icon:'⚒️', desc:'Builders who ship the network.'},
-  investor: {key:'investor', name:'Investors',  digits:2, price:'Free application',  color:'#30d158', icon:'💠', desc:'Capital with a two-digit seat.'}
-};
-
-/* ============================================================
-   SAMPLE DATA
-============================================================ */
-const USERS = [
-  {code:'001', alias:'LEO',      tier:'source',   emoji:'🦁', hue:35,  skills:['Strategy','Leadership','Capital'],    bio:'Origin node. I connect the people who build with the people who fund.'},
-  {code:'108', alias:'ORACLE',   tier:'source',   emoji:'🔮', hue:275, skills:['Research','Data','Forecasting'],      bio:'I read the signal before it becomes noise. Ledgers, models, forecasts.'},
-  {code:'042', alias:'ATLAS',    tier:'source',   emoji:'🗺️', hue:200, skills:['Logistics','Operations','Trade'],    bio:'Corridors, routes and the quiet machinery of movement.'},
-
-  {code:'1008',alias:'BUILDER',  tier:'maker',    emoji:'🏗️', hue:20,  skills:['Product','Architecture','Systems'],  bio:'Makers seat 1008. Shipping the vault layer of CODE1008.'},
-  {code:'2024',alias:'NOVA',     tier:'maker',    emoji:'✨', hue:320, skills:['Brand','Motion','UI'],                bio:'Identity and motion. If it moves, I made it move.'},
-  {code:'3141',alias:'CIPHER',   tier:'maker',    emoji:'🔐', hue:150, skills:['Security','Code','Crypto'],           bio:'Keys, handshakes, silence. Nothing leaks.'},
-  {code:'7777',alias:'FORGE',    tier:'maker',    emoji:'⚒️', hue:10,  skills:['Hardware','Manufacturing','Design'], bio:'Physical things. Cold metal, warm circuits.'},
-
-  {code:'01',  alias:'INVESTOR', tier:'investor', emoji:'💠', hue:210, skills:['Venture','Growth','Fintech'],        bio:'Two-digit seat. Long horizons, few bets, deep conviction.'},
-  {code:'07',  alias:'VEGA',     tier:'investor', emoji:'🌌', hue:260, skills:['Real Estate','Energy'],              bio:'Infrastructure and land. Things that outlive trends.'},
-  {code:'88',  alias:'MERIDIAN', tier:'investor', emoji:'🧭', hue:170, skills:['Impact','Health'],                   bio:'Capital with a compass. Health, water, and human capacity.'},
-
-  {code:'100000042', alias:'MAYA', tier:'real', emoji:'🌸', hue:330, skills:['Design','Illustration'],      bio:'Drawing quiet things in a loud world.'},
-  {code:'100000108', alias:'KAI',  tier:'real', emoji:'🌊', hue:190, skills:['Engineering','AI'],           bio:'Building small tools that think.'},
-  {code:'100000256', alias:'ZARA', tier:'real', emoji:'🦋', hue:290, skills:['Marketing','Storytelling'],   bio:'Words that make people lean in.'}
-];
-
-const store = {
-  dms: [
-    { code:'108', unread:0, messages:[
-      {from:'108', text:'Ledger for Q3 is reconciled. 108 entries verified.', time:'09:12'},
-      {from:'me',  text:'Good. Route the summary to the Source desk.', time:'09:14'},
-      {from:'108', text:'Already done. Window closes 18:00 GMT.', time:'09:15'},
-      {from:'108', text:'Also — BUILDER<>1008 asked for your read on the vault spec.', time:'09:15'},
-      {from:'me',  text:'I’ll take it after the call with INVESTOR<>01.', time:'09:18'}
-    ]},
-    { code:'01', unread:0, messages:[
-      {from:'me',  text:'Morning. Are we still on for 10:00?', time:'08:32'},
-      {from:'01',  text:'Yes. Bring the 1008 allocation sheet.', time:'08:40'},
-      {from:'me',  text:'On my screen now.', time:'08:41'}
-    ]},
-    { code:'2024', unread:0, messages:[
-      {from:'2024', text:'New motion pass for the CODE1008 identity. Want a look?', time:'Yesterday'},
-      {from:'me',   text:'Send it through.', time:'Yesterday'},
-      {from:'2024', text:'Uploaded to the Maker vault. File: NOVA_ID_v4.mov', time:'Yesterday'}
-    ]},
-    { code:'1008', unread:2, messages:[
-      {from:'1008', text:'Vault spec v3 is live.', time:'07:02'},
-      {from:'1008', text:'Your signature is the last one needed.', time:'07:02'}
-    ]}
-  ],
-
-  groups: [
-    { id:'g1', name:'MAKERS GUILD', emoji:'🏛️', hue:38, unread:2, members:['001','1008','2024','3141'],
-      messages:[
-        {from:'1008', text:'Guild, the 1008 seat is filled. Welcome.', time:'08:15'},
-        {from:'2024', text:'About time.', time:'08:17'},
-        {from:'3141', text:'Encryption keys rotated. New handshake is live.', time:'08:22'},
-        {from:'me',   text:'Noted. I’ll confirm with the Source desk.', time:'08:31'}
-      ]},
-    { id:'g2', name:'SOURCE DESK', emoji:'🜂', hue:35, unread:0, members:['001','108','042','01'],
-      messages:[
-        {from:'108', text:'Three new origin nodes proposed this week.', time:'Yesterday'},
-        {from:'042', text:'Routing table updated.', time:'Yesterday'},
-        {from:'01',  text:'Capital is ready when the nodes are.', time:'Yesterday'}
-      ]},
-    { id:'g3', name:'DEAL ROOM 88', emoji:'💠', hue:170, unread:0, members:['001','01','88','1008'],
-      messages:[
-        {from:'88',  text:'Term sheet draft attached.', time:'Mon'},
-        {from:'01',  text:'Reviewing tonight.', time:'Mon'}
-      ]}
-  ],
-
-  channels: [
-    { id:'c1', name:'CODE1008', emoji:'📡', hue:210, desc:'Official network announcements', unread:1, messages:[
-      {from:'sys', text:'Network uptime 99.98% for the quarter.', time:'Mon'},
-      {from:'sys', text:'Code IDs issued this week: 1,208.', time:'Tue'},
-      {from:'sys', text:'Reminder: aliases are permanent once sealed.', time:'Wed'}
-    ]},
-    { id:'c2', name:'SOURCE SIGNAL', emoji:'🜂', hue:35, desc:'Origin node activity', unread:0, messages:[
-      {from:'sys', text:'Node 042 opens a new trade corridor.', time:'Tue'}
-    ]},
-    { id:'c3', name:'MAKER LOG', emoji:'⚒️', hue:320, desc:'Build notes from the Makers tier', unread:0, messages:[
-      {from:'sys', text:'FORGE<>7777 shipped the first hardware key.', time:'Mon'}
-    ]}
-  ],
-
-  calls: [
-    { code:'108', mode:'video', dir:'in',  time:'09:04', dur:'12m 40s' },
-    { code:'01',  mode:'voice', dir:'out', time:'08:12', dur:'4m 06s' },
-    { code:'2024',mode:'voice', dir:'miss',time:'Yesterday', dur:'' },
-    { code:'1008',mode:'video', dir:'out', time:'Yesterday', dur:'22m 18s' },
-    { code:'3141',mode:'voice', dir:'in',  time:'Mon', dur:'1m 52s' }
-  ],
-
-  notifs: [
-    { ico:'💬', title:'ORACLE<>108', body:'I’ll take it after the call — new message', time:'09:18', unread:true },
-    { ico:'👥', title:'MAKERS GUILD', body:'CIPHER<>3141: Keys rotated.', time:'08:22', unread:true },
-    { ico:'📞', title:'Missed voice call', body:'NOVA<>2024 tried to reach you', time:'Yesterday', unread:false },
-    { ico:'📡', title:'CODE1008 channel', body:'Aliases are permanent once sealed.', time:'Wed', unread:false }
-  ]
-};
-
-/* ============================================================
-   STATE
-============================================================ */
-const state = {
-  me: null,
-  tab: 'chats',
-  discoverQ: '',
-  discoverFilter: 'all',
-  notifCount: 2
-};
-
-const $  = (s,el=document)=>el.querySelector(s);
-const $$ = (s,el=document)=>[...el.querySelectorAll(s)];
-const userByCode = c => USERS.find(u=>u.code===c) || {code:c, alias:'UNKNOWN', emoji:'❓', hue:0, tier:'real', skills:[], bio:''};
-const tierOf = u => TIERS[u.tier] || TIERS.real;
-const nowTime = () => new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false});
-
-function avatarHTML(u, cls='md'){
-  return `<div class="avatar ${cls}" style="--h:${u.hue}">${u.emoji}</div>`;
-}
-function aliasHTML(u){
-  return `${u.alias}<span class="sep">&lt;&gt;</span><span class="code-txt">${u.code}</span>`;
-}
-function tierBadge(tierKey){
-  const t = TIERS[tierKey];
-  return `<span class="tier-tag" style="color:${t.color};background:${hexA(t.color,.13)};border:1px solid ${hexA(t.color,.3)}">${t.name}</span>`;
-}
-function hexA(hex,a){
-  const n = parseInt(hex.slice(1),16);
-  return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;
-}
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-
-/* ============================================================
-   TOASTS
-============================================================ */
-function toast(title, sub, ico='💬'){
-  const el = document.createElement('div');
-  el.className = 'toast';
-  el.innerHTML = `<div class="avatar sm" style="--h:210;font-size:16px">${ico}</div>
-    <div class="tx"><div class="tt">${esc(title)}</div><div class="ts">${esc(sub)}</div></div>`;
-  $('#toasts').appendChild(el);
-  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(),300); }, 3200);
-}
-
-/* ============================================================
-   OVERLAY STACK
-============================================================ */
-function pushOverlay(html, opts={}){
-  const node = document.createElement('div');
-  node.className = 'overlay' + (opts.sheet ? ' sheet' : '');
-  node.innerHTML = html;
-  node.dataset.ovId = 'ov' + Math.random().toString(36).slice(2,8);
-  $('#stack').appendChild(node);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>node.classList.add('in')));
-  return node;
-}
-function closeOverlay(node){
-  if(!node) return;
-  node.classList.remove('in');
-  setTimeout(()=>node.remove(), 360);
-}
-function closeTopOverlay(){
-  const all = $$('#stack .overlay');
-  if(all.length) closeOverlay(all[all.length-1]);
-}
-
-/* ============================================================
-   ONBOARDING
-============================================================ */
-const obState = { step:1, tier:'source' };
-
-const ALIAS_POOL = ['NOVA','ATLAS','ORION','VECTOR','ECHO','PRISM','KESTREL','ONYX','SOLACE','RUNE','HALO','CINDER'];
-
-function renderOnboard(){
-  const c = $('#obContent');
-  if(obState.step===1){
-    c.innerHTML = `
-      <div class="ob-hero">
-        <div class="mark">1008</div>
-        <div>
-          <h1 class="ob-title">CODE<span>1008</span></h1>
-          <p class="ob-sub" style="margin-top:12px">A private network addressed by Code. No phone numbers. No feeds. No followers. Just identity and conversation.</p>
-        </div>
-        <div class="ob-feats">
-          <span class="pill">Code IDs</span>
-          <span class="pill">Alias names</span>
-          <span class="pill">Encrypted chat</span>
-          <span class="pill">Voice &amp; Video</span>
-        </div>
-      </div>
-      <button class="btn gold block" data-act="ob-next" style="margin-bottom:10px">Enter the network</button>
-      <button class="btn ghost block" data-act="ob-demo">Continue as LEO&lt;&gt;001 (demo)</button>
-    `;
-  }
-  if(obState.step===2){
-    c.innerHTML = `
-      <div class="ob-step">Step 1 of 2</div>
-      <h2 class="ob-h">Choose your tier</h2>
-      <p class="ob-p">Your tier decides the length of your Code ID. It cannot be changed later.</p>
-      ${Object.values(TIERS).map(t=>`
-        <div class="tier-card ${obState.tier===t.key?'sel':''}" data-act="ob-tier" data-tier="${t.key}">
-          <div class="tier-dot" style="background:${hexA(t.color,.15)};color:${t.color}">${t.icon}</div>
-          <div class="tier-meta">
-            <div class="tier-name">${t.name}${obState.tier===t.key?' <span style="color:#d9b36c;font-size:12px">✓</span>':''}</div>
-            <div class="tier-desc">${t.desc} · ${t.digits}-digit code</div>
-          </div>
-          <div class="tier-price">${t.price}</div>
-        </div>`).join('')}
-      <button class="btn gold block" data-act="ob-next" style="margin-top:14px">Continue</button>
-      <button class="btn ghost block" data-act="ob-back" style="margin-top:9px">Back</button>
-    `;
-  }
-  if(obState.step===3){
-    const t = TIERS[obState.tier];
-    c.innerHTML = `
-      <div class="ob-step">Step 2 of 2</div>
-      <h2 class="ob-h">Claim your Alias</h2>
-      <p class="ob-p">Your Alias and Code ID form your public address on the network. Example: <span style="color:#d9b36c;font-weight:600">LEO&lt;&gt;001</span></p>
-      <div class="label">Alias name</div>
-      <input class="field" id="obAlias" maxlength="12" placeholder="e.g. ${ALIAS_POOL[Math.floor(Math.random()*ALIAS_POOL.length)]}" autocomplete="off">
-      <div class="gen-code">
-        <div>
-          <div class="k">Your Code ID</div>
-          <div class="v" id="obCode">${genCode(obState.tier)}</div>
-        </div>
-        <div style="font-size:24px">${t.icon}</div>
-      </div>
-      <div style="font-size:11.5px;color:#5d5d66;margin-top:10px;line-height:1.5">
-        ${t.name} tier · ${t.price} · ${t.digits}-digit code. Code IDs are permanent.
-      </div>
-      <button class="btn gold block" data-act="ob-create" style="margin-top:22px">Create my Code ID</button>
-      <button class="btn ghost block" data-act="ob-back" style="margin-top:9px">Back</button>
-    `;
-    $('#obAlias').addEventListener('input', e=>{
-      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-    });
-  }
-}
-
-function genCode(tierKey){
-  const digits = TIERS[tierKey].digits;
-  const taken = new Set(USERS.map(u=>u.code));
-  let code;
-  do{
-    if(digits===9){
-      code = '100' + String(Math.floor(Math.random()*1000000)).padStart(6,'0');
-    } else {
-      const min = Math.pow(10, digits-1);
-      const max = Math.pow(10, digits)-1;
-      code = String(Math.floor(min + Math.random()*(max-min+1))).padStart(digits,'0');
-    }
-  } while(taken.has(code));
-  return code;
-}
-
-function enterApp(me){
-  state.me = me;
-  $('#onboard').hidden = true;
-  $('#app').hidden = false;
-  renderAll();
-  setTimeout(()=>toast('Welcome to CODE1008', `${me.alias}<>${me.code} is now active`, '✅'), 500);
-}
-
-function startDemo(){
-  const me = USERS.find(u=>u.code==='001');
-  enterApp({...me, messages:undefined});
-}
-
-/* ============================================================
-   TOPBAR
-============================================================ */
-const TAB_TITLES = {
-  chats:'Chats', calls:'Calls', groups:'Groups', discover:'Discover', profile:'Profile'
-};
-
-function renderTopbar(){
-  const tb = $('#topbar');
-  const unreadTotal = store.dms.reduce((a,d)=>a+d.unread,0) + store.groups.reduce((a,g)=>a+g.unread,0) + store.channels.reduce((a,c)=>a+c.unread,0);
-
-  if(state.tab==='chats'){
-    tb.innerHTML = `
-      <div class="tb-brand">
-        <div class="tb-mark">1008</div>
-        <div style="min-width:0">
-          <h1 style="font-size:17px">CODE1008</h1>
-          <div class="sub">Private network</div>
-        </div>
-      </div>
-      <button class="icon-btn" data-act="notifs">
-        ${I.bell}
-        ${state.notifCount>0?`<span class="badge-dot">${state.notifCount}</span>`:''}
-      </button>
-      <button class="icon-btn" data-act="new-chat">${I.plus}</button>
-    `;
-  } else {
-    tb.innerHTML = `<h1>${TAB_TITLES[state.tab]}</h1>` +
-      (state.tab==='groups' ? `<button class="icon-btn" data-act="new-group">${I.plus}</button>` : '') +
-      (state.tab==='discover' ? `<button class="icon-btn" data-act="notifs">${I.bell}${state.notifCount>0?`<span class="badge-dot">${state.notifCount}</span>`:''}</button>` : '');
-  }
-}
-
-/* ============================================================
-   TABBAR
-============================================================ */
-const TABS = [
-  {key:'chats',    label:'Chats',    icon:I.chat},
-  {key:'calls',    label:'Calls',    icon:I.phone},
-  {key:'groups',   label:'Groups',   icon:I.users},
-  {key:'discover', label:'Discover', icon:I.compass},
-  {key:'profile',  label:'Profile',  icon:I.user}
-];
-
-function renderTabbar(){
-  const unread = store.dms.reduce((a,d)=>a+d.unread,0);
-  $('#tabbar').innerHTML = TABS.map(t=>`
-    <button class="tab ${state.tab===t.key?'on':''}" data-act="tab" data-tab="${t.key}">
-      ${t.icon}
-      <span>${t.label}</span>
-      ${t.key==='chats'&&unread>0?`<span class="tbadge">${unread}</span>`:''}
-    </button>`).join('');
-}
-
-/* ============================================================
-   CHATS VIEW
-============================================================ */
-function renderChats(){
-  const el = $('#view-chats');
-  const total = store.dms.length;
-  el.innerHTML = `
-    <div class="section-head">Direct messages <span style="color:#5d5d66">${total}</span></div>
-    ${store.dms.map(d=>{
-      const u = userByCode(d.code);
-      const last = d.messages[d.messages.length-1];
-      return `
-      <div class="row" data-act="open-dm" data-code="${d.code}">
-        ${avatarHTML(u,'md')}
-        <div class="row-body">
-          <div class="row-top">
-            <div class="row-name">${u.alias}<span class="sep">&lt;&gt;</span><span class="row-code">${u.code}</span></div>
-            <div class="row-time">${last.time}</div>
-          </div>
-          <div class="row-prev">${last.from==='me'?'<span class="who">You: </span>':''}${esc(last.text)}</div>
-        </div>
-        ${d.unread>0?`<div class="unread">${d.unread}</div>`:''}
-      </div>`;
-    }).join('')}
-    <div class="section-head">Shortcuts</div>
-    <div class="row" data-act="tab" data-tab="discover">
-      <div class="avatar md" style="--h:210;font-size:19px">🔍</div>
-      <div class="row-body">
-        <div class="row-name">Find by Code ID or Alias</div>
-        <div class="row-prev">Search the entire network</div>
-      </div>
+    <div id="lawyerLoginWrap" class="demo-login hidden">
+      <label for="lawyerSelect" class="text-muted">Demo login:</label>
+      <select id="lawyerSelect"></select>
     </div>
-    <div class="row" data-act="new-group">
-      <div class="avatar md" style="--h:150;font-size:19px">👥</div>
-      <div class="row-body">
-        <div class="row-name">New Group</div>
-        <div class="row-prev">Invite members by Code</div>
-      </div>
-    </div>
-  `;
-}
+  </header>
 
-/* ============================================================
-   CALLS VIEW
-============================================================ */
-function renderCalls(){
-  const el = $('#view-calls');
-  el.innerHTML = `
-    <div class="section-head">Recent <span style="color:#5d5d66">${store.calls.length}</span></div>
-    ${store.calls.map(c=>{
-      const u = userByCode(c.code);
-      const missed = c.dir==='miss';
-      const dirIco = c.dir==='in' ? I.arrowIn : c.dir==='out' ? I.arrowOut : I.arrowIn;
-      const dirColor = missed ? 'var(--red)' : 'var(--muted-2)';
-      return `
-      <div class="row">
-        ${avatarHTML(u,'md')}
-        <div class="row-body">
-          <div class="row-top">
-            <div class="row-name" style="${missed?'color:var(--red)':''}">${u.alias}<span class="sep">&lt;&gt;</span><span class="row-code">${u.code}</span></div>
-            <div class="row-time">${c.time}</div>
-          </div>
-          <div class="row-prev" style="display:flex;align-items:center;gap:5px">
-            <span style="width:12px;height:12px;color:${dirColor};display:inline-flex">${dirIco}</span>
-            ${missed?'Missed':c.dir==='in'?'Incoming':'Outgoing'} ${c.mode} call${c.dur?` · ${c.dur}`:''}
-          </div>
-        </div>
-        <button class="icon-btn" data-act="call" data-code="${c.code}" data-mode="${c.mode}" style="color:var(--gold)">
-          ${c.mode==='video'?I.video:I.phone}
-        </button>
-      </div>`;
-    }).join('')}
-  `;
-}
+  <main class="container" id="app"></main>
 
-/* ============================================================
-   GROUPS VIEW
-============================================================ */
-function renderGroups(){
-  const el = $('#view-groups');
-  el.innerHTML = `
-    <div class="section-head">Your groups <span style="color:#5d5d66">${store.groups.length}</span></div>
-    ${store.groups.map(g=>{
-      const last = g.messages[g.messages.length-1];
-      const sender = last.from==='me' ? 'You' : userByCode(last.from).alias;
-      return `
-      <div class="row" data-act="open-group" data-id="${g.id}">
-        <div class="avatar md" style="--h:${g.hue}">${g.emoji}</div>
-        <div class="row-body">
-          <div class="row-top">
-            <div class="row-name">${esc(g.name)}</div>
-            <div class="row-time">${last.time}</div>
-          </div>
-          <div class="row-prev"><span class="who">${sender}: </span>${esc(last.text)}</div>
-          <div style="font-size:10.5px;color:var(--muted-2);margin-top:3px">${g.members.length} members</div>
-        </div>
-        ${g.unread>0?`<div class="unread">${g.unread}</div>`:''}
-      </div>`;
-    }).join('')}
+  <script>
+    (function() {
+      'use strict';
 
-    <div class="section-head" style="margin-top:8px">Channels <span style="color:#5d5d66">${store.channels.length}</span></div>
-    ${store.channels.map(c=>{
-      const last = c.messages[c.messages.length-1];
-      return `
-      <div class="row" data-act="open-channel" data-id="${c.id}">
-        <div class="avatar md" style="--h:${c.hue}">${c.emoji}</div>
-        <div class="row-body">
-          <div class="row-top">
-            <div class="row-name">${esc(c.name)}</div>
-            <div class="row-time">${last.time}</div>
-          </div>
-          <div class="row-prev">${esc(last.text)}</div>
-          <div style="font-size:10.5px;color:var(--muted-2);margin-top:3px">${esc(c.desc)} · read-only</div>
-        </div>
-        ${c.unread>0?`<div class="unread">${c.unread}</div>`:''}
-      </div>`;
-    }).join('')}
-
-    <div style="padding:18px 16px 0">
-      <button class="btn block" data-act="new-group">${I.plus} Create a group</button>
-    </div>
-  `;
-}
-
-/* ============================================================
-   DISCOVER VIEW
-============================================================ */
-function matches(u, q, filter){
-  if(!q) return true;
-  const query = q.toLowerCase().replace(/[<>]/g,'').trim();
-  if(!query) return true;
-  const codeHit  = u.code.toLowerCase().includes(query);
-  const aliasHit = u.alias.toLowerCase().includes(query);
-  const skillHit = u.skills.some(s=>s.toLowerCase().includes(query));
-  if(filter==='code')  return codeHit;
-  if(filter==='alias') return aliasHit;
-  if(filter==='skill') return skillHit;
-  return codeHit || aliasHit || skillHit;
-}
-
-function renderDiscover(){
-  const el = $('#view-discover');
-  const me = state.me;
-  const results = USERS.filter(u=>u.code!==me.code).filter(u=>matches(u, state.discoverQ, state.discoverFilter));
-
-  el.innerHTML = `
-    <div class="disc-search">
-      <div class="search-wrap">
-        ${I.search}
-        <input class="search-input" id="discInput" placeholder="Search Code ID, Alias or Skill" value="${esc(state.discoverQ)}" autocomplete="off">
-      </div>
-    </div>
-    <div class="chips">
-      ${[['all','All'],['code','Code ID'],['alias','Alias'],['skill','Skills']].map(([k,l])=>
-        `<div class="chip ${state.discoverFilter===k?'on':''}" data-act="disc-filter" data-filter="${k}">${l}</div>`).join('')}
-    </div>
-    <div class="section-head">${state.discoverQ ? `Results · ${results.length}` : 'On the network'}</div>
-    ${results.length===0 ? `
-      <div class="empty">
-        <div class="ico">🔎</div>
-        <p>No Code ID, Alias or Skill matches<br>"${esc(state.discoverQ)}"</p>
-      </div>` :
-      results.map(u=>userCard(u)).join('')}
-  `;
-
-  const inp = $('#discInput');
-  inp.addEventListener('input', e=>{
-    state.discoverQ = e.target.value;
-    const pos = e.target.selectionStart;
-    renderDiscover();
-    const ni = $('#discInput');
-    ni.focus();
-    ni.setSelectionRange(pos,pos);
-  });
-}
-
-function userCard(u){
-  const t = tierOf(u);
-  return `
-  <div class="ucard">
-    <div class="ucard-top" data-act="open-profile" data-code="${u.code}">
-      ${avatarHTML(u,'md')}
-      <div class="ucard-id">
-        <div class="ucard-alias">${u.alias}<span class="sep">&lt;&gt;</span><span class="code-txt">${u.code}</span></div>
-        <div class="ucard-tier">${t.name} tier · ${t.digits}-digit</div>
-      </div>
-      <div style="color:var(--muted-2);font-size:11px">View</div>
-    </div>
-    <div class="skills">
-      ${u.skills.map(s=>`<span class="skill">${esc(s)}</span>`).join('')}
-    </div>
-    <div class="ucard-actions">
-      <button class="btn gold" data-act="open-dm" data-code="${u.code}">Message</button>
-      <button class="btn iconic" data-act="call" data-code="${u.code}" data-mode="voice" title="Voice call">${I.phone}</button>
-      <button class="btn iconic" data-act="call" data-code="${u.code}" data-mode="video" title="Video call">${I.video}</button>
-      <button class="btn iconic" data-act="invite" data-code="${u.code}" title="Invite to group">${I.groupAdd}</button>
-    </div>
-  </div>`;
-}
-
-/* ============================================================
-   PROFILE VIEW
-============================================================ */
-function renderProfileView(){
-  const me = state.me;
-  const t = TIERS[me.tier];
-  const chatCount = store.dms.length;
-  const groupCount = store.groups.length;
-  const callCount = store.calls.length;
-
-  $('#view-profile').innerHTML = `
-    <div class="prof-head">
-      ${avatarHTML(me,'xl')}
-      <div class="prof-alias">${me.alias}</div>
-      <div class="prof-code">&lt;&gt; ${me.code}</div>
-      <div style="margin-top:9px">${tierBadge(me.tier)}</div>
-      <div class="prof-bio">${esc(me.bio || 'No bio set.')}</div>
-      <div class="stats">
-        <div class="stat"><div class="n">${chatCount}</div><div class="l">Chats</div></div>
-        <div class="stat"><div class="n">${groupCount}</div><div class="l">Groups</div></div>
-        <div class="stat"><div class="n">${callCount}</div><div class="l">Calls</div></div>
-      </div>
-    </div>
-
-    <div class="list-group">
-      <div class="list-item" data-act="edit-profile"><span class="li-ico">✏️</span> Edit profile <span class="li-val">›</span></div>
-      <div class="list-item" data-act="share-id"><span class="li-ico">🔗</span> Share my Code ID <span class="li-val">${me.alias}&lt;&gt;${me.code}</span></div>
-      <div class="list-item" data-act="new-group"><span class="li-ico">👥</span> Create a group <span class="li-val">›</span></div>
-    </div>
-
-    <div class="list-group">
-      <div class="list-item" data-act="soon"><span class="li-ico">🔔</span> Notifications <span class="li-val">On</span></div>
-      <div class="list-item" data-act="soon"><span class="li-ico">🛡️</span> Privacy &amp; Codes <span class="li-val">›</span></div>
-      <div class="list-item" data-act="soon"><span class="li-ico">🌙</span> Appearance <span class="li-val">Dark</span></div>
-      <div class="list-item" data-act="soon"><span class="li-ico">💾</span> Data &amp; Storage <span class="li-val">›</span></div>
-    </div>
-
-    <div class="list-group">
-      <div class="list-item" style="color:var(--red)" data-act="signout"><span class="li-ico">⎋</span> Sign out of this Code ID</div>
-    </div>
-
-    <div style="text-align:center;font-size:11px;color:#3a3a42;padding:14px 0 30px;letter-spacing:.06em">
-      CODE1008 · TIER ${t.name.toUpperCase()} · ${t.price.toUpperCase()}
-    </div>
-  `;
-}
-
-/* ============================================================
-   RENDER ALL / TAB SWITCH
-============================================================ */
-function renderAll(){
-  renderTopbar();
-  renderTabbar();
-  renderChats();
-  renderCalls();
-  renderGroups();
-  renderDiscover();
-  renderProfileView();
-}
-
-function setTab(tab){
-  state.tab = tab;
-  $$('.view').forEach(v=>v.classList.toggle('active', v.id === 'view-'+tab));
-  renderTopbar();
-  renderTabbar();
-  const view = $('#view-'+tab);
-  if(view) view.scrollTop = 0;
-}
-
-/* ============================================================
-   CONVERSATION HELPERS
-============================================================ */
-function getConvo(id){
-  const [type,key] = id.split(':');
-  if(type==='dm')  return store.dms.find(d=>d.code===key);
-  if(type==='grp') return store.groups.find(g=>g.id===key);
-  if(type==='ch')  return store.channels.find(c=>c.id===key);
-  return null;
-}
-
-function convoMeta(id){
-  const [type,key] = id.split(':');
-  if(type==='dm'){
-    const u = userByCode(key);
-    return {title:u.alias, code:u.code, avatar:avatarHTML(u,'sm'), kind:'dm', peer:u};
-  }
-  if(type==='grp'){
-    const g = store.groups.find(x=>x.id===key);
-    return {title:g.name, code:g.members.length+' members · '+g.members.map(c=>userByCode(c).alias).join(', '),
-            avatar:`<div class="avatar sm" style="--h:${g.hue}">${g.emoji}</div>`, kind:'grp', group:g};
-  }
-  const c = store.channels.find(x=>x.id===key);
-  return {title:c.name, code:c.desc, avatar:`<div class="avatar sm" style="--h:${c.hue}">${c.emoji}</div>`, kind:'ch', channel:c};
-}
-
-/* ============================================================
-   OPEN CHAT
-============================================================ */
-function openChat(id){
-  const convo = getConvo(id);
-  if(!convo) return;
-  convo.unread = 0;
-  renderChats(); renderGroups(); renderTabbar();
-
-  const meta = convoMeta(id);
-  const isChannel = meta.kind === 'ch';
-
-  const ov = pushOverlay(`
-    <header class="chat-head">
-      <button class="icon-btn" data-act="close-ov">${I.back}</button>
-      <div class="chat-head-id" data-act="chat-info" data-id="${id}">
-        ${meta.avatar}
-        <div style="margin-left:11px;min-width:0">
-          <div class="n">${esc(meta.title)}</div>
-          <div class="c ${meta.kind==='dm'?'':'grey'}">${meta.kind==='dm'?`&lt;&gt; ${meta.code}`:esc(meta.code)}</div>
-        </div>
-      </div>
-      ${meta.kind==='dm' ? `
-        <button class="icon-btn" data-act="call" data-code="${meta.peer.code}" data-mode="voice" style="color:var(--gold)">${I.phone}</button>
-        <button class="icon-btn" data-act="call" data-code="${meta.peer.code}" data-mode="video" style="color:var(--gold)">${I.video}</button>
-      ` : `
-        <button class="icon-btn" data-act="group-info" data-id="${id}">${I.users}</button>
-      `}
-    </header>
-    <div class="msgs" id="msgs"></div>
-    ${isChannel
-      ? `<div class="channel-note">📡 Only the channel owner can post in <b>${esc(meta.title)}</b></div>`
-      : `<div class="composer">
-           <input id="msgInput" placeholder="Message" autocomplete="off">
-           <button class="send-btn" data-act="send" data-id="${id}">${I.send}</button>
-         </div>`}
-  `);
-
-  ov.dataset.chatId = id;
-  const msgs = $('#msgs', ov);
-  msgs.innerHTML = renderMessages(convo, meta);
-  requestAnimationFrame(()=>{ msgs.scrollTop = msgs.scrollHeight; });
-
-  if(!isChannel){
-    const input = $('#msgInput', ov);
-    input.addEventListener('keydown', e=>{
-      if(e.key === 'Enter'){ e.preventDefault(); sendMessage(id); }
-    });
-    setTimeout(()=>input.focus(), 380);
-  }
-  return ov;
-}
-
-function renderMessages(convo, meta){
-  let html = '';
-  let lastDay = null;
-  convo.messages.forEach(m=>{
-    const mine = m.from === 'me';
-    const day = /^\d{2}:\d{2}$/.test(m.time) ? 'Today' : m.time;
-    if(day !== lastDay){
-      html += `<div class="day-sep">${day}</div>`;
-      lastDay = day;
-    }
-    const sender = (!mine && meta.kind !== 'dm') ? `<div class="msg-sender">${userByCode(m.from).alias}&lt;&gt;${m.from}</div>` : '';
-    html += `
-      <div class="msg-wrap ${mine?'me':'them'}">
-        ${sender}
-        <div class="msg ${mine?'me':'them'}">${esc(m.text)}<span class="t">${m.time}</span></div>
-      </div>`;
-  });
-  return html;
-}
-
-/* ============================================================
-   SEND MESSAGE
-============================================================ */
-const REPLIES = [
-  'Understood. I’ll confirm within the hour.',
-  'Noted — logging it on the Source desk.',
-  'That works. Sending the file now.',
-  'Copy. Let’s keep the window tight.',
-  'Agreed. I’ll loop in the Makers tier.',
-  'Received. Code verified on my side.',
-  'Good. I’ll hold the line until 18:00.'
-];
-
-function sendMessage(id){
-  const ov = $$('#stack .overlay').find(o=>o.dataset.chatId===id);
-  if(!ov) return;
-  const input = $('#msgInput', ov);
-  const text = input.value.trim();
-  if(!text) return;
-
-  const convo = getConvo(id);
-  const time = nowTime();
-  convo.messages.push({from:'me', text, time});
-  input.value = '';
-
-  const msgs = $('#msgs', ov);
-  const meta = convoMeta(id);
-  msgs.innerHTML = renderMessages(convo, meta);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  renderChats(); renderGroups();
-
-  // Simulated reply for DMs
-  const [type, key] = id.split(':');
-  if(type === 'dm'){
-    const peer = userByCode(key);
-    setTimeout(()=>{
-      const stillOpen = $$('#stack .overlay').find(o=>o.dataset.chatId===id);
-      if(stillOpen){
-        const m = $('#msgs', stillOpen);
-        m.insertAdjacentHTML('beforeend', `
-          <div class="msg-wrap them">
-            <div class="msg them typing"><i></i><i></i><i></i></div>
-          </div>`);
-        m.scrollTop = m.scrollHeight;
+      // ---------- ESCAPE HELPER ----------
+      function esc(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
-    }, 900);
 
-    setTimeout(()=>{
-      const reply = REPLIES[Math.floor(Math.random()*REPLIES.length)];
-      convo.messages.push({from:key, text:reply, time:nowTime()});
-      const stillOpen = $$('#stack .overlay').find(o=>o.dataset.chatId===id);
-      if(stillOpen){
-        const m = $('#msgs', stillOpen);
-        m.innerHTML = renderMessages(convo, convoMeta(id));
-        m.scrollTop = m.scrollHeight;
-      } else {
-        convo.unread = (convo.unread||0) + 1;
-        toast(peer.alias + '<>' + peer.code, reply, peer.emoji);
+      // ---------- STORAGE ----------
+      const STORAGE_KEY = 'vakeelConnect_v1';
+
+      function safeRead() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          console.warn('Failed to read storage', e);
+          return null;
+        }
       }
-      renderChats(); renderTabbar();
-    }, 2400);
-  }
-}
 
-/* ============================================================
-   CALL SCREEN
-============================================================ */
-let callTimer = null;
-
-function startCall(code, mode){
-  const u = userByCode(code);
-  const node = document.createElement('div');
-  node.id = 'callScreen';
-  node.innerHTML = `
-    <div class="call-avatar" style="--h:${u.hue}">${u.emoji}</div>
-    <div class="call-name">${u.alias}</div>
-    <div class="call-code">&lt;&gt; ${u.code}</div>
-    <div class="call-status" id="callStatus">Calling…</div>
-    <div class="call-ctrl">
-      <button class="cbtn" data-c="mute">${I.mic}</button>
-      <button class="cbtn end" data-c="end">${I.phone}</button>
-      <button class="cbtn" data-c="spk">${I.vol}</button>
-    </div>
-  `;
-  $('#phone').appendChild(node);
-
-  let secs = 0;
-  let connected = false;
-
-  setTimeout(()=>{
-    connected = true;
-    const st = $('#callStatus', node);
-    if(!st) return;
-    st.textContent = '00:00';
-    callTimer = setInterval(()=>{
-      secs++;
-      const mm = String(Math.floor(secs/60)).padStart(2,'0');
-      const ss = String(secs%60).padStart(2,'0');
-      const s = $('#callStatus', node);
-      if(s) s.textContent = `${mm}:${ss}`;
-    }, 1000);
-    toast('Call connected', `${u.alias}<>${u.code} · ${mode} call`, '📞');
-  }, 2200);
-
-  node.addEventListener('click', e=>{
-    const btn = e.target.closest('[data-c]');
-    if(!btn) return;
-    const c = btn.dataset.c;
-    if(c === 'end'){
-      clearInterval(callTimer); callTimer = null;
-      const dur = connected ? `${Math.floor(secs/60)}m ${secs%60}s` : '';
-      if(connected){
-        store.calls.unshift({code:u.code, mode, dir:'out', time:nowTime(), dur});
-        renderCalls();
+      function safeWrite(data) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+          console.warn('Failed to write storage', e);
+        }
       }
-      node.style.transition='opacity .25s, transform .25s';
-      node.style.opacity='0'; node.style.transform='scale(.96)';
-      setTimeout(()=>node.remove(), 260);
-    } else {
-      btn.classList.toggle('on');
-      btn.innerHTML = btn.classList.contains('on')
-        ? (c==='mute' ? I.micOff : c==='spk' ? I.vol : I.camOff)
-        : (c==='mute' ? I.mic : c==='spk' ? I.vol : I.camOff);
-    }
-  });
-}
 
-/* ============================================================
-   PROFILE OVERLAY
-============================================================ */
-function openProfile(code){
-  const u = userByCode(code);
-  const t = tierOf(u);
-  const ov = pushOverlay(`
-    <header class="chat-head">
-      <button class="icon-btn" data-act="close-ov">${I.back}</button>
-      <div class="chat-head-id"><div class="n">Profile</div><div class="c grey">Code ID ${u.code}</div></div>
-    </header>
-    <div class="scroll" style="flex:1">
-      <div class="ov-hero">
-        <div style="display:flex;justify-content:center">${avatarHTML(u,'xl')}</div>
-        <div class="alias">${u.alias}</div>
-        <div class="code">&lt;&gt; ${u.code}</div>
-        <div style="margin-top:10px">${tierBadge(u.tier)}</div>
-        <div class="bio">${esc(u.bio)}</div>
-        <div class="skills" style="justify-content:center;margin-top:16px">
-          ${u.skills.map(s=>`<span class="skill">${esc(s)}</span>`).join('')}
-        </div>
-      </div>
+      // ---------- SEED DATA ----------
+      function getSeedData() {
+        const today = new Date();
+        function futureDate(daysAhead) {
+          const d = new Date(today);
+          d.setDate(d.getDate() + daysAhead);
+          return d.toISOString().slice(0, 10);
+        }
 
-      <div class="ov-actions">
-        <button class="ov-act" data-act="open-dm" data-code="${u.code}">
-          <span class="circ">${I.chat}</span>Message
-        </button>
-        <button class="ov-act" data-act="call" data-code="${u.code}" data-mode="voice">
-          <span class="circ">${I.phone}</span>Voice
-        </button>
-        <button class="ov-act" data-act="call" data-code="${u.code}" data-mode="video">
-          <span class="circ">${I.video}</span>Video
-        </button>
-        <button class="ov-act alt" data-act="invite" data-code="${u.code}">
-          <span class="circ">${I.groupAdd}</span>Invite
-        </button>
-      </div>
-
-      <div class="list-group">
-        <div class="list-item"><span class="li-ico">🆔</span> Code ID <span class="li-val">${u.code}</span></div>
-        <div class="list-item"><span class="li-ico">🏷️</span> Alias <span class="li-val">${u.alias}</span></div>
-        <div class="list-item"><span class="li-ico">${t.icon}</span> Tier <span class="li-val">${t.name}</span></div>
-        <div class="list-item"><span class="li-ico">🛡️</span> Verification <span class="li-val">${u.tier==='real'?'Standard':'Verified node'}</span></div>
-      </div>
-      <div style="height:26px"></div>
-    </div>
-  `);
-  return ov;
-}
-
-/* ============================================================
-   GROUP MODAL
-============================================================ */
-let draftGroup = { name:'', members:[] };
-
-function openNewGroup(){
-  draftGroup = { name:'', members:[] };
-  const ov = pushOverlay(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">New Group</div>
-    <div class="scroll" style="flex:1;padding:0 16px 10px">
-      <div class="label">Group name</div>
-      <input class="field" id="grpName" placeholder="e.g. DEAL ROOM 09" maxlength="22" autocomplete="off">
-
-      <div class="label" style="margin-top:18px">Invite members by Code ID</div>
-      <div style="display:flex;gap:8px">
-        <input class="field" id="grpCode" placeholder="001 / 1008 / 01" autocomplete="off" style="flex:1">
-        <button class="btn gold" data-act="grp-add" style="padding:13px 16px">Add</button>
-      </div>
-      <div id="grpChips" style="margin-top:14px"></div>
-
-      <div class="label" style="margin-top:20px">Suggestions</div>
-      <div id="grpSuggest"></div>
-    </div>
-    <div style="padding:12px 16px calc(var(--sab) + 16px);border-top:1px solid var(--line)">
-      <button class="btn gold block" data-act="grp-create">Create group</button>
-    </div>
-  `, {sheet:true});
-
-  const renderDraft = ()=>{
-    const chips = $('#grpChips', ov);
-    chips.innerHTML = draftGroup.members.length
-      ? draftGroup.members.map(c=>{
-          const u = userByCode(c);
-          return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:13px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:8px">
-            ${avatarHTML(u,'sm')}
-            <div style="flex:1;font-size:13.5px;font-weight:620">${u.alias}<span class="sep">&lt;&gt;</span><span class="code-txt">${u.code}</span></div>
-            <button class="icon-btn" data-act="grp-remove" data-code="${c}" style="width:30px;height:30px;color:var(--muted)">${I.x}</button>
-          </div>`;
-        }).join('')
-      : `<div style="font-size:12px;color:var(--muted-2)">No members added yet.</div>`;
-
-    const sug = $('#grpSuggest', ov);
-    const pool = USERS.filter(u=>u.code!==state.me.code && !draftGroup.members.includes(u.code)).slice(0,6);
-    sug.innerHTML = pool.map(u=>`
-      <div class="row" style="padding:9px 0" data-act="grp-quick" data-code="${u.code}">
-        ${avatarHTML(u,'sm')}
-        <div class="row-body">
-          <div style="font-size:13.5px;font-weight:620">${u.alias}<span class="sep">&lt;&gt;</span><span class="code-txt">${u.code}</span></div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">${TIERS[u.tier].name} · ${u.skills[0]}</div>
-        </div>
-        <div style="color:var(--gold);font-size:20px;font-weight:300">+</div>
-      </div>`).join('');
-  };
-  renderDraft();
-  ov._renderDraft = renderDraft;
-
-  const nameInput = $('#grpName', ov);
-  nameInput.addEventListener('input', e=>{ draftGroup.name = e.target.value; });
-  const codeInput = $('#grpCode', ov);
-  codeInput.addEventListener('keydown', e=>{
-    if(e.key === 'Enter'){ e.preventDefault(); addByCode(); }
-  });
-  ov._addByCode = addByCode;
-
-  function addByCode(){
-    const v = codeInput.value.trim().replace(/[^0-9]/g,'');
-    if(!v) return;
-    const u = USERS.find(x=>x.code === v);
-    if(!u){ toast('Code not found', `No node with Code ID ${v}`, '⚠️'); return; }
-    if(u.code === state.me.code){ toast('That’s you', 'You are already in the group', '🙂'); return; }
-    if(draftGroup.members.includes(u.code)){ toast('Already added', `${u.alias}<>${u.code}`, 'ℹ️'); return; }
-    draftGroup.members.push(u.code);
-    codeInput.value = '';
-    renderDraft();
-  }
-}
-
-/* ============================================================
-   INVITE TO GROUP
-============================================================ */
-function openInvite(code){
-  const u = userByCode(code);
-  const ov = pushOverlay(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Invite ${u.alias}&lt;&gt;${u.code}</div>
-    <div class="scroll" style="flex:1;padding:0 16px calc(var(--sab) + 20px)">
-      <div style="font-size:12.5px;color:var(--muted);padding:0 4px 14px;line-height:1.5">
-        Choose a group to add this Code ID to.
-      </div>
-      ${store.groups.map(g=>{
-        const already = g.members.includes(u.code);
-        return `<div class="row" style="border-radius:14px;border:1px solid var(--line);margin-bottom:9px;background:var(--surface-2)"
-              data-act="${already?'':'do-invite'}" data-group="${g.id}" data-code="${u.code}">
-          <div class="avatar md" style="--h:${g.hue}">${g.emoji}</div>
-          <div class="row-body">
-            <div class="row-name">${esc(g.name)}</div>
-            <div class="row-prev">${g.members.length} members</div>
-          </div>
-          <div style="color:${already?'var(--muted-2)':'var(--gold)'};font-size:12px;font-weight:700">${already?'Member':'Add'}</div>
-        </div>`;
-      }).join('')}
-      <button class="btn ghost block" data-act="close-ov" style="margin-top:10px">Cancel</button>
-    </div>
-  `, {sheet:true});
-  return ov;
-}
-
-/* ============================================================
-   NOTIFICATIONS SHEET
-============================================================ */
-function openNotifs(){
-  state.notifCount = 0;
-  store.notifs.forEach(n=>n.unread = false);
-  renderTopbar();
-
-  const ov = pushOverlay(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Notifications</div>
-    <div class="scroll" style="flex:1;padding:0 16px calc(var(--sab) + 24px)">
-      ${store.notifs.map(n=>`
-        <div style="display:flex;gap:12px;padding:13px 14px;border-radius:15px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:9px">
-          <div class="avatar sm" style="--h:210;font-size:16px">${n.ico}</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13.5px;font-weight:650">${esc(n.title)}</div>
-            <div style="font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.4">${esc(n.body)}</div>
-            <div style="font-size:10.5px;color:var(--muted-2);margin-top:5px">${esc(n.time)}</div>
-          </div>
-          ${n.unread?`<div style="width:7px;height:7px;border-radius:50%;background:var(--gold);margin-top:6px;flex:none"></div>`:''}
-        </div>`).join('')}
-    </div>
-  `, {sheet:true});
-  return ov;
-}
-
-/* ============================================================
-   EDIT PROFILE
-============================================================ */
-function openEditProfile(){
-  const me = state.me;
-  const ov = pushOverlay(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">Edit Profile</div>
-    <div class="scroll" style="flex:1;padding:0 16px">
-      <div style="display:flex;justify-content:center;margin-bottom:18px">${avatarHTML(me,'lg')}</div>
-      <div class="label">Alias</div>
-      <input class="field" id="epAlias" value="${esc(me.alias)}" maxlength="12">
-      <div class="label" style="margin-top:16px">Bio</div>
-      <textarea class="field" id="epBio" rows="3" maxlength="140" style="resize:none;line-height:1.5">${esc(me.bio||'')}</textarea>
-      <div class="label" style="margin-top:16px">Code ID</div>
-      <input class="field" value="${me.code}" disabled style="opacity:.55">
-      <div style="font-size:11.5px;color:var(--muted-2);margin-top:9px;line-height:1.5">
-        Code IDs are permanent and cannot be changed.
-      </div>
-      <div style="height:20px"></div>
-    </div>
-    <div style="padding:12px 16px calc(var(--sab) + 16px);border-top:1px solid var(--line)">
-      <button class="btn gold block" data-act="ep-save">Save changes</button>
-    </div>
-  `, {sheet:true});
-  return ov;
-}
-
-/* ============================================================
-   GLOBAL EVENT DELEGATION
-============================================================ */
-document.addEventListener('click', e=>{
-  const el = e.target.closest('[data-act]');
-  if(!el) return;
-  const act = el.dataset.act;
-
-  switch(act){
-    /* onboarding */
-    case 'ob-next':
-      obState.step = Math.min(3, obState.step + 1);
-      renderOnboard();
-      break;
-    case 'ob-back':
-      obState.step = Math.max(1, obState.step - 1);
-      renderOnboard();
-      break;
-    case 'ob-tier':
-      obState.tier = el.dataset.tier;
-      renderOnboard();
-      break;
-    case 'ob-demo':
-      startDemo();
-      break;
-    case 'ob-create': {
-      const aliasEl = $('#obAlias');
-      const alias = (aliasEl.value.trim().toUpperCase() || ALIAS_POOL[Math.floor(Math.random()*ALIAS_POOL.length)]);
-      const code = $('#obCode').textContent.trim();
-      const tier = TIERS[obState.tier];
-      enterApp({
-        code, alias, tier: tier.key,
-        emoji: tier.icon, hue: 35,
-        skills:['New Node'],
-        bio: `New ${tier.name} node on the CODE1008 network.`
-      });
-      break;
-    }
-
-    /* tabs */
-    case 'tab':
-      setTab(el.dataset.tab);
-      break;
-
-    /* conversations */
-    case 'open-dm': {
-      const code = el.dataset.code;
-      if(code === state.me.code) return;
-      if(!store.dms.find(d=>d.code===code)){
-        store.dms.unshift({code, unread:0, messages:[
-          {from:code, text:`Connected. This is ${userByCode(code).alias}<>${code}.`, time:nowTime()}
-        ]});
+        return {
+          lawyers: [
+            {
+              id: 'law1',
+              name: 'Rajesh Khanna',
+              city: 'Delhi',
+              practiceAreas: ['Criminal', 'Bail', 'White Collar'],
+              years: 18,
+              barNumber: 'D/1234/2007',
+              bio: 'Senior criminal defence counsel with extensive trial experience in Delhi High Court and district courts. Specialises in bail matters and white-collar crime.',
+              fee: 1500,
+              verified: true,
+              rating: 4.7,
+              reviewCount: 23,
+              availability: {
+                weekdays: [1,2,3,4,5],
+                slots: ['10:00', '11:00', '14:00', '15:00', '16:00']
+              },
+              cases: [
+                { id: 'c1', title: 'State v. Mehta', year: 2022, description: 'Represented accused in a high-profile economic offence; secured bail after 3 months.', source: 'https://example.com/case1' },
+                { id: 'c2', title: 'Delhi HC bail application', year: 2021, description: 'Successfully argued for anticipatory bail in a cyber fraud case.', source: '' },
+              ],
+              testimonials: [
+                { id: 't1', client: 'A. Sharma', rating: 5, text: 'Very responsive and got me bail quickly.' },
+                { id: 't2', client: 'P. Verma', rating: 4, text: 'Clear advice, though fees are on the higher side.' },
+              ],
+              news: [
+                { id: 'n1', headline: 'Appointed as amicus curiae in Delhi HC', date: '2024-03-10' },
+                { id: 'n2', headline: 'Published article on bail reform in legal journal', date: '2023-11-05' },
+              ],
+              bookings: [],
+            },
+            {
+              id: 'law2',
+              name: 'Meera Deshpande',
+              city: 'Mumbai',
+              practiceAreas: ['Corporate', 'IP', 'Contracts'],
+              years: 12,
+              barNumber: 'M/5678/2013',
+              bio: 'Corporate lawyer with a focus on technology and intellectual property. Advises startups on compliance, licensing and funding.',
+              fee: 2000,
+              verified: true,
+              rating: 4.9,
+              reviewCount: 31,
+              availability: {
+                weekdays: [1,3,5],
+                slots: ['09:00', '10:30', '13:00', '16:30']
+              },
+              cases: [
+                { id: 'c3', title: 'TechNova IP dispute', year: 2023, description: 'Represented a SaaS company in a trademark opposition; favourable settlement.', source: 'https://example.com/case2' },
+              ],
+              testimonials: [
+                { id: 't3', client: 'R. Iyer', rating: 5, text: 'Meera simplified a complex shareholder agreement.' },
+              ],
+              news: [
+                { id: 'n3', headline: 'Speaker at IP India Conference 2024', date: '2024-01-20' },
+              ],
+              bookings: [],
+            },
+            {
+              id: 'law3',
+              name: 'Ananya Rao',
+              city: 'Bengaluru',
+              practiceAreas: ['Family', 'Property', 'Mediation'],
+              years: 8,
+              barNumber: 'B/9012/2017',
+              bio: 'Family and property law specialist. Focuses on amicable settlements and mediation.',
+              fee: 1000,
+              verified: false,
+              rating: 4.2,
+              reviewCount: 9,
+              availability: {
+                weekdays: [2,4,6],
+                slots: ['10:00', '11:30', '15:00', '17:00']
+              },
+              cases: [],
+              testimonials: [],
+              news: [
+                { id: 'n4', headline: 'Panelist at Bengaluru mediation workshop', date: '2024-02-15' },
+              ],
+              bookings: [],
+            },
+          ],
+          version: 1
+        };
       }
-      openChat('dm:'+code);
-      break;
-    }
-    case 'open-group':
-      openChat('grp:'+el.dataset.id);
-      break;
-    case 'open-channel':
-      openChat('ch:'+el.dataset.id);
-      break;
-    case 'send':
-      sendMessage(el.dataset.id);
-      break;
-    case 'close-ov': {
-      const ov = el.closest('.overlay');
-      closeOverlay(ov);
-      break;
-    }
-    case 'chat-info':
-    case 'group-info': {
-      const id = el.dataset.id;
-      const [type,key] = id.split(':');
-      if(type==='dm') openProfile(key);
-      else if(type==='grp'){
-        const g = store.groups.find(x=>x.id===key);
-        pushOverlay(`
-          <header class="chat-head">
-            <button class="icon-btn" data-act="close-ov">${I.back}</button>
-            <div class="chat-head-id"><div class="n">${esc(g.name)}</div><div class="c grey">${g.members.length} members</div></div>
-          </header>
-          <div class="scroll" style="flex:1;padding:8px 0 24px">
-            <div style="display:flex;justify-content:center;padding:22px 0 8px">
-              <div class="avatar xl" style="--h:${g.hue}">${g.emoji}</div>
-            </div>
-            <div style="text-align:center;font-size:20px;font-weight:750;letter-spacing:-0.03em">${esc(g.name)}</div>
-            <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:6px">Group · ${g.members.length} Code IDs</div>
-            <div class="section-head">Members</div>
-            ${g.members.map(c=>{
-              const u = userByCode(c);
-              return `<div class="row" data-act="open-profile" data-code="${u.code}">
-                ${avatarHTML(u,'sm')}
-                <div class="row-body">
-                  <div class="row-name">${u.alias}<span class="sep">&lt;&gt;</span><span class="row-code">${u.code}</span></div>
-                  <div class="row-prev">${TIERS[u.tier].name}${c===state.me.code?' · You':''}</div>
-                </div>
-              </div>`;
-            }).join('')}
-            <div style="padding:18px 16px 0">
-              <button class="btn block" data-act="new-group">${I.plus} Invite more members</button>
-            </div>
-          </div>
-        `);
-      } else {
-        const c = store.channels.find(x=>x.id===key);
-        toast(c.name, c.desc, c.emoji);
-      }
-      break;
-    }
 
-    /* discover */
-    case 'disc-filter':
-      state.discoverFilter = el.dataset.filter;
-      renderDiscover();
-      break;
-    case 'open-profile':
-      openProfile(el.dataset.code);
-      break;
-
-    /* calls */
-    case 'call':
-      startCall(el.dataset.code, el.dataset.mode);
-      break;
-
-    /* groups */
-    case 'new-group':
-      openNewGroup();
-      break;
-    case 'grp-add': {
-      const ov = el.closest('.overlay');
-      ov._addByCode();
-      break;
-    }
-    case 'grp-quick': {
-      const code = el.dataset.code;
-      if(!draftGroup.members.includes(code)) draftGroup.members.push(code);
-      const ov = el.closest('.overlay');
-      ov._renderDraft();
-      break;
-    }
-    case 'grp-remove': {
-      draftGroup.members = draftGroup.members.filter(c=>c !== el.dataset.code);
-      const ov = el.closest('.overlay');
-      ov._renderDraft();
-      break;
-    }
-    case 'grp-create': {
-      const nameEl = $('#grpName');
-      const name = (nameEl ? nameEl.value.trim() : draftGroup.name).toUpperCase() || 'NEW GROUP';
-      if(draftGroup.members.length === 0){
-        toast('Add members', 'Invite at least one Code ID', '⚠️');
-        return;
-      }
-      const g = {
-        id: 'g' + Date.now(),
-        name,
-        emoji: '🗂️',
-        hue: Math.floor(Math.random()*360),
-        unread: 0,
-        members: [state.me.code, ...draftGroup.members],
-        messages: [{from:'me', text:`Group created. ${draftGroup.members.length} Code ID(s) invited.`, time:nowTime()}]
+      // ---------- STATE ----------
+      let state = {
+        mode: 'client',
+        currentLawyerId: null,
+        selectedLawyerId: 'law1',
+        profileTab: 'experience',
+        dashboardTab: 'profile',
+        bookingForm: {
+          lawyerId: null,
+          selectedDate: null,
+          selectedTime: null,
+          name: '',
+          email: '',
+          issue: '',
+          error: '',
+          success: false,
+          zoomLink: '',
+          bookingDetails: null,
+        },
+        searchQuery: '',
+        filterArea: '',
       };
-      store.groups.unshift(g);
-      renderGroups(); renderProfileView();
-      closeOverlay(el.closest('.overlay'));
-      toast('Group created', `${name} · ${g.members.length} members`, '👥');
-      setTimeout(()=>openChat('grp:'+g.id), 320);
-      break;
-    }
 
-    /* invite */
-    case 'invite':
-      openInvite(el.dataset.code);
-      break;
-    case 'do-invite': {
-      const g = store.groups.find(x=>x.id === el.dataset.group);
-      const u = userByCode(el.dataset.code);
-      if(g && !g.members.includes(u.code)){
-        g.members.push(u.code);
-        g.messages.push({from:'me', text:`${u.alias}<>${u.code} was added to the group.`, time:nowTime()});
-        renderGroups();
-        toast('Member added', `${u.alias}<>${u.code} → ${g.name}`, '✅');
+      // Load or seed data
+      let db = safeRead();
+      if (!db || !db.lawyers || !Array.isArray(db.lawyers)) {
+        db = getSeedData();
+        safeWrite(db);
       }
-      closeOverlay(el.closest('.overlay'));
-      break;
-    }
 
-    /* notifications */
-    case 'notifs':
-      openNotifs();
-      break;
+      // ---------- RENDER HELPERS ----------
+      const app = document.getElementById('app');
+      const modeClientBtn = document.getElementById('modeClient');
+      const modeLawyerBtn = document.getElementById('modeLawyer');
+      const lawyerLoginWrap = document.getElementById('lawyerLoginWrap');
+      const lawyerSelect = document.getElementById('lawyerSelect');
 
-    /* profile */
-    case 'edit-profile':
-      openEditProfile();
-      break;
-    case 'ep-save': {
-      const ov = el.closest('.overlay');
-      const a = $('#epAlias', ov).value.trim().toUpperCase();
-      const b = $('#epBio', ov).value.trim();
-      if(a) state.me.alias = a;
-      state.me.bio = b;
-      renderProfileView(); renderTopbar();
-      closeOverlay(ov);
-      toast('Profile updated', `${state.me.alias}<>${state.me.code}`, '✅');
-      break;
-    }
-    case 'share-id':
-      toast('Code ID copied', `${state.me.alias}<>${state.me.code}`, '🔗');
-      break;
-    case 'signout': {
-      const ov = pushOverlay(`
-        <div class="sheet-handle"></div>
-        <div class="sheet-title">Sign out?</div>
-        <div style="padding:0 20px 8px;text-align:center;font-size:13px;color:var(--muted);line-height:1.55">
-          Your Code ID <b style="color:var(--gold)">${state.me.alias}&lt;&gt;${state.me.code}</b> will remain reserved on the network.
-        </div>
-        <div style="padding:16px 16px calc(var(--sab) + 16px)">
-          <button class="btn block" style="background:linear-gradient(135deg,#ff5f52,#d92b1f);color:#fff" data-act="do-signout">Sign out</button>
-          <button class="btn ghost block" data-act="close-ov" style="margin-top:9px">Cancel</button>
-        </div>
-      `, {sheet:true});
-      break;
-    }
-    case 'do-signout':
-      closeOverlay(el.closest('.overlay'));
-      $$('#stack .overlay').forEach(o=>closeOverlay(o));
-      setTimeout(()=>{
-        state.me = null;
-        $('#app').hidden = true;
-        $('#onboard').hidden = false;
-        obState.step = 1;
-        renderOnboard();
-      }, 260);
-      break;
+      function populateLawyerSelect() {
+        lawyerSelect.innerHTML = '';
+        db.lawyers.forEach(l => {
+          const opt = document.createElement('option');
+          opt.value = l.id;
+          opt.textContent = l.name + (l.verified ? ' ✓' : ' (pending)');
+          if (l.id === state.selectedLawyerId) opt.selected = true;
+          lawyerSelect.appendChild(opt);
+        });
+      }
 
-    /* misc */
-    case 'new-chat':
-      setTab('discover');
-      setTimeout(()=>{ const i = $('#discInput'); if(i) i.focus(); }, 120);
-      break;
-    case 'soon':
-      toast('Coming soon', 'This module is not part of the prototype', '🔒');
-      break;
-  }
-});
+      function formatDate(dateStr) {
+        try {
+          const d = new Date(dateStr + 'T00:00:00');
+          return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) {
+          return dateStr;
+        }
+      }
 
-/* ============================================================
-   BOOT
-============================================================ */
-renderOnboard();
-</script>
+      function formatTime12(time24) {
+        if (!time24) return '';
+        const [h, m] = time24.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2,'0')} ${ampm} IST`;
+      }
+
+      function getInitials(name) {
+        return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      }
+
+      // ---------- RENDER: CLIENT HOME ----------
+      function renderClientHome() {
+        const query = state.searchQuery.toLowerCase().trim();
+        const filter = state.filterArea;
+
+        let filtered = db.lawyers.slice();
+        if (query) {
+          filtered = filtered.filter(l =>
+            l.name.toLowerCase().includes(query) ||
+            l.city.toLowerCase().includes(query) ||
+            l.practiceAreas.some(a => a.toLowerCase().includes(query))
+          );
+        }
+        if (filter) {
+          filtered = filtered.filter(l => l.practiceAreas.includes(filter));
+        }
+
+        const allAreas = [...new Set(db.lawyers.flatMap(l => l.practiceAreas))].sort();
+
+        let html = `
+          <div style="text-align:center; margin-bottom:28px;">
+            <h1>Find a trusted legal advisor</h1>
+            <p class="text-muted" style="max-width:600px; margin:0 auto 20px;">Read their experience, cases, and testimonials. Book a paid one-to-one Zoom consultation. First session always paid.</p>
+          </div>
+
+          <div class="card" style="margin-bottom:24px;">
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+              <div style="flex:2; min-width:200px;">
+                <label for="searchInput" class="text-muted" style="font-size:0.8rem;">Search</label>
+                <input id="searchInput" type="text" placeholder="Name, city, or issue..." value="${esc(state.searchQuery)}" autocomplete="off">
+              </div>
+              <div style="flex:1; min-width:160px;">
+                <label for="filterArea" class="text-muted" style="font-size:0.8rem;">Practice area</label>
+                <select id="filterArea">
+                  <option value="">All areas</option>
+                  ${allAreas.map(a => `<option value="${esc(a)}" ${state.filterArea===a?'selected':''}>${esc(a)}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+          </div>
+        `;
+
+        if (filtered.length === 0) {
+          html += `<div class="empty">No lawyers match your search. Try a different term or filter.</div>`;
+        } else {
+          html += `<div class="grid">`;
+          filtered.forEach(l => {
+            const avgRating = l.rating ? l.rating.toFixed(1) : '—';
+            const badgeClass = l.verified ? 'verified' : 'pending';
+            const badgeText = l.verified ? 'Bar Council verified' : 'Verification pending';
+            html += `
+              <div class="card lawyer-card">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <div class="avatar">${esc(getInitials(l.name))}</div>
+                  <div>
+                    <div style="font-weight:700; font-size:1.05rem;">${esc(l.name)}</div>
+                    <div class="text-muted">${esc(l.city)} · ${esc(l.years)} yrs exp</div>
+                  </div>
+                </div>
+                <div><span class="badge ${badgeClass}">${badgeText}</span></div>
+                <div>${l.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}</div>
+                <div class="flex-between">
+                  <span class="stars">★ ${avgRating} <span class="text-muted">(${l.reviewCount})</span></span>
+                  <span class="text-muted">${l.cases.length} notable case${l.cases.length!==1?'s':''}</span>
+                </div>
+                <div class="flex-between">
+                  <span class="fee">₹${l.fee}</span>
+                  <span class="text-muted" style="font-size:0.8rem;">first consult · 30 min</span>
+                </div>
+                <button class="btn-primary" style="width:100%; margin-top:4px;" data-lawyer-id="${esc(l.id)}" data-action="view-profile">View profile & book</button>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
+
+        html += `
+          <div class="disclaimer" style="margin-top:30px;">
+            <strong>Important:</strong> A consultation is not a lawyer–client engagement until both parties agree.
+            Demo: payment and Zoom are simulated.
+          </div>
+        `;
+
+        app.innerHTML = html;
+
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            const pos = e.target.selectionStart;
+            renderClientHome();
+            const newInput = document.getElementById('searchInput');
+            if (newInput) {
+              newInput.focus();
+              newInput.setSelectionRange(pos, pos);
+            }
+          });
+        }
+
+        const filterSelect = document.getElementById('filterArea');
+        if (filterSelect) {
+          filterSelect.addEventListener('change', (e) => {
+            state.filterArea = e.target.value;
+            renderClientHome();
+          });
+        }
+
+        document.querySelectorAll('[data-action="view-profile"]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-lawyer-id');
+            state.currentLawyerId = id;
+            state.profileTab = 'experience';
+            resetBookingForm(id);
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- BOOKING FORM RESET ----------
+      function resetBookingForm(lawyerId) {
+        state.bookingForm = {
+          lawyerId: lawyerId,
+          selectedDate: null,
+          selectedTime: null,
+          name: '',
+          email: '',
+          issue: '',
+          error: '',
+          success: false,
+          zoomLink: '',
+          bookingDetails: null,
+        };
+      }
+
+      // ---------- RENDER: CLIENT PROFILE ----------
+      function renderClientProfile() {
+        const lawyer = db.lawyers.find(l => l.id === state.currentLawyerId);
+        if (!lawyer) {
+          state.currentLawyerId = null;
+          renderClientHome();
+          return;
+        }
+
+        const bf = state.bookingForm;
+        const isSuccess = bf.success;
+
+        let html = `<button class="btn-outline" style="margin-bottom:16px;" id="backToHome">← Back to all lawyers</button>`;
+
+        if (isSuccess && bf.bookingDetails) {
+          const bd = bf.bookingDetails;
+          html += `
+            <div class="card confirmation-box">
+              <h2 style="color:var(--success);">✅ Booking confirmed</h2>
+              <p style="margin:12px 0;">Your consultation with <strong>${esc(lawyer.name)}</strong> is booked.</p>
+              <div style="background:var(--bg); border-radius:var(--radius-sm); padding:16px; max-width:400px; margin:0 auto; text-align:left;">
+                <div><strong>Date:</strong> ${esc(formatDate(bd.date))}</div>
+                <div><strong>Time:</strong> ${esc(formatTime12(bd.time))}</div>
+                <div><strong>Amount paid:</strong> ₹${esc(bd.amount)}</div>
+                <div style="margin-top:8px;"><strong>Zoom link:</strong><br><span class="zoom-link">${esc(bd.zoomLink)}</span></div>
+              </div>
+              <p class="text-muted" style="margin-top:12px;">The Zoom link has been emailed to ${esc(bd.email)}.</p>
+              <div class="disclaimer" style="margin-top:20px;">
+                This is a demo. Payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
+              </div>
+              <button class="btn-primary" style="margin-top:16px;" id="backToHomeFromConfirm">Back to home</button>
+            </div>
+          `;
+          app.innerHTML = html;
+          document.getElementById('backToHomeFromConfirm')?.addEventListener('click', () => {
+            state.currentLawyerId = null;
+            resetBookingForm(null);
+            renderClientHome();
+          });
+          return;
+        }
+
+        const tabs = ['experience', 'cases', 'testimonials', 'news'];
+        const tabLabels = { experience: 'Experience', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News & achievements' };
+
+        html += `
+          <div class="profile-layout">
+            <div class="profile-main card">
+              <div style="display:flex; gap:14px; align-items:center; margin-bottom:16px;">
+                <div class="avatar" style="width:64px; height:64px; font-size:1.5rem;">${esc(getInitials(lawyer.name))}</div>
+                <div>
+                  <h2 style="margin:0;">${esc(lawyer.name)}</h2>
+                  <div class="text-muted">${esc(lawyer.city)} · ${esc(lawyer.years)} years experience</div>
+                  <div><span class="badge ${lawyer.verified?'verified':'pending'}">${lawyer.verified?'Bar Council verified':'Verification pending'}</span></div>
+                </div>
+              </div>
+              <div class="tabs" role="tablist">
+                ${tabs.map(t => `<button class="${state.profileTab===t?'active':''}" data-tab="${t}" role="tab">${tabLabels[t]}</button>`).join('')}
+              </div>
+              <div id="profileTabContent">
+                ${renderProfileTabContent(lawyer, state.profileTab)}
+              </div>
+            </div>
+
+            <div class="profile-booking card">
+              <h3>Book a consultation</h3>
+              <div class="flex-between" style="margin-bottom:12px;">
+                <span class="fee">₹${esc(lawyer.fee)}</span>
+                <span class="text-muted">30 min · First session fee</span>
+              </div>
+
+              ${bf.error ? `<div style="color:var(--danger); font-size:0.85rem; margin-bottom:10px;">${esc(bf.error)}</div>` : ''}
+
+              <label class="text-muted" style="font-size:0.8rem;">Select a day</label>
+              <div class="day-picker" id="dayPicker"></div>
+
+              <label class="text-muted" style="font-size:0.8rem;">Select a time</label>
+              <div class="slot-picker" id="slotPicker"></div>
+
+              <div class="form-group">
+                <label for="bookName">Your name</label>
+                <input id="bookName" type="text" value="${esc(bf.name)}" placeholder="Full name">
+              </div>
+              <div class="form-group">
+                <label for="bookEmail">Email</label>
+                <input id="bookEmail" type="email" value="${esc(bf.email)}" placeholder="you@example.com">
+              </div>
+              <div class="form-group">
+                <label for="bookIssue">Short description of issue</label>
+                <textarea id="bookIssue" placeholder="Briefly describe your legal issue...">${esc(bf.issue)}</textarea>
+              </div>
+
+              <button class="btn-gold" style="width:100%;" id="payAndConfirm" ${(!bf.selectedDate || !bf.selectedTime) ? 'disabled style="opacity:0.6;"' : ''}>
+                Pay ₹${esc(lawyer.fee)} & confirm
+              </button>
+
+              <div class="disclaimer" style="margin-top:14px;">
+                Demo: payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
+                Lawyers should follow Bar Council advertising rules.
+              </div>
+            </div>
+          </div>
+        `;
+
+        app.innerHTML = html;
+
+        document.querySelectorAll('.tabs button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.profileTab = e.currentTarget.getAttribute('data-tab');
+            renderClientProfile();
+          });
+        });
+
+        document.getElementById('backToHome')?.addEventListener('click', () => {
+          state.currentLawyerId = null;
+          renderClientHome();
+        });
+
+        renderDayPicker(lawyer);
+        renderSlotPicker(lawyer);
+
+        document.getElementById('bookName')?.addEventListener('input', (e) => { state.bookingForm.name = e.target.value; });
+        document.getElementById('bookEmail')?.addEventListener('input', (e) => { state.bookingForm.email = e.target.value; });
+        document.getElementById('bookIssue')?.addEventListener('input', (e) => { state.bookingForm.issue = e.target.value; });
+
+        document.getElementById('payAndConfirm')?.addEventListener('click', () => {
+          handleBookingPayment(lawyer);
+        });
+      }
+
+      function renderProfileTabContent(lawyer, tab) {
+        if (tab === 'experience') {
+          return `
+            <div>
+              <p style="margin-bottom:12px;">${esc(lawyer.bio || 'No bio provided.')}</p>
+              <div class="flex-between" style="font-size:0.9rem;">
+                <span><strong>Years of experience:</strong> ${esc(lawyer.years)}</span>
+                <span><strong>Bar enrolment:</strong> ${esc(lawyer.barNumber)}</span>
+              </div>
+              <div style="margin-top:10px;">
+                <strong>Practice areas:</strong> ${lawyer.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}
+              </div>
+            </div>
+          `;
+        }
+        if (tab === 'cases') {
+          if (!lawyer.cases || lawyer.cases.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          return lawyer.cases.map(c => `
+            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+              <div style="font-weight:600;">${esc(c.title)} <span class="text-muted">(${esc(c.year)})</span></div>
+              <div style="font-size:0.9rem; margin:4px 0;">${esc(c.description)}</div>
+              ${c.source && (c.source.startsWith('http://') || c.source.startsWith('https://')) ? 
+                `<a href="${esc(c.source)}" target="_blank" rel="noopener" class="text-muted" style="font-size:0.8rem;">Public source ↗</a>` : ''}
+            </div>
+          `).join('');
+        }
+        if (tab === 'testimonials') {
+          if (!lawyer.testimonials || lawyer.testimonials.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          return lawyer.testimonials.map(t => `
+            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+              <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)} <span class="text-muted" style="font-size:0.8rem;">— ${esc(t.client)}</span></div>
+              <div style="font-size:0.9rem; margin-top:4px;">"${esc(t.text)}"</div>
+            </div>
+          `).join('');
+        }
+        if (tab === 'news') {
+          if (!lawyer.news || lawyer.news.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          const sorted = [...lawyer.news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+          return sorted.map(n => `
+            <div class="list-item">
+              <div>${esc(n.headline)}</div>
+              <div class="text-muted" style="font-size:0.8rem;">${esc(n.date)}</div>
+            </div>
+          `).join('');
+        }
+        return '';
+      }
+
+      // ---------- DAY PICKER ----------
+      function renderDayPicker(lawyer) {
+        const container = document.getElementById('dayPicker');
+        if (!container) return;
+        const weekdays = lawyer.availability?.weekdays || [];
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        let daysHtml = '';
+        let count = 0;
+        for (let i = 0; i < 30 && count < 10; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() + i);
+          const dayOfWeek = d.getDay();
+          if (weekdays.includes(dayOfWeek)) {
+            const dateStr = d.toISOString().slice(0,10);
+            const selected = state.bookingForm.selectedDate === dateStr;
+            daysHtml += `<button class="day-btn ${selected?'selected':''}" data-date="${esc(dateStr)}">${esc(d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }))}</button>`;
+            count++;
+          }
+        }
+        container.innerHTML = daysHtml || `<div class="text-muted" style="font-size:0.85rem;">No available days</div>`;
+
+        container.querySelectorAll('.day-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.bookingForm.selectedDate = e.currentTarget.getAttribute('data-date');
+            state.bookingForm.selectedTime = null;
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- SLOT PICKER ----------
+      function renderSlotPicker(lawyer) {
+        const container = document.getElementById('slotPicker');
+        if (!container) return;
+        const selectedDate = state.bookingForm.selectedDate;
+        if (!selectedDate) {
+          container.innerHTML = `<div class="text-muted" style="font-size:0.85rem;">Pick a day first</div>`;
+          return;
+        }
+        const slots = lawyer.availability?.slots || [];
+        const bookedSlots = (lawyer.bookings || []).filter(b => b.date === selectedDate).map(b => b.time);
+
+        let html = '';
+        slots.forEach(time => {
+          const isBooked = bookedSlots.includes(time);
+          const isSelected = state.bookingForm.selectedTime === time;
+          html += `<button class="slot-btn ${isSelected?'selected':''}" data-time="${esc(time)}" ${isBooked?'disabled':''}>${esc(formatTime12(time))}${isBooked?' (booked)':''}</button>`;
+        });
+        container.innerHTML = html || `<div class="text-muted" style="font-size:0.85rem;">No slots available</div>`;
+
+        container.querySelectorAll('.slot-btn:not(:disabled)').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.bookingForm.selectedTime = e.currentTarget.getAttribute('data-time');
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- BOOKING PAYMENT ----------
+      function handleBookingPayment(lawyer) {
+        const bf = state.bookingForm;
+        bf.error = '';
+
+        if (!bf.selectedDate || !bf.selectedTime) {
+          bf.error = 'Please select a day and time slot.';
+          renderClientProfile();
+          return;
+        }
+        if (!bf.name.trim()) {
+          bf.error = 'Please enter your name.';
+          renderClientProfile();
+          return;
+        }
+        if (!bf.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bf.email.trim())) {
+          bf.error = 'Please enter a valid email address.';
+          renderClientProfile();
+          return;
+        }
+
+        const freshLawyer = db.lawyers.find(l => l.id === lawyer.id);
+        const alreadyBooked = (freshLawyer.bookings || []).some(b => b.date === bf.selectedDate && b.time === bf.selectedTime);
+        if (alreadyBooked) {
+          bf.error = 'That slot was just booked. Please choose another.';
+          renderClientProfile();
+          return;
+        }
+
+        const zoomLink = `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+        const booking = {
+          id: 'bk' + Date.now(),
+          lawyerId: lawyer.id,
+          date: bf.selectedDate,
+          time: bf.selectedTime,
+          clientName: bf.name.trim(),
+          clientEmail: bf.email.trim(),
+          issue: bf.issue.trim(),
+          amount: lawyer.fee,
+          zoomLink: zoomLink,
+          paid: true,
+        };
+
+        if (!freshLawyer.bookings) freshLawyer.bookings = [];
+        freshLawyer.bookings.push(booking);
+        safeWrite(db);
+
+        bf.success = true;
+        bf.bookingDetails = {
+          date: bf.selectedDate,
+          time: bf.selectedTime,
+          amount: lawyer.fee,
+          zoomLink: zoomLink,
+          email: bf.email.trim(),
+        };
+        renderClientProfile();
+      }
+
+      // ---------- RENDER: LAWYER DASHBOARD ----------
+      function renderLawyerDashboard() {
+        const lawyer = db.lawyers.find(l => l.id === state.selectedLawyerId);
+        if (!lawyer) return;
+
+        const tabs = ['profile', 'cases', 'testimonials', 'news', 'availability', 'bookings'];
+        const tabLabels = { profile: 'Profile & fee', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News', availability: 'Availability', bookings: 'Bookings' };
+
+        let html = `
+          <div class="flex-between" style="margin-bottom:16px;">
+            <h2>Lawyer Dashboard — ${esc(lawyer.name)}</h2>
+            ${lawyer.verified ? '<span class="badge verified">Verified</span>' : '<span class="badge pending">Verification pending</span>'}
+          </div>
+          <div class="dashboard-tabs">
+            ${tabs.map(t => `<button class="${state.dashboardTab===t?'active':''}" data-dtab="${t}">${tabLabels[t]}</button>`).join('')}
+          </div>
+          <div id="dashboardContent">
+            ${renderDashboardTab(lawyer, state.dashboardTab)}
+          </div>
+        `;
+
+        app.innerHTML = html;
+
+        document.querySelectorAll('.dashboard-tabs button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.dashboardTab = e.currentTarget.getAttribute('data-dtab');
+            renderLawyerDashboard();
+          });
+        });
+
+        attachDashboardHandlers(lawyer);
+      }
+
+      function renderDashboardTab(lawyer, tab) {
+        if (tab === 'profile') {
+          return `
+            <div class="card">
+              <div class="form-group">
+                <label>Name</label>
+                <input id="dashName" value="${esc(lawyer.name)}">
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input id="dashCity" value="${esc(lawyer.city)}">
+              </div>
+              <div class="form-group">
+                <label>Practice areas (comma-separated)</label>
+                <input id="dashAreas" value="${esc(lawyer.practiceAreas.join(', '))}">
+              </div>
+              <div class="form-group">
+                <label>Years of experience</label>
+                <input id="dashYears" type="number" value="${esc(lawyer.years)}">
+              </div>
+              <div class="form-group">
+                <label>First-consultation fee (₹)</label>
+                <input id="dashFee" type="number" value="${esc(lawyer.fee)}">
+              </div>
+              <div class="form-group">
+                <label>Bar Council number</label>
+                <input id="dashBar" value="${esc(lawyer.barNumber)}">
+              </div>
+              <div class="form-group">
+                <label>Bio</label>
+                <textarea id="dashBio">${esc(lawyer.bio)}</textarea>
+              </div>
+              <button class="btn-primary" id="saveProfile">Save profile</button>
+              <div class="disclaimer">Lawyers should follow Bar Council advertising rules.</div>
+            </div>
+          `;
+        }
+        if (tab === 'cases') {
+          const cases = lawyer.cases || [];
+          return `
+            <div class="warning-note">⚠️ Only public-record matters. Never share confidential client information.</div>
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add case</h3>
+              <div class="form-group"><label>Title</label><input id="caseTitle"></div>
+              <div class="form-group"><label>Year</label><input id="caseYear" type="number"></div>
+              <div class="form-group"><label>Description (public facts only)</label><textarea id="caseDesc"></textarea></div>
+              <div class="form-group"><label>Public source link (optional)</label><input id="caseSource" placeholder="https://..."></div>
+              <button class="btn-primary" id="addCase">Add case</button>
+            </div>
+            <div class="card">
+              <h3>Existing cases</h3>
+              ${cases.length === 0 ? '<div class="empty">None added yet</div>' :
+                cases.map(c => `
+                  <div class="list-item">
+                    <div>
+                      <strong>${esc(c.title)}</strong> (${esc(c.year)})<br>
+                      <span class="text-muted" style="font-size:0.85rem;">${esc(c.description)}</span>
+                      ${c.source ? `<br><a href="${esc(c.source)}" target="_blank" rel="noopener" style="font-size:0.8rem;">Source</a>` : ''}
+                    </div>
+                    <button class="btn-danger" data-remove-case="${esc(c.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'testimonials') {
+          const tests = lawyer.testimonials || [];
+          return `
+            <div class="warning-note">ℹ️ Production will accept testimonials only from clients who completed a booking.</div>
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add testimonial</h3>
+              <div class="form-group"><label>Client name / initials</label><input id="testClient"></div>
+              <div class="form-group"><label>Rating (1-5)</label><input id="testRating" type="number" min="1" max="5"></div>
+              <div class="form-group"><label>Text</label><textarea id="testText"></textarea></div>
+              <button class="btn-primary" id="addTestimonial">Add testimonial</button>
+            </div>
+            <div class="card">
+              <h3>Existing testimonials</h3>
+              ${tests.length === 0 ? '<div class="empty">None added yet</div>' :
+                tests.map(t => `
+                  <div class="list-item">
+                    <div>
+                      <span class="stars">${'★'.repeat(t.rating)}</span> — ${esc(t.client)}<br>
+                      <span class="text-muted" style="font-size:0.9rem;">"${esc(t.text)}"</span>
+                    </div>
+                    <button class="btn-danger" data-remove-testimonial="${esc(t.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'news') {
+          const news = lawyer.news || [];
+          const sorted = [...news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+          return `
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add news / achievement</h3>
+              <div class="form-group"><label>Headline</label><input id="newsHeadline"></div>
+              <div class="form-group"><label>Date</label><input id="newsDate" type="date"></div>
+              <button class="btn-primary" id="addNews">Add news</button>
+            </div>
+            <div class="card">
+              <h3>Existing news (newest first)</h3>
+              ${sorted.length === 0 ? '<div class="empty">None added yet</div>' :
+                sorted.map(n => `
+                  <div class="list-item">
+                    <div><strong>${esc(n.headline)}</strong><br><span class="text-muted">${esc(n.date)}</span></div>
+                    <button class="btn-danger" data-remove-news="${esc(n.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'availability') {
+          const avail = lawyer.availability || { weekdays: [], slots: [] };
+          const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          return `
+            <div class="card">
+              <h3>Available weekdays</h3>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+                ${weekdays.map((day, idx) => `
+                  <button class="day-btn ${avail.weekdays.includes(idx)?'selected':''}" data-toggle-weekday="${idx}">${day}</button>
+                `).join('')}
+              </div>
+              <div class="form-group">
+                <label>Time slots (comma-separated 24h HH:MM, IST)</label>
+                <input id="dashSlots" value="${esc(avail.slots.join(', '))}">
+              </div>
+              <button class="btn-primary" id="saveAvailability">Save availability</button>
+            </div>
+          `;
+        }
+        if (tab === 'bookings') {
+          const bookings = (lawyer.bookings || []).filter(b => b.paid);
+          const today = new Date().toISOString().slice(0,10);
+          const upcoming = bookings.filter(b => b.date >= today).sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+          return `
+            <div class="card">
+              <h3>Upcoming bookings</h3>
+              ${upcoming.length === 0 ? '<div class="empty">No upcoming bookings</div>' :
+                upcoming.map(b => `
+                  <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+                    <div><strong>${esc(formatDate(b.date))} · ${esc(formatTime12(b.time))}</strong></div>
+                    <div>Client: ${esc(b.clientName)} (${esc(b.clientEmail)})</div>
+                    <div class="text-muted" style="font-size:0.85rem;">Issue: ${esc(b.issue || '—')}</div>
+                    <div class="flex-between" style="width:100%; margin-top:6px;">
+                      <a href="${esc(b.zoomLink)}" target="_blank" rel="noopener" class="btn-outline" style="font-size:0.8rem; min-height:32px; padding:4px 12px;">Start Zoom</a>
+                      <span class="badge verified">Paid</span>
+                    </div>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        return '';
+      }
+
+      // ---------- DASHBOARD EVENT HANDLERS ----------
+      function attachDashboardHandlers(lawyer) {
+        const tab = state.dashboardTab;
+
+        if (tab === 'profile') {
+          document.getElementById('saveProfile')?.addEventListener('click', () => {
+            const name = document.getElementById('dashName').value.trim();
+            const city = document.getElementById('dashCity').value.trim();
+            const areasRaw = document.getElementById('dashAreas').value.trim();
+            const years = parseInt(document.getElementById('dashYears').value, 10);
+            const fee = parseInt(document.getElementById('dashFee').value, 10);
+            const bar = document.getElementById('dashBar').value.trim();
+            const bio = document.getElementById('dashBio').value.trim();
+
+            if (!name || !city) { alert('Name and city are required.'); return; }
+            if (isNaN(years) || years < 0) { alert('Enter valid years.'); return; }
+            if (isNaN(fee) || fee < 0) { alert('Enter valid fee.'); return; }
+
+            lawyer.name = name;
+            lawyer.city = city;
+            lawyer.practiceAreas = areasRaw.split(',').map(s => s.trim()).filter(Boolean);
+            lawyer.years = years;
+            lawyer.fee = fee;
+            lawyer.barNumber = bar;
+            lawyer.bio = bio;
+            safeWrite(db);
+            renderLawyerDashboard();
+            populateLawyerSelect();
+            alert('Profile saved.');
+          });
+        }
+
+        if (tab === 'cases') {
+          document.getElementById('addCase')?.addEventListener('click', () => {
+            const title = document.getElementById('caseTitle').value.trim();
+            const year = parseInt(document.getElementById('caseYear').value, 10);
+            const desc = document.getElementById('caseDesc').value.trim();
+            const source = document.getElementById('caseSource').value.trim();
+            if (!title || isNaN(year)) { alert('Title and year required.'); return; }
+            if (source && !/^https?:\/\//.test(source)) { alert('Source must start with http:// or https://'); return; }
+            if (!lawyer.cases) lawyer.cases = [];
+            lawyer.cases.push({ id: 'c' + Date.now(), title, year, description: desc, source });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-case]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-case');
+              lawyer.cases = lawyer.cases.filter(c => c.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'testimonials') {
+          document.getElementById('addTestimonial')?.addEventListener('click', () => {
+            const client = document.getElementById('testClient').value.trim();
+            const rating = parseInt(document.getElementById('testRating').value, 10);
+            const text = document.getElementById('testText').value.trim();
+            if (!client || !text) { alert('Client and text required.'); return; }
+            if (isNaN(rating) || rating < 1 || rating > 5) { alert('Rating must be 1-5.'); return; }
+            if (!lawyer.testimonials) lawyer.testimonials = [];
+            lawyer.testimonials.push({ id: 't' + Date.now(), client, rating, text });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-testimonial]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-testimonial');
+              lawyer.testimonials = lawyer.testimonials.filter(t => t.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'news') {
+          document.getElementById('addNews')?.addEventListener('click', () => {
+            const headline = document.getElementById('newsHeadline').value.trim();
+            const date = document.getElementById('newsDate').value;
+            if (!headline || !date) { alert('Headline and date required.'); return; }
+            if (!lawyer.news) lawyer.news = [];
+            lawyer.news.push({ id: 'n' + Date.now(), headline, date });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-news]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-news');
+              lawyer.news = lawyer.news.filter(n => n.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'availability') {
+          document.querySelectorAll('[data-toggle-weekday]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const idx = parseInt(e.currentTarget.getAttribute('data-toggle-weekday'), 10);
+              if (!lawyer.availability) lawyer.availability = { weekdays: [], slots: [] };
+              const wd = lawyer.availability.weekdays;
+              const pos = wd.indexOf(idx);
+              if (pos === -1) wd.push(idx); else wd.splice(pos, 1);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+          document.getElementById('saveAvailability')?.addEventListener('click', () => {
+            const slotsRaw = document.getElementById('dashSlots').value;
+            const slots = slotsRaw.split(',').map(s => s.trim()).filter(s => /^([01]?\d|2[0-3]):[0-5]\d$/.test(s));
+            lawyer.availability.slots = slots;
+            safeWrite(db);
+            renderLawyerDashboard();
+            alert('Availability saved.');
+          });
+        }
+      }
+
+      // ---------- MODE SWITCHING ----------
+      function setMode(mode) {
+        state.mode = mode;
+        if (mode === 'client') {
+          modeClientBtn.classList.add('active');
+          modeLawyerBtn.classList.remove('active');
+          lawyerLoginWrap.classList.add('hidden');
+          state.currentLawyerId = null;
+          renderClientHome();
+        } else {
+          modeClientBtn.classList.remove('active');
+          modeLawyerBtn.classList.add('active');
+          lawyerLoginWrap.classList.remove('hidden');
+          populateLawyerSelect();
+          state.selectedLawyerId = lawyerSelect.value || db.lawyers[0].id;
+          renderLawyerDashboard();
+        }
+      }
+
+      // ---------- INIT ----------
+      function init() {
+        populateLawyerSelect();
+        lawyerSelect.addEventListener('change', (e) => {
+          state.selectedLawyerId = e.target.value;
+          renderLawyerDashboard();
+        });
+
+        modeClientBtn.addEventListener('click', () => setMode('client'));
+        modeLawyerBtn.addEventListener('click', () => setMode('lawyer'));
+
+        setMode('client');
+      }
+
+      init();
+    })();
+  </script>
 </body>
 </html>
