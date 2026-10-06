@@ -2,1413 +2,1514 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>1008 · Real World × Skill Man</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+  <title>Vakeel Connect — Legal Marketplace</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    }
-
+    /* ---------- CSS variables ---------- */
     :root {
-      --bg: #000000;
-      --text: #ffffff;
-      --card: #1c1c1e;
-      --card-light: #2c2c2e;
-      --border: #38383a;
-      --accent: #0a84ff;
-      --secondary-text: #8e8e93;
-      --logo: #ffffff;
-      --banner-bg: #0a84ff;
-      --banner-text: #ffffff;
-      --success: #30d158;
-      --warning: #ff9f0a;
-      --danger: #ff453a;
-      --tab-bar: #0c0c0d;
-      --input-bg: #1c1c1e;
+      --navy: #1f3a5f;
+      --gold: #b8860b;
+      --bg: #fdfbf7;
+      --surface: #ffffff;
+      --text: #1e1e1e;
+      --text-muted: #5e5e5e;
+      --border: #d9d0c0;
+      --card-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      --focus-ring: 0 0 0 3px rgba(184,134,11,0.4);
+      --danger: #b33a3a;
+      --success: #2e6b4a;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
     }
 
-    .light {
-      --bg: #ffffff;
-      --text: #000000;
-      --card: #f2f2f7;
-      --card-light: #e5e5ea;
-      --border: #d1d1d6;
-      --accent: #007aff;
-      --secondary-text: #8e8e93;
-      --logo: #000000;
-      --banner-bg: #007aff;
-      --banner-text: #ffffff;
-      --tab-bar: #f2f2f7;
-      --input-bg: #e5e5ea;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.2s, color 0.2s;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 0 70px 0;
-    }
-
-    #app {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      background: var(--bg);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* top banner */
-    .top-banner {
-      background: var(--banner-bg);
-      color: var(--banner-text);
-      padding: 10px 16px;
-      font-size: 13px;
-      text-align: center;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
-      letter-spacing: 0.2px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .top-banner::-webkit-scrollbar {
-      display: none;
-    }
-
-    .top-banner span {
-      margin: 0 8px;
-      opacity: 0.9;
-    }
-
-    /* main scroll area */
-    .screen-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      padding: 16px 16px 20px;
-    }
-
-    /* logo */
-    .logo {
-      font-size: 42px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      color: var(--logo);
-      line-height: 1;
-      margin-bottom: 8px;
-      user-select: none;
-    }
-
-    .logo-small {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: var(--logo);
-    }
-
-    /* typography */
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      font-size: 16px;
-      color: var(--secondary-text);
-      margin-bottom: 24px;
-      line-height: 1.4;
-    }
-
-    .secondary {
-      color: var(--secondary-text);
-      font-size: 14px;
-    }
-
-    /* buttons */
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      font-size: 17px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s;
-      background: var(--accent);
-      color: #fff;
-      margin-bottom: 10px;
-    }
-
-    .btn:active {
-      opacity: 0.8;
-      transform: scale(0.98);
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--accent);
-      color: var(--accent);
-    }
-
-    .btn-sm {
-      padding: 10px 16px;
-      font-size: 15px;
-      width: auto;
-      border-radius: 20px;
-    }
-
-    /* inputs */
-    input, select, textarea {
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text);
-      font-size: 16px;
-      margin-bottom: 12px;
-      outline: none;
-      transition: border 0.2s;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--accent);
-    }
-
-    ::placeholder {
-      color: var(--secondary-text);
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--secondary-text);
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    /* cards */
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 20px;
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .badge-green {
-      background: var(--success);
-      color: #000;
-    }
-
-    .badge-orange {
-      background: var(--warning);
-      color: #000;
-    }
-
-    .badge-grey {
-      background: var(--secondary-text);
-      color: #fff;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--card-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--text);
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-    }
-
-    .avatar-sm {
-      width: 36px;
-      height: 36px;
-      font-size: 14px;
-    }
-
-    .avatar-lg {
-      width: 72px;
-      height: 72px;
-      font-size: 26px;
-    }
-
-    /* identity */
-    .identity-code {
-      font-family: 'SF Mono', 'Menlo', monospace;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* tab bar */
-    .tab-bar {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      background: var(--tab-bar);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0 12px;
-      z-index: 30;
-    }
-
-    .tab-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
-      color: var(--secondary-text);
-      cursor: pointer;
-      padding: 4px 8px;
-      transition: color 0.2s;
-      border: none;
-      background: none;
-    }
-
-    .tab-item.active {
-      color: var(--accent);
-    }
-
-    .tab-icon {
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    /* floating support */
-    .support-btn {
-      position: fixed;
-      bottom: 80px;
-      right: calc(50% - 240px + 16px);
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 25;
-      border: none;
-    }
-
-    @media (max-width: 480px) {
-      .support-btn {
-        right: 16px;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --navy: #9bb7d4;
+        --gold: #d4a017;
+        --bg: #121212;
+        --surface: #1e1e1e;
+        --text: #ececec;
+        --text-muted: #b0b0b0;
+        --border: #333333;
+        --card-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        --focus-ring: 0 0 0 3px rgba(212,160,23,0.5);
+        --danger: #cf6679;
+        --success: #7bc9a2;
       }
     }
 
-    /* chats */
-    .chat-item {
+    /* ---------- Reset & base ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      padding: 0 16px 40px;
+      min-height: 100vh;
       display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .chat-item:last-child {
-      border-bottom: none;
-    }
-
-    .chat-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .chat-name {
-      font-weight: 600;
-      font-size: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .chat-msg {
-      font-size: 14px;
-      color: var(--secondary-text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 2px;
-    }
-
-    .chat-time {
-      font-size: 12px;
-      color: var(--secondary-text);
-      flex-shrink: 0;
-    }
-
-    /* task */
-    .task-reward {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .task-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--secondary-text);
-    }
-
-    .task-meta span {
-      background: var(--card-light);
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
-
-    /* profile */
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .profile-stats {
-      display: flex;
-      gap: 20px;
-      margin-top: 8px;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--secondary-text);
-    }
-
-    /* community */
-    .community-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* support modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 50;
-      padding: 16px;
-    }
-
-    .modal-content {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 20px;
-      width: 100%;
-      max-width: 440px;
-      border: 1px solid var(--border);
-      margin-bottom: 70px;
-    }
-
-    .modal-content .btn {
-      margin-bottom: 8px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* utility */
-    .flex {
-      display: flex;
-    }
-
-    .flex-col {
       flex-direction: column;
     }
 
-    .items-center {
+    /* sticky header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      margin: 0 -16px 20px;
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
-    }
-
-    .justify-between {
       justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
-    .gap-8 {
-      gap: 8px;
-    }
-
-    .gap-12 {
-      gap: 12px;
-    }
-
-    .gap-16 {
-      gap: 16px;
-    }
-
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .mb-8 { margin-bottom: 8px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .p-16 { padding: 16px; }
-    .text-center { text-align: center; }
-    .w-full { width: 100%; }
-    .relative { position: relative; }
-
-    /* theme toggle */
-    .theme-toggle {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
+    .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--navy);
+      letter-spacing: -0.02em;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      color: var(--text);
+      gap: 6px;
+    }
+    .logo span {
+      color: var(--gold);
+      font-size: 1.5rem;
+      line-height: 1;
     }
 
-    /* scrollbar */
-    ::-webkit-scrollbar {
-      width: 4px;
+    .mode-toggle {
+      display: flex;
+      background: var(--bg);
+      border-radius: 40px;
+      border: 1px solid var(--border);
+      overflow: hidden;
     }
-    ::-webkit-scrollbar-track {
+    .mode-toggle button {
       background: transparent;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      min-height: 40px;
+      transition: background 0.15s, color 0.15s;
     }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
+    .mode-toggle button.active {
+      background: var(--navy);
+      color: #fff;
+    }
+    .mode-toggle button:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* Demo login dropdown */
+    .demo-login {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      background: var(--bg);
+      padding: 4px 10px 4px 14px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+    }
+    .demo-login select {
+      background: transparent;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      padding: 6px 0;
+      cursor: pointer;
+      min-height: 36px;
+    }
+    .demo-login select:focus-visible {
+      outline: var(--focus-ring);
       border-radius: 4px;
     }
 
-    /* tag */
+    /* ---------- layout ---------- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    h2 { font-size: 1.4rem; margin-bottom: 12px; }
+    h3 { font-size: 1.1rem; margin-bottom: 8px; }
+
+    /* ---------- cards ---------- */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+      transition: box-shadow 0.2s;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* lawyer card */
+    .lawyer-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .badge.verified {
+      background: #e6f0e9;
+      border-color: #b3d1bc;
+      color: var(--success);
+    }
+    .badge.pending {
+      background: #fff3e0;
+      border-color: #e6c9a8;
+      color: #9e6b1f;
+    }
+    @media (prefers-color-scheme: dark) {
+      .badge.verified { background: #1e3a2b; border-color: #2d6b4a; color: #b3e6c9; }
+      .badge.pending { background: #3a2e1a; border-color: #7a5c2e; color: #e6c88a; }
+    }
+
     .tag {
       display: inline-block;
-      padding: 4px 10px;
-      border-radius: 12px;
-      background: var(--card-light);
-      font-size: 12px;
-      margin: 2px;
-    }
-
-    /* success screen */
-    .success-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-    }
-
-    .otp-inputs {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin: 20px 0;
-    }
-
-    .otp-input {
-      width: 48px;
-      height: 56px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 700;
-      border-radius: 12px;
+      background: var(--bg);
       border: 1px solid var(--border);
-      background: var(--input-bg);
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .stars {
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .fee {
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 1.1rem;
+    }
+
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      text-decoration: none;
+      color: inherit;
+      background: transparent;
+    }
+    button:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .btn-primary:hover { background: #152c4a; }
+    @media (prefers-color-scheme: dark) {
+      .btn-primary { background: #2c4a6e; border-color: #2c4a6e; color: #f0f0f0; }
+      .btn-primary:hover { background: #3a5e87; }
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .btn-gold:hover { background: #9e7209; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
       color: var(--text);
-      padding: 0;
+    }
+    .btn-outline:hover { background: var(--bg); }
+
+    .btn-danger {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      min-height: 32px;
+    }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+
+    button:focus-visible, .btn:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    input, textarea, select {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      width: 100%;
+      min-height: 44px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-weight: 500; font-size: 0.85rem; margin-bottom: 4px; color: var(--text-muted); }
+
+    /* ---------- profile layout ---------- */
+    .profile-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    @media (min-width: 800px) {
+      .profile-layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      .profile-main { flex: 2; }
+      .profile-booking { flex: 1; min-width: 280px; }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tabs button {
+      background: transparent;
+      border: none;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      border-radius: 0;
+      min-height: 40px;
+    }
+    .tabs button.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    /* empty state */
+    .empty {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 16px 0;
+      text-align: center;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+
+    /* booking slots */
+    .day-picker, .slot-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .day-btn, .slot-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      min-height: 40px;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .day-btn.selected, .slot-btn.selected {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .slot-btn:disabled {
+      opacity: 0.5;
+      text-decoration: line-through;
+      cursor: not-allowed;
+      background: var(--bg);
+      color: var(--text-muted);
+      border-color: var(--border);
+    }
+
+    /* ---------- dashboard ---------- */
+    .dashboard-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dashboard-tabs button {
+      background: transparent;
+      border: none;
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      border-radius: 0;
+      min-height: 40px;
+    }
+    .dashboard-tabs button.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .list-item:last-child { border-bottom: none; }
+
+    .warning-note {
+      background: #fff9e6;
+      border-left: 4px solid var(--gold);
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 16px;
+      color: #6b4e1a;
+    }
+    @media (prefers-color-scheme: dark) {
+      .warning-note { background: #2e2a1a; color: #e6d5a8; border-left-color: var(--gold); }
+    }
+
+    .disclaimer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    /* confirmation */
+    .confirmation-box {
+      text-align: center;
+      padding: 30px 16px;
+    }
+    .zoom-link {
+      word-break: break-all;
+      font-size: 0.9rem;
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin: 8px 0;
+    }
+
+    /* utility */
+    .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .gap-8 { gap: 8px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-8 { margin-bottom: 8px; }
+    .text-muted { color: var(--text-muted); font-size: 0.85rem; }
+    .hidden { display: none !important; }
+    .cursor-pointer { cursor: pointer; }
+
+    /* focus visible for interactive elements */
+    .day-btn:focus-visible, .slot-btn:focus-visible, .tabs button:focus-visible, .dashboard-tabs button:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    /* responsive fixes */
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      header { padding: 10px 16px; }
+      .logo { font-size: 1.1rem; }
+      .mode-toggle button { padding: 6px 12px; font-size: 0.75rem; }
+      .demo-login { font-size: 0.75rem; padding: 2px 8px 2px 10px; }
+      .demo-login select { font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
-<div id="app">
-  <!-- Top scrolling banner -->
-  <div class="top-banner" id="topBanner">
-    <span>Need help?</span>
-    <span>Contact us using your Alias Name and Identity Code.</span>
-    <span>Real Skills. Real Builders. Real Results.</span>
-  </div>
-
-  <!-- Main screens container -->
-  <div class="screen-container" id="screenContainer">
-    <!-- dynamic content -->
-  </div>
-
-  <!-- Bottom tab bar (hidden until logged in) -->
-  <div class="tab-bar hidden" id="tabBar">
-    <button class="tab-item active" data-tab="home">
-      <span class="tab-icon">🏠</span>
-      <span>Home</span>
-    </button>
-    <button class="tab-item" data-tab="tasks">
-      <span class="tab-icon">📋</span>
-      <span>Tasks</span>
-    </button>
-    <button class="tab-item" data-tab="chats">
-      <span class="tab-icon">💬</span>
-      <span>Chats</span>
-    </button>
-    <button class="tab-item" data-tab="communities">
-      <span class="tab-icon">👥</span>
-      <span>Communities</span>
-    </button>
-    <button class="tab-item" data-tab="profile">
-      <span class="tab-icon">👤</span>
-      <span>Profile</span>
-    </button>
-  </div>
-
-  <!-- Floating support button -->
-  <button class="support-btn hidden" id="supportBtn" onclick="toggleSupportModal()">?</button>
-
-  <!-- Support modal -->
-  <div class="modal-overlay hidden" id="supportModal" onclick="if(event.target===this)toggleSupportModal()">
-    <div class="modal-content">
-      <h3 style="margin-bottom:16px;">Support</h3>
-      <button class="btn" onclick="alert('Chat support coming soon')">💬 Chat Support</button>
-      <button class="btn" onclick="alert('WhatsApp support: +1 000 1008')">📱 WhatsApp Support</button>
-      <button class="btn" onclick="alert('Email: support@1008.network')">✉️ Email Support</button>
-      <button class="btn btn-secondary" onclick="alert('Report issue submitted')">⚠️ Report Issue</button>
-      <button class="btn btn-outline" style="margin-top:8px;" onclick="toggleSupportModal()">Close</button>
+  <header>
+    <div class="logo"><span>⚖️</span> Vakeel Connect</div>
+    <div class="mode-toggle" role="tablist" aria-label="Mode">
+      <button id="modeClient" class="active" role="tab" aria-selected="true">I need a lawyer</button>
+      <button id="modeLawyer" role="tab" aria-selected="false">I'm a lawyer</button>
     </div>
-  </div>
-</div>
+    <div id="lawyerLoginWrap" class="demo-login hidden">
+      <label for="lawyerSelect" class="text-muted">Demo login:</label>
+      <select id="lawyerSelect"></select>
+    </div>
+  </header>
 
-<script>
-  // ============================================================
-  // 1008 – REAL WORLD × SKILL MAN
-  // ============================================================
+  <main class="container" id="app"></main>
 
-  // ---------- STATE ----------
-  let currentUser = null;
-  let currentScreen = 'welcome';
-  let activeTab = 'home';
-  let theme = localStorage.getItem('1008-theme') || 'dark';
+  <script>
+    (function() {
+      'use strict';
 
-  // ---------- DEMO DATA ----------
-  const skillMen = [
-    { id: 1, alias: 'SKILLMAN<>01', name: 'Ace', skills: ['Developer', 'Automation'], country: 'US', lang: 'English', bio: 'Full-stack builder. 10+ projects delivered.', successRate: 98, completed: 47 },
-    { id: 2, alias: 'SKILLMAN<>02', name: 'Nova', skills: ['Designer', 'Branding'], country: 'UK', lang: 'English', bio: 'Product designer focused on clean interfaces.', successRate: 95, completed: 32 },
-    { id: 3, alias: 'SKILLMAN<>03', name: 'Kai', skills: ['Marketer', 'Growth'], country: 'DE', lang: 'German', bio: 'Growth marketer. Scaled 3 startups.', successRate: 92, completed: 28 },
-    { id: 4, alias: 'SKILLMAN<>04', name: 'Zara', skills: ['Video Editor', 'Motion'], country: 'IN', lang: 'Hindi', bio: 'Video editor & motion designer.', successRate: 97, completed: 51 },
-    { id: 5, alias: 'SKILLMAN<>05', name: 'Rex', skills: ['Sales', 'Negotiation'], country: 'CA', lang: 'English', bio: 'B2B sales expert. Closed $2M+ deals.', successRate: 94, completed: 39 },
-    { id: 6, alias: 'SKILLMAN<>06', name: 'Luna', skills: ['Automation', 'AI'], country: 'AU', lang: 'English', bio: 'AI automation specialist. Building smart workflows.', successRate: 96, completed: 44 },
-    { id: 7, alias: 'SKILLMAN<>07', name: 'Orion', skills: ['Developer', 'CRM'], country: 'FR', lang: 'French', bio: 'CRM architect. Salesforce & HubSpot certified.', successRate: 91, completed: 23 },
-    { id: 8, alias: 'SKILLMAN<>08', name: 'Vega', skills: ['Consultant', 'Strategy'], country: 'SG', lang: 'English', bio: 'Business consultant. Helping founders scale.', successRate: 99, completed: 62 },
-    { id: 9, alias: 'SKILLMAN<>09', name: 'Atlas', skills: ['Developer', 'Mobile'], country: 'BR', lang: 'Portuguese', bio: 'Mobile app developer. iOS & Android.', successRate: 93, completed: 36 },
-    { id: 10, alias: 'SKILLMAN<>10', name: 'Iris', skills: ['Designer', 'UX'], country: 'JP', lang: 'Japanese', bio: 'UX researcher & designer.', successRate: 95, completed: 41 },
-    { id: 11, alias: 'SKILLMAN<>11', name: 'Flux', skills: ['Trader', 'Finance'], country: 'CH', lang: 'German', bio: 'Quant trader. Crypto & forex.', successRate: 89, completed: 19 },
-    { id: 12, alias: 'SKILLMAN<>12', name: 'Echo', skills: ['Marketer', 'SEO'], country: 'ES', lang: 'Spanish', bio: 'SEO specialist. Ranked 200+ keywords.', successRate: 94, completed: 33 },
-    { id: 13, alias: 'SKILLMAN<>13', name: 'Nyx', skills: ['Developer', 'AI'], country: 'NL', lang: 'Dutch', bio: 'AI engineer. LLMs & computer vision.', successRate: 97, completed: 48 },
-    { id: 14, alias: 'SKILLMAN<>14', name: 'Cruz', skills: ['Video Editor', 'YouTube'], country: 'MX', lang: 'Spanish', bio: 'YouTube video editor. 10M+ views.', successRate: 92, completed: 27 },
-    { id: 15, alias: 'SKILLMAN<>15', name: 'Sage', skills: ['Consultant', 'Product'], country: 'IL', lang: 'Hebrew', bio: 'Product consultant. 0→1 specialist.', successRate: 96, completed: 38 },
-    { id: 16, alias: 'SKILLMAN<>16', name: 'Jade', skills: ['Sales', 'Partnerships'], country: 'AE', lang: 'Arabic', bio: 'Partnerships lead. Building global networks.', successRate: 90, completed: 21 },
-    { id: 17, alias: 'SKILLMAN<>17', name: 'Wolf', skills: ['Developer', 'Security'], country: 'SE', lang: 'Swedish', bio: 'Security engineer. Ethical hacking.', successRate: 98, completed: 52 },
-    { id: 18, alias: 'SKILLMAN<>18', name: 'Star', skills: ['Founder', 'Vision'], country: 'KR', lang: 'Korean', bio: 'Serial founder. 2 exits.', successRate: 95, completed: 30 }
-  ];
-
-  const realWorldUsers = Array.from({ length: 30 }, (_, i) => {
-    const code = 100000000 + (i * 10) + (i % 9 === 0 ? 8 : i % 7);
-    return {
-      id: 100 + i,
-      alias: `REAL<>${String(code).slice(-4)}`,
-      code: String(code),
-      name: ['Alex', 'Jordan', 'Taylor', 'Morgan', 'Casey', 'Riley', 'Quinn', 'Avery', 'Parker', 'Reese'][i % 10],
-      country: ['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'JP', 'CA', 'AU', 'SG'][i % 10],
-      lang: ['English', 'Hindi', 'German', 'French', 'Portuguese', 'Japanese'][i % 6],
-      bio: 'Looking for skilled builders.',
-      joined: '2025'
-    };
-  });
-
-  const tasks = [
-    { id: 1, title: 'Build Landing Page', reward: 1008, deadline: '7 Days', skill: 'Developer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1001', description: 'Responsive landing page with modern design.' },
-    { id: 2, title: 'Design Logo & Brand Kit', reward: 508, deadline: '5 Days', skill: 'Designer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1002', description: 'Minimal logo + brand guidelines.' },
-    { id: 3, title: 'Create AI Chatbot System', reward: 1508, deadline: '14 Days', skill: 'AI', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1003', description: 'Custom LLM integration for customer support.' },
-    { id: 4, title: 'Generate 1000 Leads', reward: 808, deadline: '10 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1004', description: 'B2B leads in SaaS space.' },
-    { id: 5, title: 'Build CRM Dashboard', reward: 1208, deadline: '12 Days', skill: 'Developer', difficulty: 'Advanced', status: 'locked', assignedTo: 'SKILLMAN<>08', creator: 'REAL<>1005', description: 'Custom CRM with analytics.' },
-    { id: 6, title: 'Video Editing – YouTube Series', reward: 708, deadline: '6 Days', skill: 'Video Editor', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1006', description: 'Edit 5 videos for YouTube channel.' },
-    { id: 7, title: 'Marketing Strategy Plan', reward: 908, deadline: '8 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1007', description: 'Full go-to-market strategy.' },
-    { id: 8, title: 'Automation Setup – Zapier/Make', reward: 608, deadline: '4 Days', skill: 'Automation', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1008', description: 'Connect 5 business tools.' },
-    { id: 9, title: 'Mobile App MVP', reward: 2008, deadline: '21 Days', skill: 'Developer', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1009', description: 'Cross-platform MVP for iOS/Android.' },
-    { id: 10, title: 'SEO Audit & Fix', reward: 508, deadline: '5 Days', skill: 'Marketer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1010', description: 'Technical SEO audit + fixes.' },
-    { id: 11, title: 'Sales Funnel Setup', reward: 1008, deadline: '9 Days', skill: 'Sales', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1011', description: 'Full funnel with email sequences.' },
-    { id: 12, title: 'Brand Identity Design', reward: 808, deadline: '7 Days', skill: 'Designer', difficulty: 'Intermediate', status: 'completed', assignedTo: 'SKILLMAN<>02', creator: 'REAL<>1012', description: 'Complete visual identity.' },
-    { id: 13, title: 'AI Model Fine-tuning', reward: 1808, deadline: '15 Days', skill: 'AI', difficulty: 'Advanced', status: 'open', assignedTo: null, creator: 'REAL<>1013', description: 'Fine-tune Llama for domain-specific use.' },
-    { id: 14, title: 'Video Ads for Social Media', reward: 608, deadline: '5 Days', skill: 'Video Editor', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1014', description: '3 short-form video ads.' },
-    { id: 15, title: 'Business Plan & Financial Model', reward: 1108, deadline: '10 Days', skill: 'Consultant', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1015', description: 'Investor-ready business plan.' },
-    { id: 16, title: 'WordPress Website', reward: 708, deadline: '6 Days', skill: 'Developer', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1016', description: '5-page WordPress site.' },
-    { id: 17, title: 'Cold Email Outreach', reward: 508, deadline: '4 Days', skill: 'Sales', difficulty: 'Beginner', status: 'open', assignedTo: null, creator: 'REAL<>1017', description: 'Set up cold email campaign.' },
-    { id: 18, title: 'Community Growth Strategy', reward: 808, deadline: '8 Days', skill: 'Marketer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1018', description: 'Discord community growth plan.' },
-    { id: 19, title: 'API Integration', reward: 908, deadline: '7 Days', skill: 'Developer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1019', description: 'Connect 3 APIs into one dashboard.' },
-    { id: 20, title: 'Pitch Deck Design', reward: 608, deadline: '5 Days', skill: 'Designer', difficulty: 'Intermediate', status: 'open', assignedTo: null, creator: 'REAL<>1020', description: '10-slide investor pitch deck.' }
-  ];
-
-  const communities = [
-    { id: 1, name: 'AI Builders', type: 'Public', members: 1240, desc: 'Building with LLMs and AI agents.' },
-    { id: 2, name: 'Founders Circle', type: 'Private', members: 320, desc: 'Founders helping founders.' },
-    { id: 3, name: 'Skill Men Network', type: 'Private', members: 18, desc: 'Exclusive network of verified Skill Men.' },
-    { id: 4, name: 'Startup Community', type: 'Public', members: 2100, desc: 'Everything startups.' },
-    { id: 5, name: 'Marketing Masters', type: 'Public', members: 890, desc: 'Growth & marketing strategies.' },
-    { id: 6, name: 'Code & Coffee', type: 'Public', members: 560, desc: 'Developers sharing knowledge.' },
-    { id: 7, name: 'Design Lab', type: 'Public', members: 720, desc: 'UI/UX & product design.' },
-    { id: 8, name: 'Sales Signals', type: 'Private', members: 180, desc: 'B2B sales tactics.' },
-    { id: 9, name: 'Automation Nation', type: 'Public', members: 430, desc: 'No-code & automation.' },
-    { id: 10, name: 'Video Creators', type: 'Public', members: 950, desc: 'Video editing & content.' }
-  ];
-
-  const chats = [
-    { id: 1, name: 'SKILLMAN<>08', lastMsg: 'I can start on that CRM today.', time: '2m', unread: 2 },
-    { id: 2, name: 'REAL<>1001', lastMsg: 'Thanks for the landing page!', time: '15m', unread: 0 },
-    { id: 3, name: 'AI Builders', lastMsg: 'New model just dropped.', time: '1h', unread: 5 },
-    { id: 4, name: 'SKILLMAN<>02', lastMsg: 'Logo concepts attached.', time: '3h', unread: 0 },
-    { id: 5, name: 'REAL<>1005', lastMsg: 'When can you deliver?', time: '5h', unread: 1 }
-  ];
-
-  const calls = [
-    { id: 1, name: 'SKILLMAN<>08', type: 'Voice', duration: '12:34', time: 'Today' },
-    { id: 2, name: 'REAL<>1001', type: 'Video', duration: '05:20', time: 'Yesterday' },
-    { id: 3, name: 'SKILLMAN<>02', type: 'Voice', duration: '08:15', time: 'Yesterday' }
-  ];
-
-  // ---------- HELPERS ----------
-  function applyTheme() {
-    document.documentElement.className = theme === 'light' ? 'light' : '';
-    localStorage.setItem('1008-theme', theme);
-    const toggle = document.getElementById('themeToggle');
-    if (toggle) toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-  }
-
-  function toggleTheme() {
-    theme = theme === 'dark' ? 'light' : 'dark';
-    applyTheme();
-    renderScreen();
-  }
-
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;z-index:999;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 2000);
-  }
-
-  // ---------- SCREEN RENDER ----------
-  function renderScreen() {
-    const container = document.getElementById('screenContainer');
-    const tabBar = document.getElementById('tabBar');
-    const supportBtn = document.getElementById('supportBtn');
-
-    if (!currentUser) {
-      tabBar.classList.add('hidden');
-      supportBtn.classList.add('hidden');
-    } else {
-      tabBar.classList.remove('hidden');
-      supportBtn.classList.remove('hidden');
-    }
-
-    switch (currentScreen) {
-      case 'welcome':
-        container.innerHTML = renderWelcome();
-        break;
-      case 'email':
-        container.innerHTML = renderEmail();
-        break;
-      case 'otp':
-        container.innerHTML = renderOTP();
-        break;
-      case 'identity':
-        container.innerHTML = renderIdentity();
-        break;
-      case 'profile-setup':
-        container.innerHTML = renderProfileSetup();
-        break;
-      case 'main':
-        container.innerHTML = renderMain();
-        break;
-    }
-  }
-
-  // ---------- WELCOME ----------
-  function renderWelcome() {
-    return `
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px 0;">
-        <div style="position:absolute;top:20px;right:20px;">
-          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
-        </div>
-        <div class="logo" style="font-size:72px;margin-bottom:24px;">&gt;&lt;</div>
-        <h1 style="font-size:32px;margin-bottom:12px;">The Real World<br>Needs Real Skills</h1>
-        <p class="subtitle" style="max-width:300px;">Connect skilled people with real-world opportunities.</p>
-        <button class="btn" style="max-width:340px;margin-top:20px;" onclick="goToEmail()">Continue With Email</button>
-      </div>
-    `;
-  }
-
-  // ---------- EMAIL ----------
-  function renderEmail() {
-    return `
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
-        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
-        <h2 style="margin-bottom:24px;">Enter your email</h2>
-        <p class="secondary mb-16">We'll send a verification code.</p>
-        <input type="email" id="emailInput" placeholder="you@example.com" value="demo@1008.network" autocomplete="email">
-        <button class="btn" onclick="submitEmail()">Continue</button>
-        <button class="btn btn-secondary" onclick="currentScreen='welcome';renderScreen()">Back</button>
-      </div>
-    `;
-  }
-
-  function submitEmail() {
-    const email = document.getElementById('emailInput')?.value?.trim();
-    if (!email || !email.includes('@')) {
-      showToast('Please enter a valid email');
-      return;
-    }
-    window._tempEmail = email;
-    currentScreen = 'otp';
-    renderScreen();
-  }
-
-  // ---------- OTP ----------
-  function renderOTP() {
-    return `
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
-        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
-        <h2 style="margin-bottom:8px;">Verify your email</h2>
-        <p class="secondary mb-16">Code sent to ${window._tempEmail || 'your email'}</p>
-        <div class="otp-inputs">
-          <input class="otp-input" maxlength="1" inputmode="numeric" value="1">
-          <input class="otp-input" maxlength="1" inputmode="numeric" value="0">
-          <input class="otp-input" maxlength="1" inputmode="numeric" value="0">
-          <input class="otp-input" maxlength="1" inputmode="numeric" value="8">
-        </div>
-        <button class="btn" onclick="verifyOTP()">Verify</button>
-        <button class="btn btn-secondary" onclick="currentScreen='email';renderScreen()">Back</button>
-        <p class="secondary text-center mt-16" style="font-size:13px;">Demo: any code works</p>
-      </div>
-    `;
-  }
-
-  function verifyOTP() {
-    currentScreen = 'identity';
-    renderScreen();
-  }
-
-  // ---------- IDENTITY ----------
-  function renderIdentity() {
-    return `
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0;">
-        <div class="logo-small" style="margin-bottom:8px;">&gt;&lt;</div>
-        <h2 style="margin-bottom:24px;">Choose your identity</h2>
-
-        <div class="card" style="cursor:pointer;" onclick="selectIdentity('skillman')">
-          <div class="card-header">
-            <span class="badge">Skill Man</span>
-            <span class="identity-code">01 – 18</span>
-          </div>
-          <h3>SKILL MAN</h3>
-          <p class="secondary" style="font-size:14px;">People who can solve problems and create value.</p>
-          <p class="secondary mt-8" style="font-size:12px;">Developer · Designer · Marketer · Sales Expert · Video Editor · Automation Builder · Trader · Consultant · Founder</p>
-          <p class="secondary mt-8" style="font-size:12px;font-weight:600;">Membership limited and reviewed.</p>
-        </div>
-
-        <div class="card" style="cursor:pointer;" onclick="selectIdentity('realworld')">
-          <div class="card-header">
-            <span class="badge badge-grey">Real World</span>
-            <span class="identity-code">9-digit code</span>
-          </div>
-          <h3>REAL WORLD</h3>
-          <p class="secondary" style="font-size:14px;">People seeking solutions, services, knowledge, or collaboration.</p>
-          <p class="secondary mt-8" style="font-size:12px;">Example: 100000008 · 100000018 · 100000108</p>
-          <p class="secondary mt-8" style="font-size:12px;font-weight:600;">Membership is open.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  function selectIdentity(type) {
-    if (type === 'skillman') {
-      // pick a random skill man
-      const sm = skillMen[Math.floor(Math.random() * skillMen.length)];
-      currentUser = {
-        type: 'skillman',
-        ...sm,
-        email: window._tempEmail || 'skill@1008.network',
-        badge: 'Skill Man',
-        code: sm.alias
-      };
-    } else {
-      const rw = realWorldUsers[Math.floor(Math.random() * realWorldUsers.length)];
-      currentUser = {
-        type: 'realworld',
-        ...rw,
-        email: window._tempEmail || 'real@1008.network',
-        badge: 'Real World',
-        code: rw.code,
-        alias: rw.alias
-      };
-    }
-    currentScreen = 'profile-setup';
-    renderScreen();
-  }
-
-  // ---------- PROFILE SETUP ----------
-  function renderProfileSetup() {
-    const isSkill = currentUser.type === 'skillman';
-    return `
-      <div style="flex:1;display:flex;flex-direction:column;padding:10px 0;">
-        <div class="logo-small mb-8">&gt;&lt;</div>
-        <h2 class="mb-16">Create your profile</h2>
-
-        <div class="flex items-center gap-12 mb-16">
-          <div class="avatar avatar-lg">${currentUser.name ? currentUser.name[0] : '?'}</div>
-          <div>
-            <p style="font-weight:600;">${currentUser.name || 'Your Name'}</p>
-            <p class="identity-code">${currentUser.alias || currentUser.code}</p>
-            <span class="badge ${isSkill ? '' : 'badge-grey'}" style="margin-top:4px;">${currentUser.badge}</span>
-          </div>
-        </div>
-
-        <label>Profile Photo</label>
-        <div class="flex items-center gap-12 mb-16">
-          <div class="avatar">${currentUser.name ? currentUser.name[0] : '?'}</div>
-          <button class="btn btn-sm btn-secondary" onclick="showToast('Photo upload demo')">Upload</button>
-        </div>
-
-        <label>Alias Name</label>
-        <input id="aliasInput" value="${currentUser.name || ''}" placeholder="Your alias">
-
-        <label>Bio</label>
-        <textarea id="bioInput" rows="2" placeholder="Tell us about yourself">${currentUser.bio || ''}</textarea>
-
-        <label>Country</label>
-        <input id="countryInput" value="${currentUser.country || ''}" placeholder="Your country">
-
-        <label>Skills (comma separated)</label>
-        <input id="skillsInput" value="${(currentUser.skills || []).join(', ')}" placeholder="Developer, Designer...">
-
-        <label>Languages</label>
-        <input id="langInput" value="${currentUser.lang || ''}" placeholder="English, Spanish...">
-
-        <label>Email</label>
-        <input id="emailProfileInput" value="${currentUser.email || ''}" placeholder="you@example.com">
-
-        <button class="btn mt-8" onclick="completeProfile()">Create My Identity</button>
-      </div>
-    `;
-  }
-
-  function completeProfile() {
-    const alias = document.getElementById('aliasInput')?.value?.trim();
-    const bio = document.getElementById('bioInput')?.value?.trim();
-    const country = document.getElementById('countryInput')?.value?.trim();
-    const skills = document.getElementById('skillsInput')?.value?.split(',').map(s => s.trim()).filter(Boolean);
-    const lang = document.getElementById('langInput')?.value?.trim();
-    const email = document.getElementById('emailProfileInput')?.value?.trim();
-
-    if (alias) currentUser.name = alias;
-    if (bio) currentUser.bio = bio;
-    if (country) currentUser.country = country;
-    if (skills && skills.length) currentUser.skills = skills;
-    if (lang) currentUser.lang = lang;
-    if (email) currentUser.email = email;
-
-    // regenerate identity code based on type
-    if (currentUser.type === 'skillman') {
-      const idx = skillMen.findIndex(s => s.alias === currentUser.alias);
-      if (idx >= 0) {
-        const num = String(idx + 1).padStart(2, '0');
-        currentUser.alias = `SKILLMAN<>${num}`;
-        currentUser.code = currentUser.alias;
+      // ---------- ESCAPE HELPER ----------
+      function esc(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
-    } else {
-      // Real World 9-digit code
-      const base = 100000000;
-      const rand = Math.floor(Math.random() * 900) + 100;
-      currentUser.code = String(base + rand);
-      currentUser.alias = `REAL<>${currentUser.code.slice(-4)}`;
-    }
 
-    currentScreen = 'main';
-    activeTab = 'home';
-    renderScreen();
-    showToast('Identity created!');
-  }
+      // ---------- STORAGE ----------
+      const STORAGE_KEY = 'vakeelConnect_v1';
 
-  // ---------- MAIN PLATFORM ----------
-  function renderMain() {
-    updateTabBar();
-    switch (activeTab) {
-      case 'home': return renderHome();
-      case 'tasks': return renderTasks();
-      case 'chats': return renderChats();
-      case 'communities': return renderCommunities();
-      case 'profile': return renderProfile();
-      default: return renderHome();
-    }
-  }
+      function safeRead() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          console.warn('Failed to read storage', e);
+          return null;
+        }
+      }
 
-  function updateTabBar() {
-    document.querySelectorAll('.tab-item').forEach(el => {
-      el.classList.toggle('active', el.dataset.tab === activeTab);
-    });
-  }
+      function safeWrite(data) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+          console.warn('Failed to write storage', e);
+        }
+      }
 
-  // ---------- HOME ----------
-  function renderHome() {
-    const recentTasks = tasks.slice(0, 3);
-    const recentChats = chats.slice(0, 3);
-    const suggestedSkillMen = skillMen.slice(0, 4);
-    const communityUpdates = communities.slice(0, 3);
+      // ---------- SEED DATA ----------
+      function getSeedData() {
+        const today = new Date();
+        function futureDate(daysAhead) {
+          const d = new Date(today);
+          d.setDate(d.getDate() + daysAhead);
+          return d.toISOString().slice(0, 10);
+        }
 
-    return `
-      <div style="padding-bottom:20px;">
-        <div class="flex justify-between items-center mb-16">
-          <div class="logo-small">&gt;&lt;</div>
-          <div class="flex items-center gap-8">
-            <span class="identity-code">${currentUser.alias}</span>
-            <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
+        return {
+          lawyers: [
+            {
+              id: 'law1',
+              name: 'Rajesh Khanna',
+              city: 'Delhi',
+              practiceAreas: ['Criminal', 'Bail', 'White Collar'],
+              years: 18,
+              barNumber: 'D/1234/2007',
+              bio: 'Senior criminal defence counsel with extensive trial experience in Delhi High Court and district courts. Specialises in bail matters and white-collar crime.',
+              fee: 1500,
+              verified: true,
+              rating: 4.7,
+              reviewCount: 23,
+              availability: {
+                weekdays: [1,2,3,4,5],
+                slots: ['10:00', '11:00', '14:00', '15:00', '16:00']
+              },
+              cases: [
+                { id: 'c1', title: 'State v. Mehta', year: 2022, description: 'Represented accused in a high-profile economic offence; secured bail after 3 months.', source: 'https://example.com/case1' },
+                { id: 'c2', title: 'Delhi HC bail application', year: 2021, description: 'Successfully argued for anticipatory bail in a cyber fraud case.', source: '' },
+              ],
+              testimonials: [
+                { id: 't1', client: 'A. Sharma', rating: 5, text: 'Very responsive and got me bail quickly.' },
+                { id: 't2', client: 'P. Verma', rating: 4, text: 'Clear advice, though fees are on the higher side.' },
+              ],
+              news: [
+                { id: 'n1', headline: 'Appointed as amicus curiae in Delhi HC', date: '2024-03-10' },
+                { id: 'n2', headline: 'Published article on bail reform in legal journal', date: '2023-11-05' },
+              ],
+              bookings: [],
+            },
+            {
+              id: 'law2',
+              name: 'Meera Deshpande',
+              city: 'Mumbai',
+              practiceAreas: ['Corporate', 'IP', 'Contracts'],
+              years: 12,
+              barNumber: 'M/5678/2013',
+              bio: 'Corporate lawyer with a focus on technology and intellectual property. Advises startups on compliance, licensing and funding.',
+              fee: 2000,
+              verified: true,
+              rating: 4.9,
+              reviewCount: 31,
+              availability: {
+                weekdays: [1,3,5],
+                slots: ['09:00', '10:30', '13:00', '16:30']
+              },
+              cases: [
+                { id: 'c3', title: 'TechNova IP dispute', year: 2023, description: 'Represented a SaaS company in a trademark opposition; favourable settlement.', source: 'https://example.com/case2' },
+              ],
+              testimonials: [
+                { id: 't3', client: 'R. Iyer', rating: 5, text: 'Meera simplified a complex shareholder agreement.' },
+              ],
+              news: [
+                { id: 'n3', headline: 'Speaker at IP India Conference 2024', date: '2024-01-20' },
+              ],
+              bookings: [],
+            },
+            {
+              id: 'law3',
+              name: 'Ananya Rao',
+              city: 'Bengaluru',
+              practiceAreas: ['Family', 'Property', 'Mediation'],
+              years: 8,
+              barNumber: 'B/9012/2017',
+              bio: 'Family and property law specialist. Focuses on amicable settlements and mediation.',
+              fee: 1000,
+              verified: false,
+              rating: 4.2,
+              reviewCount: 9,
+              availability: {
+                weekdays: [2,4,6],
+                slots: ['10:00', '11:30', '15:00', '17:00']
+              },
+              cases: [],
+              testimonials: [],
+              news: [
+                { id: 'n4', headline: 'Panelist at Bengaluru mediation workshop', date: '2024-02-15' },
+              ],
+              bookings: [],
+            },
+          ],
+          version: 1
+        };
+      }
+
+      // ---------- STATE ----------
+      let state = {
+        mode: 'client',
+        currentLawyerId: null,
+        selectedLawyerId: 'law1',
+        profileTab: 'experience',
+        dashboardTab: 'profile',
+        bookingForm: {
+          lawyerId: null,
+          selectedDate: null,
+          selectedTime: null,
+          name: '',
+          email: '',
+          issue: '',
+          error: '',
+          success: false,
+          zoomLink: '',
+          bookingDetails: null,
+        },
+        searchQuery: '',
+        filterArea: '',
+      };
+
+      // Load or seed data
+      let db = safeRead();
+      if (!db || !db.lawyers || !Array.isArray(db.lawyers)) {
+        db = getSeedData();
+        safeWrite(db);
+      }
+
+      // ---------- RENDER HELPERS ----------
+      const app = document.getElementById('app');
+      const modeClientBtn = document.getElementById('modeClient');
+      const modeLawyerBtn = document.getElementById('modeLawyer');
+      const lawyerLoginWrap = document.getElementById('lawyerLoginWrap');
+      const lawyerSelect = document.getElementById('lawyerSelect');
+
+      function populateLawyerSelect() {
+        lawyerSelect.innerHTML = '';
+        db.lawyers.forEach(l => {
+          const opt = document.createElement('option');
+          opt.value = l.id;
+          opt.textContent = l.name + (l.verified ? ' ✓' : ' (pending)');
+          if (l.id === state.selectedLawyerId) opt.selected = true;
+          lawyerSelect.appendChild(opt);
+        });
+      }
+
+      function formatDate(dateStr) {
+        try {
+          const d = new Date(dateStr + 'T00:00:00');
+          return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) {
+          return dateStr;
+        }
+      }
+
+      function formatTime12(time24) {
+        if (!time24) return '';
+        const [h, m] = time24.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2,'0')} ${ampm} IST`;
+      }
+
+      function getInitials(name) {
+        return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      }
+
+      // ---------- RENDER: CLIENT HOME ----------
+      function renderClientHome() {
+        const query = state.searchQuery.toLowerCase().trim();
+        const filter = state.filterArea;
+
+        let filtered = db.lawyers.slice();
+        if (query) {
+          filtered = filtered.filter(l =>
+            l.name.toLowerCase().includes(query) ||
+            l.city.toLowerCase().includes(query) ||
+            l.practiceAreas.some(a => a.toLowerCase().includes(query))
+          );
+        }
+        if (filter) {
+          filtered = filtered.filter(l => l.practiceAreas.includes(filter));
+        }
+
+        const allAreas = [...new Set(db.lawyers.flatMap(l => l.practiceAreas))].sort();
+
+        let html = `
+          <div style="text-align:center; margin-bottom:28px;">
+            <h1>Find a trusted legal advisor</h1>
+            <p class="text-muted" style="max-width:600px; margin:0 auto 20px;">Read their experience, cases, and testimonials. Book a paid one-to-one Zoom consultation. First session always paid.</p>
           </div>
-        </div>
 
-        <!-- Featured Challenge -->
-        <div class="card" style="background:linear-gradient(135deg,var(--accent),#0066cc);color:#fff;border:none;">
-          <div class="flex justify-between items-center">
-            <div>
-              <p style="font-size:12px;opacity:0.8;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Featured Challenge</p>
-              <h3 style="color:#fff;margin:4px 0;">Reward: $1008</h3>
-              <p style="font-size:13px;opacity:0.9;">Reward exceptional problem solving.</p>
-            </div>
-            <div style="font-size:40px;">🏆</div>
-          </div>
-        </div>
-
-        <!-- Recent Tasks -->
-        <div class="flex justify-between items-center mt-16 mb-8">
-          <h3>Recent Tasks</h3>
-          <button class="btn btn-sm btn-outline" onclick="activeTab='tasks';renderScreen()">See all</button>
-        </div>
-        ${recentTasks.map(t => `
-          <div class="card" onclick="activeTab='tasks';renderScreen()" style="cursor:pointer;">
-            <div class="flex justify-between items-center">
-              <div>
-                <p style="font-weight:600;font-size:15px;">${t.title}</p>
-                <p class="secondary" style="font-size:13px;">${t.skill} · ${t.deadline}</p>
+          <div class="card" style="margin-bottom:24px;">
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+              <div style="flex:2; min-width:200px;">
+                <label for="searchInput" class="text-muted" style="font-size:0.8rem;">Search</label>
+                <input id="searchInput" type="text" placeholder="Name, city, or issue..." value="${esc(state.searchQuery)}" autocomplete="off">
               </div>
-              <span class="task-reward">$${t.reward}</span>
+              <div style="flex:1; min-width:160px;">
+                <label for="filterArea" class="text-muted" style="font-size:0.8rem;">Practice area</label>
+                <select id="filterArea">
+                  <option value="">All areas</option>
+                  ${allAreas.map(a => `<option value="${esc(a)}" ${state.filterArea===a?'selected':''}>${esc(a)}</option>`).join('')}
+                </select>
+              </div>
             </div>
           </div>
-        `).join('')}
+        `;
 
-        <!-- Recent Chats -->
-        <div class="flex justify-between items-center mt-16 mb-8">
-          <h3>Recent Chats</h3>
-          <button class="btn btn-sm btn-outline" onclick="activeTab='chats';renderScreen()">See all</button>
-        </div>
-        ${recentChats.map(c => `
-          <div class="card" onclick="activeTab='chats';renderScreen()" style="cursor:pointer;">
-            <div class="flex items-center gap-12">
-              <div class="avatar avatar-sm">${c.name[0]}</div>
-              <div class="chat-info">
-                <div class="chat-name">
-                  <span>${c.name}</span>
-                  <span class="chat-time">${c.time}</span>
+        if (filtered.length === 0) {
+          html += `<div class="empty">No lawyers match your search. Try a different term or filter.</div>`;
+        } else {
+          html += `<div class="grid">`;
+          filtered.forEach(l => {
+            const avgRating = l.rating ? l.rating.toFixed(1) : '—';
+            const badgeClass = l.verified ? 'verified' : 'pending';
+            const badgeText = l.verified ? 'Bar Council verified' : 'Verification pending';
+            html += `
+              <div class="card lawyer-card">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <div class="avatar">${esc(getInitials(l.name))}</div>
+                  <div>
+                    <div style="font-weight:700; font-size:1.05rem;">${esc(l.name)}</div>
+                    <div class="text-muted">${esc(l.city)} · ${esc(l.years)} yrs exp</div>
+                  </div>
                 </div>
-                <div class="chat-msg">${c.lastMsg}</div>
+                <div><span class="badge ${badgeClass}">${badgeText}</span></div>
+                <div>${l.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}</div>
+                <div class="flex-between">
+                  <span class="stars">★ ${avgRating} <span class="text-muted">(${l.reviewCount})</span></span>
+                  <span class="text-muted">${l.cases.length} notable case${l.cases.length!==1?'s':''}</span>
+                </div>
+                <div class="flex-between">
+                  <span class="fee">₹${l.fee}</span>
+                  <span class="text-muted" style="font-size:0.8rem;">first consult · 30 min</span>
+                </div>
+                <button class="btn-primary" style="width:100%; margin-top:4px;" data-lawyer-id="${esc(l.id)}" data-action="view-profile">View profile & book</button>
               </div>
-              ${c.unread > 0 ? `<span class="badge" style="background:var(--accent);">${c.unread}</span>` : ''}
-            </div>
+            `;
+          });
+          html += `</div>`;
+        }
+
+        html += `
+          <div class="disclaimer" style="margin-top:30px;">
+            <strong>Important:</strong> A consultation is not a lawyer–client engagement until both parties agree.
+            Demo: payment and Zoom are simulated.
           </div>
-        `).join('')}
+        `;
 
-        <!-- Suggested Skill Men -->
-        <div class="flex justify-between items-center mt-16 mb-8">
-          <h3>Suggested Skill Men</h3>
-          <button class="btn btn-sm btn-outline" onclick="showToast('Discover coming soon')">Discover</button>
-        </div>
-        <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;">
-          ${suggestedSkillMen.map(s => `
-            <div class="card" style="min-width:120px;text-align:center;cursor:pointer;" onclick="showToast('${s.alias}')">
-              <div class="avatar" style="margin:0 auto 8px;">${s.name[0]}</div>
-              <p style="font-weight:600;font-size:13px;">${s.alias}</p>
-              <p class="secondary" style="font-size:11px;">${s.skills[0]}</p>
-            </div>
-          `).join('')}
-        </div>
+        app.innerHTML = html;
 
-        <!-- Community Updates -->
-        <div class="flex justify-between items-center mt-16 mb-8">
-          <h3>Community Updates</h3>
-          <button class="btn btn-sm btn-outline" onclick="activeTab='communities';renderScreen()">See all</button>
-        </div>
-        ${communityUpdates.map(c => `
-          <div class="card" onclick="activeTab='communities';renderScreen()" style="cursor:pointer;">
-            <div class="flex justify-between items-center">
-              <div>
-                <p style="font-weight:600;font-size:14px;">${c.name}</p>
-                <p class="secondary" style="font-size:12px;">${c.members} members · ${c.type}</p>
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            const pos = e.target.selectionStart;
+            renderClientHome();
+            const newInput = document.getElementById('searchInput');
+            if (newInput) {
+              newInput.focus();
+              newInput.setSelectionRange(pos, pos);
+            }
+          });
+        }
+
+        const filterSelect = document.getElementById('filterArea');
+        if (filterSelect) {
+          filterSelect.addEventListener('change', (e) => {
+            state.filterArea = e.target.value;
+            renderClientHome();
+          });
+        }
+
+        document.querySelectorAll('[data-action="view-profile"]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-lawyer-id');
+            state.currentLawyerId = id;
+            state.profileTab = 'experience';
+            resetBookingForm(id);
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- BOOKING FORM RESET ----------
+      function resetBookingForm(lawyerId) {
+        state.bookingForm = {
+          lawyerId: lawyerId,
+          selectedDate: null,
+          selectedTime: null,
+          name: '',
+          email: '',
+          issue: '',
+          error: '',
+          success: false,
+          zoomLink: '',
+          bookingDetails: null,
+        };
+      }
+
+      // ---------- RENDER: CLIENT PROFILE ----------
+      function renderClientProfile() {
+        const lawyer = db.lawyers.find(l => l.id === state.currentLawyerId);
+        if (!lawyer) {
+          state.currentLawyerId = null;
+          renderClientHome();
+          return;
+        }
+
+        const bf = state.bookingForm;
+        const isSuccess = bf.success;
+
+        let html = `<button class="btn-outline" style="margin-bottom:16px;" id="backToHome">← Back to all lawyers</button>`;
+
+        if (isSuccess && bf.bookingDetails) {
+          const bd = bf.bookingDetails;
+          html += `
+            <div class="card confirmation-box">
+              <h2 style="color:var(--success);">✅ Booking confirmed</h2>
+              <p style="margin:12px 0;">Your consultation with <strong>${esc(lawyer.name)}</strong> is booked.</p>
+              <div style="background:var(--bg); border-radius:var(--radius-sm); padding:16px; max-width:400px; margin:0 auto; text-align:left;">
+                <div><strong>Date:</strong> ${esc(formatDate(bd.date))}</div>
+                <div><strong>Time:</strong> ${esc(formatTime12(bd.time))}</div>
+                <div><strong>Amount paid:</strong> ₹${esc(bd.amount)}</div>
+                <div style="margin-top:8px;"><strong>Zoom link:</strong><br><span class="zoom-link">${esc(bd.zoomLink)}</span></div>
               </div>
-              <span class="badge ${c.type === 'Private' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${c.type}</span>
-            </div>
-          </div>
-        `).join('')}
-
-        <!-- Platform News -->
-        <div class="card mt-16">
-          <p style="font-weight:600;font-size:14px;">📢 Platform News</p>
-          <p class="secondary" style="font-size:13px;margin-top:6px;">1008 is now live! Connect with verified Skill Men and Real World opportunities.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  // ---------- TASKS ----------
-  function renderTasks() {
-    const isSkillMan = currentUser.type === 'skillman';
-    const openTasks = tasks.filter(t => t.status === 'open' || t.status === 'locked');
-    const completedTasks = tasks.filter(t => t.status === 'completed');
-
-    return `
-      <div>
-        <div class="flex justify-between items-center mb-16">
-          <h2>Tasks</h2>
-          <span class="identity-code">${currentUser.alias}</span>
-        </div>
-
-        ${!isSkillMan ? `
-          <div class="card" style="border:1px dashed var(--accent);text-align:center;margin-bottom:16px;">
-            <p style="font-weight:600;">You are a Real World user</p>
-            <p class="secondary" style="font-size:13px;">Only Skill Men can claim tasks. Create a task to get help.</p>
-            <button class="btn btn-sm btn-outline mt-8" onclick="showToast('Task creation coming soon')">Create Task</button>
-          </div>
-        ` : ''}
-
-        <h3 class="mb-8">Open Tasks (${openTasks.length})</h3>
-        ${openTasks.map(t => `
-          <div class="card">
-            <div class="card-header">
-              <span class="badge ${t.status === 'locked' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${t.status === 'locked' ? 'Locked' : 'Open'}</span>
-              <span class="task-reward">$${t.reward}</span>
-            </div>
-            <h3 style="margin-bottom:4px;">${t.title}</h3>
-            <p class="secondary" style="font-size:13px;">${t.description}</p>
-            <div class="task-meta">
-              <span>${t.skill}</span>
-              <span>${t.deadline}</span>
-              <span>${t.difficulty}</span>
-            </div>
-            ${t.assignedTo ? `<p class="identity-code mt-8" style="font-size:11px;">Assigned to: ${t.assignedTo}</p>` : ''}
-            ${isSkillMan && t.status === 'open' ? `
-              <button class="btn btn-sm btn-outline mt-8" style="width:100%;" onclick="claimTask(${t.id})">Claim Task</button>
-            ` : ''}
-            ${isSkillMan && t.status === 'locked' && t.assignedTo === currentUser.alias ? `
-              <button class="btn btn-sm mt-8" style="width:100%;background:var(--success);color:#000;" onclick="completeTask(${t.id})">Mark Complete</button>
-              <button class="btn btn-sm btn-secondary mt-4" style="width:100%;" onclick="failTask(${t.id})">Report Failure</button>
-            ` : ''}
-          </div>
-        `).join('')}
-
-        <h3 class="mt-16 mb-8">Completed (${completedTasks.length})</h3>
-        ${completedTasks.map(t => `
-          <div class="card" style="opacity:0.7;">
-            <div class="flex justify-between items-center">
-              <div>
-                <p style="font-weight:600;">${t.title}</p>
-                <p class="secondary" style="font-size:12px;">Completed by ${t.assignedTo}</p>
+              <p class="text-muted" style="margin-top:12px;">The Zoom link has been emailed to ${esc(bd.email)}.</p>
+              <div class="disclaimer" style="margin-top:20px;">
+                This is a demo. Payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
               </div>
-              <span class="badge badge-green">Completed</span>
+              <button class="btn-primary" style="margin-top:16px;" id="backToHomeFromConfirm">Back to home</button>
             </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
+          `;
+          app.innerHTML = html;
+          document.getElementById('backToHomeFromConfirm')?.addEventListener('click', () => {
+            state.currentLawyerId = null;
+            resetBookingForm(null);
+            renderClientHome();
+          });
+          return;
+        }
 
-  function claimTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task && task.status === 'open' && currentUser.type === 'skillman') {
-      task.status = 'locked';
-      task.assignedTo = currentUser.alias;
-      renderScreen();
-      showToast('Task claimed!');
-    }
-  }
+        const tabs = ['experience', 'cases', 'testimonials', 'news'];
+        const tabLabels = { experience: 'Experience', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News & achievements' };
 
-  function completeTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task && task.status === 'locked' && task.assignedTo === currentUser.alias) {
-      task.status = 'completed';
-      renderScreen();
-      showToast('Task completed! Reward released.');
-    }
-  }
-
-  function failTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task && task.status === 'locked' && task.assignedTo === currentUser.alias) {
-      task.status = 'open';
-      task.assignedTo = null;
-      renderScreen();
-      showToast('Task reopened.');
-    }
-  }
-
-  // ---------- CHATS ----------
-  function renderChats() {
-    return `
-      <div>
-        <div class="flex justify-between items-center mb-16">
-          <h2>Chats</h2>
-          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
-        </div>
-
-        <h3 class="mb-8">Recent</h3>
-        ${chats.map(c => `
-          <div class="chat-item" onclick="showToast('Opening chat with ${c.name}')">
-            <div class="avatar avatar-sm">${c.name[0]}</div>
-            <div class="chat-info">
-              <div class="chat-name">
-                <span>${c.name}</span>
-                <span class="chat-time">${c.time}</span>
+        html += `
+          <div class="profile-layout">
+            <div class="profile-main card">
+              <div style="display:flex; gap:14px; align-items:center; margin-bottom:16px;">
+                <div class="avatar" style="width:64px; height:64px; font-size:1.5rem;">${esc(getInitials(lawyer.name))}</div>
+                <div>
+                  <h2 style="margin:0;">${esc(lawyer.name)}</h2>
+                  <div class="text-muted">${esc(lawyer.city)} · ${esc(lawyer.years)} years experience</div>
+                  <div><span class="badge ${lawyer.verified?'verified':'pending'}">${lawyer.verified?'Bar Council verified':'Verification pending'}</span></div>
+                </div>
               </div>
-              <div class="chat-msg">${c.lastMsg}</div>
-            </div>
-            ${c.unread > 0 ? `<span class="badge" style="background:var(--accent);">${c.unread}</span>` : ''}
-          </div>
-        `).join('')}
-
-        <h3 class="mt-16 mb-8">Calls</h3>
-        ${calls.map(c => `
-          <div class="card" style="display:flex;align-items:center;gap:12px;">
-            <div class="avatar avatar-sm">${c.name[0]}</div>
-            <div style="flex:1;">
-              <p style="font-weight:600;font-size:14px;">${c.name}</p>
-              <p class="secondary" style="font-size:12px;">${c.type} call · ${c.duration}</p>
-            </div>
-            <span class="secondary" style="font-size:12px;">${c.time}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  // ---------- COMMUNITIES ----------
-  function renderCommunities() {
-    return `
-      <div>
-        <div class="flex justify-between items-center mb-16">
-          <h2>Communities</h2>
-          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
-        </div>
-
-        <p class="secondary mb-16" style="font-size:14px;">Join groups, voice rooms, and connect with builders.</p>
-
-        ${communities.map(c => `
-          <div class="card" onclick="showToast('Joined ${c.name}')" style="cursor:pointer;">
-            <div class="flex justify-between items-center">
-              <div>
-                <p style="font-weight:600;">${c.name}</p>
-                <p class="secondary" style="font-size:13px;">${c.members} members · ${c.desc}</p>
+              <div class="tabs" role="tablist">
+                ${tabs.map(t => `<button class="${state.profileTab===t?'active':''}" data-tab="${t}" role="tab">${tabLabels[t]}</button>`).join('')}
               </div>
-              <span class="badge ${c.type === 'Private' ? 'badge-orange' : 'badge-green'}" style="font-size:10px;">${c.type}</span>
+              <div id="profileTabContent">
+                ${renderProfileTabContent(lawyer, state.profileTab)}
+              </div>
+            </div>
+
+            <div class="profile-booking card">
+              <h3>Book a consultation</h3>
+              <div class="flex-between" style="margin-bottom:12px;">
+                <span class="fee">₹${esc(lawyer.fee)}</span>
+                <span class="text-muted">30 min · First session fee</span>
+              </div>
+
+              ${bf.error ? `<div style="color:var(--danger); font-size:0.85rem; margin-bottom:10px;">${esc(bf.error)}</div>` : ''}
+
+              <label class="text-muted" style="font-size:0.8rem;">Select a day</label>
+              <div class="day-picker" id="dayPicker"></div>
+
+              <label class="text-muted" style="font-size:0.8rem;">Select a time</label>
+              <div class="slot-picker" id="slotPicker"></div>
+
+              <div class="form-group">
+                <label for="bookName">Your name</label>
+                <input id="bookName" type="text" value="${esc(bf.name)}" placeholder="Full name">
+              </div>
+              <div class="form-group">
+                <label for="bookEmail">Email</label>
+                <input id="bookEmail" type="email" value="${esc(bf.email)}" placeholder="you@example.com">
+              </div>
+              <div class="form-group">
+                <label for="bookIssue">Short description of issue</label>
+                <textarea id="bookIssue" placeholder="Briefly describe your legal issue...">${esc(bf.issue)}</textarea>
+              </div>
+
+              <button class="btn-gold" style="width:100%;" id="payAndConfirm" ${(!bf.selectedDate || !bf.selectedTime) ? 'disabled style="opacity:0.6;"' : ''}>
+                Pay ₹${esc(lawyer.fee)} & confirm
+              </button>
+
+              <div class="disclaimer" style="margin-top:14px;">
+                Demo: payment and Zoom are simulated. A consultation is not a lawyer–client engagement until both parties agree.
+                Lawyers should follow Bar Council advertising rules.
+              </div>
             </div>
           </div>
-        `).join('')}
+        `;
 
-        <div class="card mt-8" style="text-align:center;border:1px dashed var(--border);">
-          <p class="secondary" style="font-size:13px;">Voice Rooms · Video Rooms · Announcements</p>
-        </div>
-      </div>
-    `;
-  }
+        app.innerHTML = html;
 
-  // ---------- PROFILE ----------
-  function renderProfile() {
-    const isSkill = currentUser.type === 'skillman';
-    return `
-      <div>
-        <div class="flex justify-between items-center mb-16">
-          <h2>Profile</h2>
-          <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">${theme === 'dark' ? '☀️' : '🌙'}</div>
-        </div>
+        document.querySelectorAll('.tabs button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.profileTab = e.currentTarget.getAttribute('data-tab');
+            renderClientProfile();
+          });
+        });
 
-        <div class="profile-header">
-          <div class="avatar avatar-lg">${currentUser.name ? currentUser.name[0] : '?'}</div>
-          <div>
-            <h3 style="margin-bottom:2px;">${currentUser.name || 'User'}</h3>
-            <p class="identity-code">${currentUser.alias || currentUser.code}</p>
-            <span class="badge ${isSkill ? '' : 'badge-grey'}" style="margin-top:4px;">${currentUser.badge}</span>
-          </div>
-        </div>
+        document.getElementById('backToHome')?.addEventListener('click', () => {
+          state.currentLawyerId = null;
+          renderClientHome();
+        });
 
-        <div class="card">
-          <p class="secondary" style="font-size:14px;">${currentUser.bio || 'No bio yet.'}</p>
-        </div>
+        renderDayPicker(lawyer);
+        renderSlotPicker(lawyer);
 
-        <div class="card">
-          <h3 class="mb-8">Skills</h3>
-          <div>
-            ${(currentUser.skills || ['Builder']).map(s => `<span class="tag">${s}</span>`).join('')}
-          </div>
-        </div>
+        document.getElementById('bookName')?.addEventListener('input', (e) => { state.bookingForm.name = e.target.value; });
+        document.getElementById('bookEmail')?.addEventListener('input', (e) => { state.bookingForm.email = e.target.value; });
+        document.getElementById('bookIssue')?.addEventListener('input', (e) => { state.bookingForm.issue = e.target.value; });
 
-        <div class="card">
-          <h3 class="mb-8">Languages</h3>
-          <p>${currentUser.lang || 'English'}</p>
-        </div>
+        document.getElementById('payAndConfirm')?.addEventListener('click', () => {
+          handleBookingPayment(lawyer);
+        });
+      }
 
-        <div class="card">
-          <h3 class="mb-8">Country</h3>
-          <p>${currentUser.country || 'Global'}</p>
-        </div>
-
-        <div class="card">
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-value">${currentUser.completed || 0}</div>
-              <div class="stat-label">Tasks Done</div>
+      function renderProfileTabContent(lawyer, tab) {
+        if (tab === 'experience') {
+          return `
+            <div>
+              <p style="margin-bottom:12px;">${esc(lawyer.bio || 'No bio provided.')}</p>
+              <div class="flex-between" style="font-size:0.9rem;">
+                <span><strong>Years of experience:</strong> ${esc(lawyer.years)}</span>
+                <span><strong>Bar enrolment:</strong> ${esc(lawyer.barNumber)}</span>
+              </div>
+              <div style="margin-top:10px;">
+                <strong>Practice areas:</strong> ${lawyer.practiceAreas.map(a => `<span class="tag">${esc(a)}</span>`).join('')}
+              </div>
             </div>
-            <div class="stat">
-              <div class="stat-value">${currentUser.successRate || 100}%</div>
-              <div class="stat-label">Success Rate</div>
+          `;
+        }
+        if (tab === 'cases') {
+          if (!lawyer.cases || lawyer.cases.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          return lawyer.cases.map(c => `
+            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+              <div style="font-weight:600;">${esc(c.title)} <span class="text-muted">(${esc(c.year)})</span></div>
+              <div style="font-size:0.9rem; margin:4px 0;">${esc(c.description)}</div>
+              ${c.source && (c.source.startsWith('http://') || c.source.startsWith('https://')) ? 
+                `<a href="${esc(c.source)}" target="_blank" rel="noopener" class="text-muted" style="font-size:0.8rem;">Public source ↗</a>` : ''}
             </div>
-            <div class="stat">
-              <div class="stat-value">${isSkill ? '⭐ 4.9' : '—'}</div>
-              <div class="stat-label">Reviews</div>
+          `).join('');
+        }
+        if (tab === 'testimonials') {
+          if (!lawyer.testimonials || lawyer.testimonials.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          return lawyer.testimonials.map(t => `
+            <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+              <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)} <span class="text-muted" style="font-size:0.8rem;">— ${esc(t.client)}</span></div>
+              <div style="font-size:0.9rem; margin-top:4px;">"${esc(t.text)}"</div>
             </div>
+          `).join('');
+        }
+        if (tab === 'news') {
+          if (!lawyer.news || lawyer.news.length === 0) {
+            return `<div class="empty">None added yet</div>`;
+          }
+          const sorted = [...lawyer.news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+          return sorted.map(n => `
+            <div class="list-item">
+              <div>${esc(n.headline)}</div>
+              <div class="text-muted" style="font-size:0.8rem;">${esc(n.date)}</div>
+            </div>
+          `).join('');
+        }
+        return '';
+      }
+
+      // ---------- DAY PICKER ----------
+      function renderDayPicker(lawyer) {
+        const container = document.getElementById('dayPicker');
+        if (!container) return;
+        const weekdays = lawyer.availability?.weekdays || [];
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        let daysHtml = '';
+        let count = 0;
+        for (let i = 0; i < 30 && count < 10; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() + i);
+          const dayOfWeek = d.getDay();
+          if (weekdays.includes(dayOfWeek)) {
+            const dateStr = d.toISOString().slice(0,10);
+            const selected = state.bookingForm.selectedDate === dateStr;
+            daysHtml += `<button class="day-btn ${selected?'selected':''}" data-date="${esc(dateStr)}">${esc(d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }))}</button>`;
+            count++;
+          }
+        }
+        container.innerHTML = daysHtml || `<div class="text-muted" style="font-size:0.85rem;">No available days</div>`;
+
+        container.querySelectorAll('.day-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.bookingForm.selectedDate = e.currentTarget.getAttribute('data-date');
+            state.bookingForm.selectedTime = null;
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- SLOT PICKER ----------
+      function renderSlotPicker(lawyer) {
+        const container = document.getElementById('slotPicker');
+        if (!container) return;
+        const selectedDate = state.bookingForm.selectedDate;
+        if (!selectedDate) {
+          container.innerHTML = `<div class="text-muted" style="font-size:0.85rem;">Pick a day first</div>`;
+          return;
+        }
+        const slots = lawyer.availability?.slots || [];
+        const bookedSlots = (lawyer.bookings || []).filter(b => b.date === selectedDate).map(b => b.time);
+
+        let html = '';
+        slots.forEach(time => {
+          const isBooked = bookedSlots.includes(time);
+          const isSelected = state.bookingForm.selectedTime === time;
+          html += `<button class="slot-btn ${isSelected?'selected':''}" data-time="${esc(time)}" ${isBooked?'disabled':''}>${esc(formatTime12(time))}${isBooked?' (booked)':''}</button>`;
+        });
+        container.innerHTML = html || `<div class="text-muted" style="font-size:0.85rem;">No slots available</div>`;
+
+        container.querySelectorAll('.slot-btn:not(:disabled)').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.bookingForm.selectedTime = e.currentTarget.getAttribute('data-time');
+            renderClientProfile();
+          });
+        });
+      }
+
+      // ---------- BOOKING PAYMENT ----------
+      function handleBookingPayment(lawyer) {
+        const bf = state.bookingForm;
+        bf.error = '';
+
+        if (!bf.selectedDate || !bf.selectedTime) {
+          bf.error = 'Please select a day and time slot.';
+          renderClientProfile();
+          return;
+        }
+        if (!bf.name.trim()) {
+          bf.error = 'Please enter your name.';
+          renderClientProfile();
+          return;
+        }
+        if (!bf.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bf.email.trim())) {
+          bf.error = 'Please enter a valid email address.';
+          renderClientProfile();
+          return;
+        }
+
+        const freshLawyer = db.lawyers.find(l => l.id === lawyer.id);
+        const alreadyBooked = (freshLawyer.bookings || []).some(b => b.date === bf.selectedDate && b.time === bf.selectedTime);
+        if (alreadyBooked) {
+          bf.error = 'That slot was just booked. Please choose another.';
+          renderClientProfile();
+          return;
+        }
+
+        const zoomLink = `https://zoom.us/j/${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+        const booking = {
+          id: 'bk' + Date.now(),
+          lawyerId: lawyer.id,
+          date: bf.selectedDate,
+          time: bf.selectedTime,
+          clientName: bf.name.trim(),
+          clientEmail: bf.email.trim(),
+          issue: bf.issue.trim(),
+          amount: lawyer.fee,
+          zoomLink: zoomLink,
+          paid: true,
+        };
+
+        if (!freshLawyer.bookings) freshLawyer.bookings = [];
+        freshLawyer.bookings.push(booking);
+        safeWrite(db);
+
+        bf.success = true;
+        bf.bookingDetails = {
+          date: bf.selectedDate,
+          time: bf.selectedTime,
+          amount: lawyer.fee,
+          zoomLink: zoomLink,
+          email: bf.email.trim(),
+        };
+        renderClientProfile();
+      }
+
+      // ---------- RENDER: LAWYER DASHBOARD ----------
+      function renderLawyerDashboard() {
+        const lawyer = db.lawyers.find(l => l.id === state.selectedLawyerId);
+        if (!lawyer) return;
+
+        const tabs = ['profile', 'cases', 'testimonials', 'news', 'availability', 'bookings'];
+        const tabLabels = { profile: 'Profile & fee', cases: 'High-profile cases', testimonials: 'Testimonials', news: 'News', availability: 'Availability', bookings: 'Bookings' };
+
+        let html = `
+          <div class="flex-between" style="margin-bottom:16px;">
+            <h2>Lawyer Dashboard — ${esc(lawyer.name)}</h2>
+            ${lawyer.verified ? '<span class="badge verified">Verified</span>' : '<span class="badge pending">Verification pending</span>'}
           </div>
-        </div>
+          <div class="dashboard-tabs">
+            ${tabs.map(t => `<button class="${state.dashboardTab===t?'active':''}" data-dtab="${t}">${tabLabels[t]}</button>`).join('')}
+          </div>
+          <div id="dashboardContent">
+            ${renderDashboardTab(lawyer, state.dashboardTab)}
+          </div>
+        `;
 
-        <button class="btn btn-secondary" onclick="logout()">Log Out</button>
-      </div>
-    `;
-  }
+        app.innerHTML = html;
 
-  function logout() {
-    currentUser = null;
-    currentScreen = 'welcome';
-    activeTab = 'home';
-    renderScreen();
-    showToast('Logged out');
-  }
+        document.querySelectorAll('.dashboard-tabs button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            state.dashboardTab = e.currentTarget.getAttribute('data-dtab');
+            renderLawyerDashboard();
+          });
+        });
 
-  // ---------- SUPPORT MODAL ----------
-  function toggleSupportModal() {
-    const modal = document.getElementById('supportModal');
-    modal.classList.toggle('hidden');
-  }
+        attachDashboardHandlers(lawyer);
+      }
 
-  // ---------- TAB BAR EVENTS ----------
-  document.querySelectorAll('.tab-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (!currentUser) return;
-      activeTab = btn.dataset.tab;
-      renderScreen();
-      window.scrollTo({ top: 0 });
-    });
-  });
+      function renderDashboardTab(lawyer, tab) {
+        if (tab === 'profile') {
+          return `
+            <div class="card">
+              <div class="form-group">
+                <label>Name</label>
+                <input id="dashName" value="${esc(lawyer.name)}">
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input id="dashCity" value="${esc(lawyer.city)}">
+              </div>
+              <div class="form-group">
+                <label>Practice areas (comma-separated)</label>
+                <input id="dashAreas" value="${esc(lawyer.practiceAreas.join(', '))}">
+              </div>
+              <div class="form-group">
+                <label>Years of experience</label>
+                <input id="dashYears" type="number" value="${esc(lawyer.years)}">
+              </div>
+              <div class="form-group">
+                <label>First-consultation fee (₹)</label>
+                <input id="dashFee" type="number" value="${esc(lawyer.fee)}">
+              </div>
+              <div class="form-group">
+                <label>Bar Council number</label>
+                <input id="dashBar" value="${esc(lawyer.barNumber)}">
+              </div>
+              <div class="form-group">
+                <label>Bio</label>
+                <textarea id="dashBio">${esc(lawyer.bio)}</textarea>
+              </div>
+              <button class="btn-primary" id="saveProfile">Save profile</button>
+              <div class="disclaimer">Lawyers should follow Bar Council advertising rules.</div>
+            </div>
+          `;
+        }
+        if (tab === 'cases') {
+          const cases = lawyer.cases || [];
+          return `
+            <div class="warning-note">⚠️ Only public-record matters. Never share confidential client information.</div>
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add case</h3>
+              <div class="form-group"><label>Title</label><input id="caseTitle"></div>
+              <div class="form-group"><label>Year</label><input id="caseYear" type="number"></div>
+              <div class="form-group"><label>Description (public facts only)</label><textarea id="caseDesc"></textarea></div>
+              <div class="form-group"><label>Public source link (optional)</label><input id="caseSource" placeholder="https://..."></div>
+              <button class="btn-primary" id="addCase">Add case</button>
+            </div>
+            <div class="card">
+              <h3>Existing cases</h3>
+              ${cases.length === 0 ? '<div class="empty">None added yet</div>' :
+                cases.map(c => `
+                  <div class="list-item">
+                    <div>
+                      <strong>${esc(c.title)}</strong> (${esc(c.year)})<br>
+                      <span class="text-muted" style="font-size:0.85rem;">${esc(c.description)}</span>
+                      ${c.source ? `<br><a href="${esc(c.source)}" target="_blank" rel="noopener" style="font-size:0.8rem;">Source</a>` : ''}
+                    </div>
+                    <button class="btn-danger" data-remove-case="${esc(c.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'testimonials') {
+          const tests = lawyer.testimonials || [];
+          return `
+            <div class="warning-note">ℹ️ Production will accept testimonials only from clients who completed a booking.</div>
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add testimonial</h3>
+              <div class="form-group"><label>Client name / initials</label><input id="testClient"></div>
+              <div class="form-group"><label>Rating (1-5)</label><input id="testRating" type="number" min="1" max="5"></div>
+              <div class="form-group"><label>Text</label><textarea id="testText"></textarea></div>
+              <button class="btn-primary" id="addTestimonial">Add testimonial</button>
+            </div>
+            <div class="card">
+              <h3>Existing testimonials</h3>
+              ${tests.length === 0 ? '<div class="empty">None added yet</div>' :
+                tests.map(t => `
+                  <div class="list-item">
+                    <div>
+                      <span class="stars">${'★'.repeat(t.rating)}</span> — ${esc(t.client)}<br>
+                      <span class="text-muted" style="font-size:0.9rem;">"${esc(t.text)}"</span>
+                    </div>
+                    <button class="btn-danger" data-remove-testimonial="${esc(t.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'news') {
+          const news = lawyer.news || [];
+          const sorted = [...news].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+          return `
+            <div class="card" style="margin-bottom:16px;">
+              <h3>Add news / achievement</h3>
+              <div class="form-group"><label>Headline</label><input id="newsHeadline"></div>
+              <div class="form-group"><label>Date</label><input id="newsDate" type="date"></div>
+              <button class="btn-primary" id="addNews">Add news</button>
+            </div>
+            <div class="card">
+              <h3>Existing news (newest first)</h3>
+              ${sorted.length === 0 ? '<div class="empty">None added yet</div>' :
+                sorted.map(n => `
+                  <div class="list-item">
+                    <div><strong>${esc(n.headline)}</strong><br><span class="text-muted">${esc(n.date)}</span></div>
+                    <button class="btn-danger" data-remove-news="${esc(n.id)}">Remove</button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        if (tab === 'availability') {
+          const avail = lawyer.availability || { weekdays: [], slots: [] };
+          const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          return `
+            <div class="card">
+              <h3>Available weekdays</h3>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+                ${weekdays.map((day, idx) => `
+                  <button class="day-btn ${avail.weekdays.includes(idx)?'selected':''}" data-toggle-weekday="${idx}">${day}</button>
+                `).join('')}
+              </div>
+              <div class="form-group">
+                <label>Time slots (comma-separated 24h HH:MM, IST)</label>
+                <input id="dashSlots" value="${esc(avail.slots.join(', '))}">
+              </div>
+              <button class="btn-primary" id="saveAvailability">Save availability</button>
+            </div>
+          `;
+        }
+        if (tab === 'bookings') {
+          const bookings = (lawyer.bookings || []).filter(b => b.paid);
+          const today = new Date().toISOString().slice(0,10);
+          const upcoming = bookings.filter(b => b.date >= today).sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+          return `
+            <div class="card">
+              <h3>Upcoming bookings</h3>
+              ${upcoming.length === 0 ? '<div class="empty">No upcoming bookings</div>' :
+                upcoming.map(b => `
+                  <div class="list-item" style="flex-direction:column; align-items:flex-start;">
+                    <div><strong>${esc(formatDate(b.date))} · ${esc(formatTime12(b.time))}</strong></div>
+                    <div>Client: ${esc(b.clientName)} (${esc(b.clientEmail)})</div>
+                    <div class="text-muted" style="font-size:0.85rem;">Issue: ${esc(b.issue || '—')}</div>
+                    <div class="flex-between" style="width:100%; margin-top:6px;">
+                      <a href="${esc(b.zoomLink)}" target="_blank" rel="noopener" class="btn-outline" style="font-size:0.8rem; min-height:32px; padding:4px 12px;">Start Zoom</a>
+                      <span class="badge verified">Paid</span>
+                    </div>
+                  </div>
+                `).join('')
+              }
+            </div>
+          `;
+        }
+        return '';
+      }
 
-  // ---------- EMAIL / OTP SIMULATION ----------
-  window.goToEmail = function() {
-    currentScreen = 'email';
-    renderScreen();
-  };
+      // ---------- DASHBOARD EVENT HANDLERS ----------
+      function attachDashboardHandlers(lawyer) {
+        const tab = state.dashboardTab;
 
-  window.submitEmail = submitEmail;
-  window.verifyOTP = verifyOTP;
-  window.selectIdentity = selectIdentity;
-  window.completeProfile = completeProfile;
-  window.claimTask = claimTask;
-  window.completeTask = completeTask;
-  window.failTask = failTask;
-  window.toggleTheme = toggleTheme;
-  window.toggleSupportModal = toggleSupportModal;
-  window.logout = logout;
-  window.showToast = showToast;
-  window.renderScreen = renderScreen;
+        if (tab === 'profile') {
+          document.getElementById('saveProfile')?.addEventListener('click', () => {
+            const name = document.getElementById('dashName').value.trim();
+            const city = document.getElementById('dashCity').value.trim();
+            const areasRaw = document.getElementById('dashAreas').value.trim();
+            const years = parseInt(document.getElementById('dashYears').value, 10);
+            const fee = parseInt(document.getElementById('dashFee').value, 10);
+            const bar = document.getElementById('dashBar').value.trim();
+            const bio = document.getElementById('dashBio').value.trim();
 
-  // ---------- INIT ----------
-  applyTheme();
-  renderScreen();
-</script>
+            if (!name || !city) { alert('Name and city are required.'); return; }
+            if (isNaN(years) || years < 0) { alert('Enter valid years.'); return; }
+            if (isNaN(fee) || fee < 0) { alert('Enter valid fee.'); return; }
+
+            lawyer.name = name;
+            lawyer.city = city;
+            lawyer.practiceAreas = areasRaw.split(',').map(s => s.trim()).filter(Boolean);
+            lawyer.years = years;
+            lawyer.fee = fee;
+            lawyer.barNumber = bar;
+            lawyer.bio = bio;
+            safeWrite(db);
+            renderLawyerDashboard();
+            populateLawyerSelect();
+            alert('Profile saved.');
+          });
+        }
+
+        if (tab === 'cases') {
+          document.getElementById('addCase')?.addEventListener('click', () => {
+            const title = document.getElementById('caseTitle').value.trim();
+            const year = parseInt(document.getElementById('caseYear').value, 10);
+            const desc = document.getElementById('caseDesc').value.trim();
+            const source = document.getElementById('caseSource').value.trim();
+            if (!title || isNaN(year)) { alert('Title and year required.'); return; }
+            if (source && !/^https?:\/\//.test(source)) { alert('Source must start with http:// or https://'); return; }
+            if (!lawyer.cases) lawyer.cases = [];
+            lawyer.cases.push({ id: 'c' + Date.now(), title, year, description: desc, source });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-case]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-case');
+              lawyer.cases = lawyer.cases.filter(c => c.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'testimonials') {
+          document.getElementById('addTestimonial')?.addEventListener('click', () => {
+            const client = document.getElementById('testClient').value.trim();
+            const rating = parseInt(document.getElementById('testRating').value, 10);
+            const text = document.getElementById('testText').value.trim();
+            if (!client || !text) { alert('Client and text required.'); return; }
+            if (isNaN(rating) || rating < 1 || rating > 5) { alert('Rating must be 1-5.'); return; }
+            if (!lawyer.testimonials) lawyer.testimonials = [];
+            lawyer.testimonials.push({ id: 't' + Date.now(), client, rating, text });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-testimonial]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-testimonial');
+              lawyer.testimonials = lawyer.testimonials.filter(t => t.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'news') {
+          document.getElementById('addNews')?.addEventListener('click', () => {
+            const headline = document.getElementById('newsHeadline').value.trim();
+            const date = document.getElementById('newsDate').value;
+            if (!headline || !date) { alert('Headline and date required.'); return; }
+            if (!lawyer.news) lawyer.news = [];
+            lawyer.news.push({ id: 'n' + Date.now(), headline, date });
+            safeWrite(db);
+            renderLawyerDashboard();
+          });
+          document.querySelectorAll('[data-remove-news]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const id = e.currentTarget.getAttribute('data-remove-news');
+              lawyer.news = lawyer.news.filter(n => n.id !== id);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+        }
+
+        if (tab === 'availability') {
+          document.querySelectorAll('[data-toggle-weekday]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const idx = parseInt(e.currentTarget.getAttribute('data-toggle-weekday'), 10);
+              if (!lawyer.availability) lawyer.availability = { weekdays: [], slots: [] };
+              const wd = lawyer.availability.weekdays;
+              const pos = wd.indexOf(idx);
+              if (pos === -1) wd.push(idx); else wd.splice(pos, 1);
+              safeWrite(db);
+              renderLawyerDashboard();
+            });
+          });
+          document.getElementById('saveAvailability')?.addEventListener('click', () => {
+            const slotsRaw = document.getElementById('dashSlots').value;
+            const slots = slotsRaw.split(',').map(s => s.trim()).filter(s => /^([01]?\d|2[0-3]):[0-5]\d$/.test(s));
+            lawyer.availability.slots = slots;
+            safeWrite(db);
+            renderLawyerDashboard();
+            alert('Availability saved.');
+          });
+        }
+      }
+
+      // ---------- MODE SWITCHING ----------
+      function setMode(mode) {
+        state.mode = mode;
+        if (mode === 'client') {
+          modeClientBtn.classList.add('active');
+          modeLawyerBtn.classList.remove('active');
+          lawyerLoginWrap.classList.add('hidden');
+          state.currentLawyerId = null;
+          renderClientHome();
+        } else {
+          modeClientBtn.classList.remove('active');
+          modeLawyerBtn.classList.add('active');
+          lawyerLoginWrap.classList.remove('hidden');
+          populateLawyerSelect();
+          state.selectedLawyerId = lawyerSelect.value || db.lawyers[0].id;
+          renderLawyerDashboard();
+        }
+      }
+
+      // ---------- INIT ----------
+      function init() {
+        populateLawyerSelect();
+        lawyerSelect.addEventListener('change', (e) => {
+          state.selectedLawyerId = e.target.value;
+          renderLawyerDashboard();
+        });
+
+        modeClientBtn.addEventListener('click', () => setMode('client'));
+        modeLawyerBtn.addEventListener('click', () => setMode('lawyer'));
+
+        setMode('client');
+      }
+
+      init();
+    })();
+  </script>
 </body>
 </html>
