@@ -402,6 +402,46 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
 .pgrid{display:flex;gap:4px;margin:6px 0}.pgrid i{flex:1;height:7px;border-radius:9px;background:var(--bd)}.pgrid i.on{background:var(--ok)}
 .qrow{padding:14px 0;border-bottom:1px solid var(--bd);display:grid;gap:8px}.qrow .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
 .bk{display:inline-flex;gap:6px;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px}.bk.on{background:rgba(22,163,74,.14);color:var(--ok)}.bk.off{background:rgba(245,158,11,.16);color:#b45309}
+
+#modal{z-index:210}
+.bdg{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:#ef4444;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.icon-btn{position:relative}
+.fab{position:fixed;left:14px;bottom:16px;z-index:90;display:flex;gap:8px;align-items:center;padding:12px 16px;border-radius:99px;background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;font-weight:600;font-size:14px;box-shadow:var(--sh2);transition:.2s}.fab:hover{transform:translateY(-3px)}.fab .ic{color:var(--s2)}
+#joinBar{position:fixed;left:50%;transform:translateX(-50%);bottom:76px;z-index:95;background:var(--card);border:2px solid var(--ok);border-radius:16px;padding:10px 12px 10px 16px;display:flex;gap:12px;align-items:center;box-shadow:var(--sh2);width:max-content;max-width:calc(100vw - 24px);font-size:14px;animation:up .4s}
+#joinBar[hidden]{display:none}
+.fitb{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:99px;display:inline-flex;gap:6px;align-items:center;align-self:flex-start}
+.fitb.hi{background:rgba(22,163,74,.14);color:var(--ok)}.fitb.mid{background:rgba(201,162,39,.2);color:#8a6d00}.fitb.lo{background:rgba(245,158,11,.16);color:#b45309}
+[data-theme=dark] .fitb.mid{color:#e6c85a}
+.fitl{list-style:none;display:grid;gap:6px;font-size:13.5px}.fitl li{display:flex;gap:8px;align-items:flex-start}.fitl .ic{width:16px;height:16px;margin-top:3px}.fitl .y{color:var(--ok)}.fitl .n{color:var(--warn)}
+.brief{background:var(--bg);border:1px solid var(--bd);border-radius:16px;padding:14px 16px;margin-top:10px;text-align:left;color:var(--tx)}
+.brief h5{font-size:14px;color:var(--h);margin:10px 0 8px}.brief h5:first-child{margin-top:0}
+.br{display:grid;grid-template-columns:130px 1fr;gap:8px;font-size:13.5px;padding:5px 0;border-bottom:1px dashed var(--bd)}.br span{color:var(--mut)}.br b{font-weight:600;color:var(--tx);word-break:break-word}
+.brief ol{margin-left:18px;display:grid;gap:8px;font-size:13.5px}.brief ol small{display:block;color:var(--ok);font-size:12px}
+.flag{font-size:12.5px;margin-top:10px;padding:8px 10px;border-radius:10px;background:rgba(239,68,68,.1);color:#b91c1c}[data-theme=dark] .flag{color:#fca5a5}
+.bacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bchip{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 14px;font-size:12.5px;background:rgba(201,162,39,.12);border-bottom:1px solid var(--bd)}.bchip.no{background:var(--bg);color:var(--mut)}
+.bchip button{font-weight:600;color:var(--s);font-size:12.5px}
+.aitabs{display:flex;background:var(--card);border-bottom:1px solid var(--bd)}.aitabs button{flex:1;padding:10px 6px;font-size:13px;font-weight:600;color:var(--mut);border-bottom:3px solid transparent}.aitabs button.on{color:var(--h);border-color:var(--s)}
+.vbar2{display:flex;gap:8px;align-items:center;padding:10px 14px;background:var(--card);border-top:1px solid var(--bd);flex-wrap:wrap;font-size:12.5px;color:var(--mut)}
+.vbar2 label{display:flex;gap:6px;align-items:center;cursor:pointer}.vbar2 input{accent-color:var(--s)}
+.micb{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--bd);display:grid;place-items:center;flex:none;background:var(--bg);transition:.2s}.micb.on{background:#ef4444;color:#fff;border-color:#ef4444;animation:pulse 1.4s infinite}
+.talkb.on{background:#ef4444;color:#fff}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mode{position:relative;display:block;cursor:pointer}.mode input{position:absolute;opacity:0}
+.mode span{display:block;text-align:center;padding:10px 4px;border:1.5px solid var(--bd);border-radius:14px;font-size:13px;transition:.2s}.mode span b{display:block;font-size:16px;color:var(--h)}
+.mode input:checked+span{border-color:var(--s);background:rgba(201,162,39,.14);box-shadow:0 0 0 3px rgba(201,162,39,.2)}.mode input:focus-visible+span{outline:3px solid var(--s)}
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+.dayc{flex:none;width:62px;padding:8px 0;text-align:center;border:1.5px solid var(--bd);border-radius:14px;font-size:12px;color:var(--mut);transition:.2s}.dayc b{display:block;font-size:18px;color:var(--h)}.dayc.on{background:var(--p);color:#fff;border-color:var(--p)}.dayc.on b{color:var(--s2)}
+[data-theme=dark] .dayc.on{background:var(--s);color:var(--p);border-color:var(--s)}[data-theme=dark] .dayc.on b{color:var(--p)}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(min-width:520px){.slots{grid-template-columns:repeat(5,1fr)}}
+.slot{padding:9px 4px;border:1.5px solid var(--bd);border-radius:12px;font-size:13px;font-weight:600;transition:.2s}.slot:hover:not([disabled]){border-color:var(--s)}.slot.on{background:var(--s);border-color:var(--s);color:var(--p)}.slot[disabled]{opacity:.45;text-decoration:line-through;cursor:not-allowed;background:var(--bg)}
+.sec-t{font-size:14px;font-weight:700;color:var(--h);margin:18px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.crow{padding:14px 0;border-bottom:1px solid var(--bd);display:grid;gap:10px}.ctop{display:flex;gap:12px;align-items:center}.ctop img{width:46px;height:46px;border-radius:14px}.ctop div{flex:1;min-width:0}.ctop small{display:block;color:var(--mut)}
+.bk.wait{background:rgba(245,158,11,.16);color:#b45309}.bk.bad{background:rgba(239,68,68,.12);color:#b91c1c}.bk.done{background:var(--bg);color:var(--mut)}
+.nt{padding:10px 12px;border-radius:12px;border:1px solid var(--bd);margin-bottom:8px;font-size:13.5px}.nt.un{border-color:var(--s);background:rgba(201,162,39,.08)}.nt b{display:block;color:var(--h)}.nt small{color:var(--mut)}
+.chk{display:flex;gap:8px;align-items:center;font-size:13.5px;margin:6px 0 12px}.chk input{accent-color:var(--s);width:17px;height:17px}
+details.qa{border:1px solid var(--bd);border-radius:14px;padding:10px 14px;margin-top:14px}details.qa summary{cursor:pointer;font-weight:600;color:var(--h);font-size:14px}
+.steps3{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:10px 0 0}.steps3 div{font-size:12.5px;padding:10px;border-radius:12px;background:var(--bg);border:1px solid var(--bd)}.steps3 b{display:block;color:var(--h);font-size:13px}
+.dsep.pin{display:flex;gap:8px;align-items:center;max-width:94%;text-align:left}.dsep.pin button{color:#16a34a;font-weight:700}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 @media print{body *{visibility:hidden}.paper,.paper *{visibility:visible}.paper{position:absolute;left:0;top:0;width:100%;border:0;box-shadow:none}}
 </style>
@@ -419,6 +459,7 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
   </nav>
   <div class="nav-r">
    <select class="lang" id="lang" aria-label="Language"><option value="en">English</option><option value="hi">हिन्दी</option></select>
+   <button class="icon-btn" id="bellBtn" data-act="my" aria-label="My consultations and notifications"><svg class="ic" viewBox="0 0 24 24" data-i="bell"></svg><span class="bdg" id="bellN" hidden>0</span></button>
    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"><svg class="ic" viewBox="0 0 24 24" data-i="moon"></svg></button>
    <button class="btn btn-ghost btn-sm hide-m" data-go="join" data-i18n="become">Become A Lawyer</button>
    <button class="btn btn-gold btn-sm" data-act="quick" data-i18n="consult">Consult Now</button>
@@ -442,6 +483,7 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
    <div class="hero-cta">
     <button class="btn btn-gold" data-act="quick"><svg class="ic" viewBox="0 0 24 24" data-i="chat"></svg><span data-i18n="start">Start Consultation</span></button>
     <button class="btn btn-out" data-go="find"><svg class="ic" viewBox="0 0 24 24" data-i="search"></svg><span data-i18n="find">Find Lawyer</span></button>
+    <button class="btn btn-out" data-go="ai"><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg><span>Talk to AI Assistant</span></button>
    </div>
    <div class="searchbox" id="sbox">
     <form id="sForm" role="search" autocomplete="off">
@@ -481,6 +523,24 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
 </section>
 <div class="trust"><div class="wrap"><span><svg class="ic" viewBox="0 0 24 24" data-i="shield"></svg>Bar Council verified lawyers</span><span><svg class="ic" viewBox="0 0 24 24" data-i="lock"></svg>Private & confidential</span><span><svg class="ic" viewBox="0 0 24 24" data-i="clock"></svg>Available 24 × 7</span><span><svg class="ic" viewBox="0 0 24 24" data-i="globe"></svg>10+ Indian languages</span><span><svg class="ic" viewBox="0 0 24 24" data-i="award"></svg>Satisfaction guarantee</span></div></div>
 
+<!-- AI -->
+<section id="ai" style="padding-top:56px"><div class="wrap ai">
+ <div class="ai-left rv"><span class="eyebrow" style="color:var(--s);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase">LawBot · Chat or talk by voice</span>
+  <h2 data-i18n="ait">Tell your case once. We reuse it for every lawyer.</h2>
+  <p>LawBot listens, finds your main issue, and prepares a <b>Case Brief</b> you share with any lawyer — so you never repeat your story. It also tells you <b>what to ask</b> and how to judge if a lawyer can really help you.</p>
+  <ul><li><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg>Talk in English or हिन्दी — LawBot talks back</li><li><svg class="ic" viewBox="0 0 24 24" data-i="file"></svg>One brief, attached to every chat / call / video request</li><li><svg class="ic" viewBox="0 0 24 24" data-i="award"></svg>Review each lawyer's past work first, then schedule</li><li><svg class="ic" viewBox="0 0 24 24" data-i="calendar"></svg>Both sides agree on a time — then chat, call or video opens</li></ul>
+  <div class="steps3"><div><b>1 · Brief</b>Tell LawBot your issue</div><div><b>2 · Choose</b>Compare track records &amp; fit</div><div><b>3 · Schedule</b>Time is blocked for you</div><div><b>4 · Confirm</b>Lawyer reviews &amp; accepts</div></div></div>
+ <div class="card aibox rv" style="height:620px">
+  <div class="aihd"><i><svg class="ic" viewBox="0 0 24 24" data-i="bot"></svg></i><div><b>LawBot</b><small>AI legal guide • demo • not legal advice</small></div></div>
+  <div class="aitabs" role="tablist"><button role="tab" class="on" id="tabQa" data-act="aimode" data-m="qa">💬 Legal Q&amp;A</button><button role="tab" id="tabIn" data-act="aimode" data-m="intake">📋 Build my Case Brief</button></div>
+  <div class="bchip no" id="bchip"></div>
+  <div class="aibody" id="aiBody" aria-live="polite"></div>
+  <div class="aiq" id="aiq"></div>
+  <form class="aif" id="aiForm"><button type="button" class="micb" id="micBtn" data-act="aimic" aria-label="Speak your message" title="Speak"><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg></button><input id="aiIn" placeholder="Type or tap the mic to speak…" aria-label="Message to LawBot" autocomplete="off"><button class="btn btn-gold btn-sm" type="submit" aria-label="Send"><svg class="ic" viewBox="0 0 24 24" data-i="send"></svg></button></form>
+  <div class="vbar2"><button class="btn btn-navy btn-sm talkb" id="talkBtn" data-act="aitalk"><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg><span>Talk to LawBot</span></button><label><input type="checkbox" id="voiceOut" data-act="aivoice"> Read replies aloud</label><span id="voiceNote" style="margin-left:auto"></span></div>
+ </div>
+</div></section>
+
 <!-- CATEGORIES -->
 <section id="find"><div class="wrap">
  <div class="sec-h rv"><span class="eyebrow">Practice Areas</span><h2 data-i18n="cats">Find the Right Lawyer for Your Case</h2><p>Pick a specialisation to see verified experts, ready to talk right now.</p></div>
@@ -505,20 +565,6 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
 <section id="services" style="background:var(--card);border-block:1px solid var(--bd)"><div class="wrap">
  <div class="sec-h rv"><span class="eyebrow">Legal Services</span><h2 data-i18n="servt">Legal Services, Simplified</h2><p>Fixed-price legal work delivered by verified lawyers. Order in two clicks.</p></div>
  <div class="grid g-srv" id="srv"></div>
-</div></section>
-
-<!-- AI -->
-<section id="ai"><div class="wrap ai">
- <div class="ai-left rv"><span class="eyebrow" style="color:var(--s);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase">AI Legal Assistant · Demo</span>
-  <h2 data-i18n="ait">Ask LawBot your first legal question</h2>
-  <p>Get a quick, plain-language overview of your rights before speaking to a lawyer. Demo responses only — not a substitute for legal advice.</p>
-  <ul><li><svg class="ic" viewBox="0 0 24 24" data-i="zap"></svg>Instant answers in seconds</li><li><svg class="ic" viewBox="0 0 24 24" data-i="book"></svg>References to Indian laws and sections</li><li><svg class="ic" viewBox="0 0 24 24" data-i="users"></svg>One tap to connect with a human lawyer</li></ul></div>
- <div class="card aibox rv">
-  <div class="aihd"><i><svg class="ic" viewBox="0 0 24 24" data-i="bot"></svg></i><div><b>LawBot</b><small>AI legal guide • demo</small></div></div>
-  <div class="aibody" id="aiBody" aria-live="polite"></div>
-  <div class="aiq" id="aiq"></div>
-  <form class="aif" id="aiForm"><input id="aiIn" placeholder="Ask a legal question..." aria-label="Ask a legal question"><button class="btn btn-gold btn-sm" type="submit" aria-label="Send"><svg class="ic" viewBox="0 0 24 24" data-i="send"></svg></button></form>
- </div>
 </div></section>
 
 <!-- DASHBOARD -->
@@ -631,6 +677,9 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
   <div class="card panel rv wide"><h3>Active Consultations – last 14 days</h3><canvas id="c3" height="220"></canvas></div>
  </div>
  <div class="card panel rv" style="margin-top:18px"><h3>Lawyer Verification Queue</h3><p>Admin: verify each of the 5 steps. Fees are assigned and the lawyer goes live only when all 5 are done. <span id="beBadge"></span></p><div class="fld" style="max-width:320px"><label for="admKey">Admin key (demo)</label><input id="admKey" value="lawconnect-admin" autocomplete="off"></div><button class="btn btn-ghost btn-sm" id="admLoad" style="margin-bottom:8px">Load queue</button><div id="vq"></div></div>
+ <div class="card panel rv" style="margin-top:18px"><h3>Lawyer Desk <small style="color:var(--mut);font-weight:500">(demo of the lawyer's view)</small></h3><p>Requests arrive here with the client's Case Brief. Accepting confirms the blocked slot and notifies both sides. <span id="deskNote"></span></p>
+  <div class="fld" style="max-width:360px"><label for="deskL">Lawyer</label><select id="deskL"></select></div>
+  <label class="chk"><input type="checkbox" id="autoOn"> Auto-respond in demo (lawyer accepts ~20 s after a request)</label><div id="desk"></div></div>
  <div style="text-align:center;margin-top:20px"><button class="btn btn-ghost btn-sm" id="resetDemo">Reset demo data</button></div>
 </div></section>
 
@@ -674,19 +723,21 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
  </div>
  <div class="fbot"><span>© <span id="yr"></span> LawConnect Technologies. Demo project — not a real law firm.</span><span>Lawyers listed are fictional for demonstration.</span></div>
 </div></footer>
+<div id="joinBar" hidden><span id="joinTxt"></span><button class="btn btn-gold btn-sm" data-act="join" id="joinBtn">Join now</button></div>
+<button class="fab" data-go="ai" aria-label="Ask LawBot"><svg class="ic" viewBox="0 0 24 24" data-i="bot"></svg>Ask LawBot</button>
 <button class="icon-btn totop btn-gold" id="totop" aria-label="Back to top" style="background:var(--s);color:var(--p)"><svg class="ic" viewBox="0 0 24 24" style="transform:rotate(180deg)" data-i="chev"></svg></button>
 
 <!-- OVERLAYS -->
 <div class="ov" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="modal" id="mBox"><div class="mh"><h3 id="mTitle"></h3><button class="icon-btn" data-close aria-label="Close"><svg class="ic" viewBox="0 0 24 24" data-i="x"></svg></button></div><div class="mb" id="mBody"></div></div></div>
 
 <div class="ov" id="chat" role="dialog" aria-modal="true" aria-label="Chat with lawyer"><div class="chatbox">
- <div class="chh"><button class="icon-btn" data-close aria-label="Close chat"><svg class="ic" viewBox="0 0 24 24" style="transform:rotate(90deg)" data-i="chev"></svg></button><img id="chImg" alt=""><div><b id="chName"></b><small id="chSt">online</small></div><button class="icon-btn" data-chcall="audio" aria-label="Audio call"><svg class="ic" viewBox="0 0 24 24" data-i="phone"></svg></button><button class="icon-btn" data-chcall="video" aria-label="Video call"><svg class="ic" viewBox="0 0 24 24" data-i="video"></svg></button></div>
+ <div class="chh"><button class="icon-btn" data-close aria-label="Close chat"><svg class="ic" viewBox="0 0 24 24" style="transform:rotate(90deg)" data-i="chev"></svg></button><img id="chImg" alt=""><div><b id="chName"></b><small id="chSt">online</small></div></div>
  <div class="chb" id="chBody" aria-live="polite"></div><div class="cht" id="chTyp"></div>
  <form class="chf" id="chForm"><input id="chIn" placeholder="Type a message" aria-label="Type a message" autocomplete="off"><button aria-label="Send"><svg class="ic" viewBox="0 0 24 24" data-i="send"></svg></button></form>
 </div></div>
 
 <div class="ov" id="call" role="dialog" aria-modal="true" aria-label="Audio call"><div class="callbox" id="callBox">
- <div><small id="cState" style="letter-spacing:.14em;text-transform:uppercase;color:#b9c8df">Calling…</small><div class="av"><img id="caImg" alt=""></div><h3 id="caName"></h3><small id="caSp" style="color:#b9c8df"></small><div class="tm2" id="caTm">00:00</div><div class="wave off" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+ <div><small id="cState" style="letter-spacing:.14em;text-transform:uppercase;color:#b9c8df">Calling…</small><div class="av"><img id="caImg" alt=""></div><h3 id="caName"></h3><small id="caSp" style="color:#b9c8df"></small><div style="margin-top:10px"><button class="btn btn-out btn-sm" data-act="vbrief">📋 Shared case brief</button></div><div class="tm2" id="caTm">00:00</div><div class="wave off" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
  <div style="width:100%;display:flex;flex-direction:column;align-items:center"><div class="ctrls">
   <button class="ctl" data-cc="mute"><span><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg></span>Mute</button>
   <button class="ctl" data-cc="spk"><span><svg class="ic" viewBox="0 0 24 24" data-i="speaker"></svg></span>Speaker</button>
@@ -706,6 +757,7 @@ footer a:hover,footer button.fl:hover{color:var(--s2)}
   <button class="vb" data-vc="mic"><svg class="ic" viewBox="0 0 24 24" data-i="mic"></svg><span>Mic</span></button>
   <button class="vb" data-vc="cam"><svg class="ic" viewBox="0 0 24 24" data-i="video"></svg><span>Camera</span></button>
   <button class="vb" data-vc="scr"><svg class="ic" viewBox="0 0 24 24" data-i="screen"></svg><span>Share</span></button>
+  <button class="vb" data-act="vbrief"><svg class="ic" viewBox="0 0 24 24" data-i="file"></svg><span>Brief</span></button>
   <button class="vb" data-vc="chat"><svg class="ic" viewBox="0 0 24 24" data-i="chat"></svg><span>Chat</span></button>
   <button class="vb end" id="endVid"><svg class="ic" viewBox="0 0 24 24" data-i="phone" style="transform:rotate(135deg)"></svg><span>End</span></button>
  </div>
@@ -803,6 +855,10 @@ function lawyerFromReg(r){
  l.rec={fought:0,won:0,settled:0,lost:0,wr:0};l.awards=[];l.notable=[];l.tests=[];
  l.steps=STEPS.map((s,i)=>({s,ok:!!r.steps[i],d:(r.dates&&r.dates[i])||''}));
  l.verified=r.steps.every(Boolean);l.p=priceFor(l.spec,l.exp,null,0,l.verified);l.fee=l.p?l.p.chat:99999;return l}
+const SLOTS=['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+const BUSY_P={online:.25,busy:.5,offline:.7};
+/* deterministic "already in court / booked" slots; Sundays are off */
+function busySlot(l,date,time){const d=new Date(date+'T00:00:00');if(d.getDay()===0)return true;return rng(l.id*7919+(+date.replace(/-/g,'')%100000)*31+(+time.slice(0,2)))()<(BUSY_P[l.st]||.3)}
 /*==SHARED_END==*/
 const hydrate=l=>{l.img=av(l.id,l.f);return l};
 let LAW=LAW0.map(hydrate);let REGS=[],BACKEND=false;
@@ -812,7 +868,7 @@ const SRV=[['Legal Consultation','chat','Talk to a verified lawyer for 30 minute
 const PLANS=[['Basic Legal Help',299,'month',['1 chat consultation','Basic document check','Email support','Legal FAQs access'],0],['Standard Legal Support',999,'month',['3 audio/video consultations','2 document reviews','1 legal notice','Priority chat support'],0],['Premium Legal Protection',2999,'month',['Unlimited chat consultations','6 audio/video consultations','5 document reviews','2 drafted agreements','Dedicated lawyer'],1],['Enterprise Legal Desk',9999,'month',['Unlimited consultations','Unlimited document reviews','Contract drafting','Compliance calendar','Account manager','24×7 priority desk'],0]];
 const CMP=[['Chat consultations','1','5','Unlimited','Unlimited'],['Audio / video calls','–','3','6','Unlimited'],['Document reviews','–','2','5','Unlimited'],['Legal notice drafting','–','1','2','Unlimited'],['Agreement drafting','–','–','2','Unlimited'],['Dedicated lawyer','–','–','✓','✓'],['Compliance calendar','–','–','–','✓'],['Priority response','–','✓','✓','24×7 desk'],['Account manager','–','–','–','✓']];
 const TM=[['Neha Gupta','Delhi','Divorce',5,'My divorce felt overwhelming until Adv. Sharma explained every step in Hindi. Calm, clear and always reachable.'],['Rakesh Menon','Kochi','Consumer Complaint',5,'Got a full refund from an e-commerce company in 3 weeks. The notice drafted via LawConnect did the trick!'],['Imran Sheikh','Hyderabad','Property Dispute',5,'Property verification saved me from a fraudulent sale. Worth every rupee. Highly recommended.'],['Ritu Agarwal','Jaipur','Business Contract',4,'Reviewed my vendor contract in a day and flagged two risky clauses. Very professional team.'],['Sandeep Patil','Pune','Cheque Bounce',5,'Section 138 notice drafted within hours. The accused paid up before we even filed the case.'],['Anjali Das','Kolkata','Cyber Crime',5,'Faced online harassment and did not know where to turn. The lawyer guided me through the FIR and takedown.'],['Manoj Kumar','Lucknow','Labour Dispute',5,'Recovered my pending salary and gratuity. The video consultation felt just like meeting in person.'],['Priyanka Rao','Bengaluru','Startup Legal',5,'Founder agreement and incorporation in a week. Our investors loved how clean the paperwork was.'],['Harjeet Singh','Chandigarh','Criminal Case',4,'Bail secured within days. Clear communication, honest about the chances, no false promises.'],['Divya Nair','Chennai','Trademark',5,'Our brand got registered smoothly. Updates on every objection and hearing right in the dashboard.'],['Aditya Bansal','Gurugram','Tax Notice',5,'GST notice replied before the deadline. Expert CA-lawyer duo that actually understands compliance.']];
-const FAQ=[['Is LawConnect a law firm?','No. LawConnect is a marketplace that connects you with independent, Bar Council–verified advocates. Advice is provided by the lawyer you choose.'],['How are lawyers verified?','We verify the Bar Council enrolment number, identity documents, practice history and run a background check before onboarding.'],['How much does a consultation cost?','Fees are shown upfront for chat, audio and video separately, per session. They are calculated only after a lawyer passes all 5 verification checks, from the practice-area base rate adjusted for years of experience, past win rate and awards.'],['Is my conversation confidential?','Yes. Chats, calls and documents are protected by attorney–client confidentiality and encrypted in transit.'],['Can I talk to a lawyer in Hindi or a regional language?','Absolutely. Filter lawyers by language — Hindi, Tamil, Telugu, Marathi, Bengali, Gujarati, Punjabi and more.'],['How fast can I speak to a lawyer?','Lawyers marked "Online" typically respond within 2 minutes via chat, audio or video call.'],['What if I am not satisfied?','If the consultation does not meet expectations, you can request a free re-consult or refund within 24 hours.'],['Can a lawyer represent me in court?','Yes. After the consultation you can hire the same lawyer for court representation; fees are agreed separately.'],['Which payment methods are supported?','UPI, debit/credit cards, net banking and wallets. This demo does not process real payments.'],['Do you handle criminal cases and bail matters?','Yes. We have experienced criminal lawyers across major High Courts and district courts for bail, quashing and trial defence.'],['Can NRIs use LawConnect?','Yes. NRIs can consult via video for property, family, inheritance and corporate matters in India.'],['How do I upload documents securely?','Use the Upload section. Files are stored only on your device in this demo; in production they would be encrypted.'],['What is a legal notice and do I need one?','A legal notice is a formal communication before filing a case. It is mandatory in some matters, e.g. cheque bounce under Section 138.'],['How do I become a lawyer on LawConnect?','Fill the Become A Lawyer form with your Bar Council number. Verification takes around 48 hours.'],['Is the AI assistant a replacement for a lawyer?','No. LawBot gives general information only. Always consult a qualified lawyer for advice on your specific situation.']];
+const FAQ=[['Is LawConnect a law firm?','No. LawConnect is a marketplace that connects you with independent, Bar Council–verified advocates. Advice is provided by the lawyer you choose.'],['How are lawyers verified?','We verify the Bar Council enrolment number, identity documents, practice history and run a background check before onboarding.'],['How much does a consultation cost?','Fees are shown upfront for chat, audio and video separately, per session. They are calculated only after a lawyer passes all 5 verification checks, from the practice-area base rate adjusted for years of experience, past win rate and awards.'],['Is my conversation confidential?','Yes. Chats, calls and documents are protected by attorney–client confidentiality and encrypted in transit.'],['Can I talk to a lawyer in Hindi or a regional language?','Absolutely. Filter lawyers by language — Hindi, Tamil, Telugu, Marathi, Bengali, Gujarati, Punjabi and more.'],['How fast can I speak to a lawyer?','Lawyers marked "Online" typically respond within 2 minutes via chat, audio or video call.'],['What if I am not satisfied?','If the consultation does not meet expectations, you can request a free re-consult or refund within 24 hours.'],['Why can\'t I connect with a lawyer instantly?','To make every consultation useful: you share your Case Brief once (LawBot prepares it), the lawyer reviews it, and both of you agree on a time. Your slot is blocked immediately; once the lawyer accepts, you both get a notification and the chat, call or video opens at the scheduled time. You can chat or talk with LawBot instantly any time.'],['Do I have to repeat my case to every lawyer?','No. Your Case Brief is saved once and attached automatically to every consultation request — chat, audio or video.'],['Can a lawyer represent me in court?','Yes. After the consultation you can hire the same lawyer for court representation; fees are agreed separately.'],['Which payment methods are supported?','UPI, debit/credit cards, net banking and wallets. This demo does not process real payments.'],['Do you handle criminal cases and bail matters?','Yes. We have experienced criminal lawyers across major High Courts and district courts for bail, quashing and trial defence.'],['Can NRIs use LawConnect?','Yes. NRIs can consult via video for property, family, inheritance and corporate matters in India.'],['How do I upload documents securely?','Use the Upload section. Files are stored only on your device in this demo; in production they would be encrypted.'],['What is a legal notice and do I need one?','A legal notice is a formal communication before filing a case. It is mandatory in some matters, e.g. cheque bounce under Section 138.'],['How do I become a lawyer on LawConnect?','Fill the Become A Lawyer form with your Bar Council number. Verification takes around 48 hours.'],['Is the AI assistant a replacement for a lawyer?','No. LawBot gives general information only. Always consult a qualified lawyer for advice on your specific situation.']];
 const HUB=[['about','About Us','info','Our mission and team'],['privacy','Privacy Policy','lock','How we protect your data'],['terms','Terms of Service','file','Rules of using LawConnect'],['contact','Contact','mail','Talk to our team'],['join','Become a Lawyer','briefcase','Join our network'],['careers','Careers','users','Open roles at LawConnect'],['resources','Legal Resources','book','Guides & templates'],['crm','Lead Management CRM','grid','Track and convert leads'],['subs','Lawyer Subscription Plans','award','Plans for advocates'],['referral','Referral Program','heart','Earn ₹500 per referral'],['affiliate','Affiliate Dashboard','trend','Partner earnings'],['market','Legal Marketplace','tag','Templates & packages'],['courses','Legal Courses','cap','Learn from top advocates'],['forum','Community Forum','chat','Ask & discuss'],['blog','Legal Blog','book','Latest legal updates'],['kb','Knowledge Base','search','Searchable help articles'],['courts','Court Directory','building','Courts across India'],['judges','Judge Directory','gavel','Benches (demo data)'],['rc','Legal Resource Center','file','Free checklists & forms']];
 /* i18n */
 const T={en:{},hi:{n_home:'होम',n_find:'वकील खोजें',n_serv:'कानूनी सेवाएँ',n_price:'मूल्य',n_rev:'समीक्षाएँ',n_faq:'सवाल-जवाब',n_law:'वकील',n_con:'संपर्क',consult:'अभी परामर्श लें',become:'वकील बनें',h1:'मिनटों में विशेषज्ञ वकीलों से बात करें',sub:'पारिवारिक मामले, तलाक़, दीवानी, आपराधिक मामले, संपत्ति विवाद, व्यावसायिक अनुबंध, उपभोक्ता शिकायत, टैक्स नोटिस और बहुत कुछ पर तुरंत कानूनी सलाह पाएँ।',start:'परामर्श शुरू करें',find:'वकील खोजें',ph:'अपनी कानूनी समस्या बताएँ...',search:'खोजें',online:'वकील अभी ऑनलाइन',cats:'अपने मामले के लिए सही वकील चुनें',lawt:'सत्यापित वकील, सिद्ध ट्रैक रिकॉर्ड के साथ',servt:'कानूनी सेवाएँ, आसान तरीके से',ait:'अपना पहला कानूनी सवाल LawBot से पूछें',pricet:'सरल और पारदर्शी मूल्य',revt:'हज़ारों ग्राहकों का भरोसा',faqt:'अक्सर पूछे जाने वाले प्रश्न'}};
